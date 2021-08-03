@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -28,8 +29,8 @@ public class DataIntializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Role userRole = Role.builder().role("USER").build();
-        Role adminRole = Role.builder().role("ADMIN").build();
+        Role userRole = Role.builder().role("ROLE_USER").build();
+        Role adminRole = Role.builder().role("ROLE_ADMIN").build();
         roleRepository.save(userRole);
         roleRepository.save(adminRole);
 

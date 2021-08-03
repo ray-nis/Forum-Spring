@@ -1,5 +1,6 @@
 package com.forum.model;
 
+import com.forum.model.audit.DateAudit;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.util.*;
 
 @Setter
@@ -17,8 +19,7 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@ToString
-public class User implements UserDetails {
+public class User extends DateAudit implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

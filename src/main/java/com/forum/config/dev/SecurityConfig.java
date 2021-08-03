@@ -26,13 +26,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+        http
+                .authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
                 .and()
                 .headers().frameOptions().disable()
                 .and()
                 .csrf().ignoringAntMatchers("/h2-console/**")
                 .and()
                 .cors().disable();
-        http.authorizeRequests().antMatchers("/").authenticated().and().formLogin();
+        http.
+                authorizeRequests()
+                .antMatchers("/").hasRole("USER")
+                .antMatchers("/login", "signup").permitAll()
+                .and()
+                .formLogin()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login")
+                .and()
+                .rememberMe();
     }
 }

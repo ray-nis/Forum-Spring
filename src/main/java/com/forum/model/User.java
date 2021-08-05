@@ -31,7 +31,7 @@ public class User extends DateAudit implements UserDetails {
     private String userName;
 
     @NotBlank(message = "Email is required.")
-    @Email
+    @Email(regexp = ".+@.+\\..+")
     @Column(unique=true)
     private String email;
 

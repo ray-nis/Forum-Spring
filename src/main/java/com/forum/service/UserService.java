@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
+    @Transactional
     public User saveUser(UserSignupDto userSignupDto) throws UserExistsException {
         if (emailExists(userSignupDto.getEmail())) {
             throw new UserExistsException("Email already in use");
@@ -44,11 +46,16 @@ public class UserService {
                 .email(userSignupDto.getEmail())
                 .password(passwordEncoder.encode(userSignupDto.getPassword()))
                 .roles(new HashSet<Role>(Arrays.asList(userRole)))
-                .enabled(true)
+                .enabled(false)
                 .nonLocked(true)
                 .build();
 
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public void enableUser(User user) {
+        user.setEnabled(true);
     }
 
     private boolean emailExists(String email) {

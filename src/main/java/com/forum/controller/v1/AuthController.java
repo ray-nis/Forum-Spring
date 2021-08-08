@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -51,7 +52,11 @@ public class AuthController {
         }
         try {
             User user = userService.saveUser(userSignupDto);
-            eventPublisher.publishEvent(new RegistrationCompleteEvent(user, request.getContextPath()));
+            String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                    .replacePath(null)
+                    .build()
+                    .toUriString();
+            eventPublisher.publishEvent(new RegistrationCompleteEvent(user, baseUrl));
         }
         catch (UserExistsException err) {
             ModelAndView mav = new ModelAndView("signUp", "user", userSignupDto);
@@ -66,7 +71,6 @@ public class AuthController {
     }
 
     @GetMapping("/registrationConfirm")
-    @Transactional
     public ModelAndView confirmRegistration(@RequestParam("token") String token, Model model) {
         Optional<VerificationToken> verificationToken = verificationTokenService.getVerificationToken(token);
 

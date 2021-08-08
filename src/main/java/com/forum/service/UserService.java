@@ -6,8 +6,8 @@ import com.forum.model.Role;
 import com.forum.model.User;
 import com.forum.repository.RoleRepository;
 import com.forum.repository.UserRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -9,11 +9,11 @@ import org.springframework.context.ApplicationEvent;
 @Setter
 public class RegistrationCompleteEvent extends ApplicationEvent {
     private User user;
-    private String contextPath;
+    private String baseUrl;
 
-    public RegistrationCompleteEvent(User user, String contextPath) {
+    public RegistrationCompleteEvent(User user, String baseUrl) {
         super(user);
         this.user = user;
-        this.contextPath = contextPath;
+        this.baseUrl = baseUrl;
     }
 }

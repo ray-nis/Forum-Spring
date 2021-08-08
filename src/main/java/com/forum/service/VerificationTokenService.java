@@ -3,6 +3,7 @@ package com.forum.service;
 import com.forum.model.User;
 import com.forum.model.VerificationToken;
 import com.forum.repository.VerificationTokenRepository;
+import com.forum.util.ClockUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class VerificationTokenService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserService userService;
+    private final ClockUtil clockUtil;
 
     @Transactional
     public String createVerificationToken(User user) {
@@ -23,8 +25,8 @@ public class VerificationTokenService {
         VerificationToken verificationToken = VerificationToken.builder()
                 .user(user)
                 .token(token)
-                .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(30))
+                .createdAt(clockUtil.getTimeNow())
+                .expiresAt(clockUtil.getTimeNow().plusMinutes(clockUtil.verificationTokenExpirationMins))
                 .build();
         verificationTokenRepository.save(verificationToken);
         return verificationToken.getToken();
@@ -32,7 +34,7 @@ public class VerificationTokenService {
 
     @Transactional
     public void confirmToken(VerificationToken verificationToken) {
-        verificationToken.setConfirmedAt(LocalDateTime.now());
+        verificationToken.setConfirmedAt(clockUtil.getTimeNow());
         userService.enableUser(verificationToken.getUser());
     }
 

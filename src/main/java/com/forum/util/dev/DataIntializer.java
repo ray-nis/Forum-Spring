@@ -1,21 +1,24 @@
 package com.forum.util.dev;
 
+import com.forum.model.Category;
+import com.forum.model.Post;
 import com.forum.model.Role;
 import com.forum.model.User;
+import com.forum.repository.CategoryRepository;
+import com.forum.repository.PostRepository;
 import com.forum.repository.RoleRepository;
 import com.forum.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Profile("dev")
 @Component
@@ -26,6 +29,8 @@ public class DataIntializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CategoryRepository categoryRepository;
+    private final PostRepository postRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,5 +57,47 @@ public class DataIntializer implements CommandLineRunner {
 
         userRepository.save(john);
         userRepository.save(ben);
+
+        Category firstCategory = Category.builder()
+                .description("First category descp")
+                .name("First category")
+                .build();
+
+        Category secondCategory = Category.builder()
+                .description("Second category descp")
+                .name("Second category")
+                .build();
+
+        categoryRepository.saveAll(Arrays.asList(firstCategory, secondCategory));
+
+        Post firstPost = Post.builder()
+                .postContent("First post for 1st category")
+                .category(firstCategory)
+                .poster(john)
+                .build();
+
+        Post secondPost = Post.builder()
+                .postContent("Second post for 1st category")
+                .category(firstCategory)
+                .poster(ben)
+                .build();
+
+        Post thirdPost = Post.builder()
+                .postContent("First post for 2nd category")
+                .category(secondCategory)
+                .poster(ben)
+                .build();
+
+        Post fourthPost = Post.builder()
+                .postContent("Second post for 2nd category")
+                .category(secondCategory)
+                .poster(ben)
+                .build();
+
+        postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost));
+
+        List<Post> posts = userRepository.findUserWithPostsByUserName("Ben").get().getPosts();
+        log.info("Ben's posts --- \n" + posts);
+        //log.info("First category's posts --- \n" + categoryRepository.findByName("Second category").get().getPosts());
     }
 }

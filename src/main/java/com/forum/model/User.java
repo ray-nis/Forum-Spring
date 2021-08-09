@@ -46,6 +46,9 @@ public class User extends DateAudit implements UserDetails {
 
     private Boolean enabled = false;
 
+    @OneToMany(mappedBy = "poster")
+    private List<Post> posts = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();

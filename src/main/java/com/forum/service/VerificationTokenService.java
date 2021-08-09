@@ -6,9 +6,8 @@ import com.forum.repository.VerificationTokenRepository;
 import com.forum.util.ClockUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 

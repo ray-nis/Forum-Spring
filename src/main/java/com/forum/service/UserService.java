@@ -6,12 +6,11 @@ import com.forum.model.Role;
 import com.forum.model.User;
 import com.forum.repository.RoleRepository;
 import com.forum.repository.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;

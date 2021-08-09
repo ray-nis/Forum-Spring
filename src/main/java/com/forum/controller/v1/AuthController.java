@@ -8,7 +8,6 @@ import com.forum.model.VerificationToken;
 import com.forum.service.UserService;
 import com.forum.service.VerificationTokenService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

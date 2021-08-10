@@ -4,6 +4,9 @@ import com.forum.model.audit.DateAudit;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Setter
 @Getter
@@ -17,8 +20,12 @@ public class Post extends DateAudit {
     private long id;
 
     @ManyToOne
+    @Column(nullable = false)
     private User poster;
 
+    @Size(min = 3)
+    @NotEmpty
+    @NotNull
     private String postContent;
 
     @ManyToOne

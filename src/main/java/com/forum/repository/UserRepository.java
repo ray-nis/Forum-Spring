@@ -12,6 +12,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findByUserName(String userName);
 
-    @Query("select p from User p left join fetch p.posts where p.userName = :userName")
+    Optional<User> findByEmailIgnoreCase(String email);
+    Optional<User> findByUserNameIgnoreCase(String userName);
+
+    @Query("select u from User u LEFT JOIN FETCH u.posts where u.userName = :userName")
     Optional<User> findUserWithPostsByUserName(String userName);
+
+    @Query("select u from User u LEFT JOIN FETCH u.posts where u.email = :email")
+    Optional<User> findUserWithPostsByEmail(String email);
+
+    @Query("select u from User u LEFT JOIN FETCH u.posts where u.id = :id")
+    Optional<User> findUserWithPostsById(Long id);
 }

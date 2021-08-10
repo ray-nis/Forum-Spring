@@ -58,10 +58,10 @@ public class UserService {
     }
 
     private boolean emailExists(String email) {
-        return userRepository.findByEmail(email).isPresent();
+        return userRepository.findByEmailIgnoreCase(email).isPresent();
     }
 
     private boolean userNameExists(String userName) {
-        return userRepository.findByUserName(userName).isPresent();
+        return userRepository.findByUserNameIgnoreCase(userName).isPresent();
     }
 }

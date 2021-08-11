@@ -1,6 +1,7 @@
 package com.forum.model;
 
 import com.forum.model.audit.DateAudit;
+import com.forum.util.SlugUtil;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,8 +21,14 @@ public class Post extends DateAudit {
     private long id;
 
     @ManyToOne
-    @Column(nullable = false)
+    @NotNull
     private User poster;
+
+    @NotNull
+    @Size(min = 3)
+    private String title;
+
+    private String slug;
 
     @Size(min = 3)
     @NotEmpty
@@ -31,8 +38,8 @@ public class Post extends DateAudit {
     @ManyToOne
     private Category category;
 
-    @Override
-    public String toString() {
-        return postContent + " posted by " + poster.getUsername();
+    @PrePersist
+    public void slugColumn() {
+        slug = SlugUtil.toSlug(title);
     }
 }

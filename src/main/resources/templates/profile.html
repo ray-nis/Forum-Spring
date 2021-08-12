@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getVisibleUsername()}"></title>
+</head>
+<body>
+<h1 th:text="${user.getVisibleUsername()}"></h1>
+<ul th:each="post: ${user.getPosts()}">
+    <li th:text="${post.getTitle()}"><a th:href=""></a></li>
+</ul>
+</body>
+</html>

@@ -1,7 +1,6 @@
 package com.forum.util;
 
 import java.text.Normalizer;
-import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class SlugUtil {
@@ -14,6 +13,6 @@ public class SlugUtil {
         String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
         String slug = NONLATIN.matcher(normalized).replaceAll("");
         slug = EDGESDHASHES.matcher(slug).replaceAll("");
-        return slug.toLowerCase(Locale.ENGLISH);
+        return slug.toLowerCase();
     }
 }

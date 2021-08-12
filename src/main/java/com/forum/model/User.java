@@ -59,9 +59,18 @@ public class User extends DateAudit implements UserDetails {
         return grantedAuthorities;
     }
 
+    public String getVisibleUsername() {
+        return userName;
+    }
+
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override

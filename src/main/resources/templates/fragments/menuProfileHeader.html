@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+    <div th:fragment="menuProfile">
+        <div sec:authorize="isAnonymous()">
+            <h1 th:text="Welcome"></h1>
+            <h5><a th:text="Login" th:href="@{~/login}"></a></h5>
+            <h5><a th:text="Register" th:href="@{~/signup}"></a></h5>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            Welcome back
+            <h1 th:text="'Welcome back ' + ${#authentication.getPrincipal().getVisibleUsername()}"></h1>
+            <h5><a th:text="Profile" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></h5>
+        </div>
+    </div>
+</body>
+</html>

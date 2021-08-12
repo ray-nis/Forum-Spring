@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Forum</title>
 </head>
 <body>
-<h1>Welcome</h1>
+<header th:insert="/fragments/menuHeader.html :: menuHeader"></header>
+<nav th:insert="/fragments/menuProfileHeader.html :: menuProfile"></nav>
 </body>
 </html>

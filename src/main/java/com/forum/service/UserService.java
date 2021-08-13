@@ -64,4 +64,8 @@ public class UserService {
     private boolean userNameExists(String userName) {
         return userRepository.findByUserNameIgnoreCase(userName).isPresent();
     }
+
+    public Optional<User> findUserWithPostsById(Long id) {
+        return userRepository.findUserWithPostsById(id);
+    }
 }

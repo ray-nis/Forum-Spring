@@ -25,7 +25,7 @@ public class Post extends DateAudit {
     private User poster;
 
     @NotNull
-    @Size(min = 3)
+    @Size(min = 3, max = 50)
     private String title;
 
     private String slug;

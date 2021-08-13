@@ -1,8 +1,7 @@
 package com.forum.controller.v1;
 
-import com.forum.model.User;
-import com.forum.repository.UserRepository;
-import com.forum.service.UserService;
+import com.forum.model.Post;
+import com.forum.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -13,17 +12,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Controller
-public class ProfileController {
-    private final UserService userService;
+@RequiredArgsConstructor
+public class PostController {
+    private final PostService postService;
 
-    @GetMapping("/profile/{id}")
-    public String getProfile(@PathVariable("id") Long id, Model model) {
-        Optional<User> user = userService.findUserWithPostsById(id);
-        if (user.isPresent()) {
-            model.addAttribute("user", user.get());
-            return "profile";
+    @GetMapping("/post/{id}/{slug}")
+    public String getPost(@PathVariable("id") Long id, @PathVariable("slug") String slug, Model model) {
+        Optional<Post> post = postService.getPostByIdAndSlug(id, slug);
+        if (post.isPresent()) {
+            model.addAttribute("post", post.get());
+            return "post/post";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

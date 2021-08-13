@@ -7,7 +7,7 @@
 <body>
 <h1 th:text="${user.getVisibleUsername()}"></h1>
 <ul th:each="post: ${user.getPosts()}">
-    <li th:text="${post.getTitle()}"><a th:href=""></a></li>
+    <a th:href="@{~/post/{id}/{slug}(id=${post.getId()}, slug=${post.getSlug()})}"><li th:text="${post.getTitle()}"></li></a>
 </ul>
 </body>
 </html>

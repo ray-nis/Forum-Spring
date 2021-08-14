@@ -15,4 +15,12 @@ public class PostService {
     public Optional<Post> getPostByIdAndSlug(Long id, String slug) {
         return postRepository.findByIdAndSlug(id, slug);
     }
+
+    public Optional<Post> getPostById(Long id) {
+        return postRepository.findById(id);
+    }
+
+    public Optional<Post> getPostBySlug(String slug) {
+        return postRepository.findBySlug(slug);
+    }
 }

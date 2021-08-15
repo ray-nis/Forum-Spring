@@ -29,7 +29,7 @@
     <input type="password" th:field="*{matchingPassword}"/>
     <p th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
 
-    <button type="submit">Submit</button>
+    <button th:text="#{register}" type="submit">/button>
 
 </form>
 </body>

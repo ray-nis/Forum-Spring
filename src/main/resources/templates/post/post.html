@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1 th:text="${post.getTitle()}"></h1>
-<h3 th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getCreatedAt()}"></h3>
+<h3 th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getPostedTime()}"></h3>
 <p th:text="${post.getPostContent()}"></p>
 </body>
 </html>

@@ -1,10 +1,12 @@
 package com.forum.service;
 
+import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +24,9 @@ public class PostService {
 
     public Optional<Post> getPostBySlug(String slug) {
         return postRepository.findBySlug(slug);
+    }
+
+    public Optional<List<Post>> getAllByCategory(Category category) {
+        return postRepository.findByCategory(category);
     }
 }

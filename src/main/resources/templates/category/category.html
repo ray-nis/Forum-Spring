@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${category.getName()}"></title>
+</head>
+<body>
+<div th:each="post : ${posts}">
+    <a th:href="@{~/post/{id}/{slug}(id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
+</div>
+</body>
+</html>

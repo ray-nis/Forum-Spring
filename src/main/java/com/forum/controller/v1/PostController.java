@@ -1,5 +1,6 @@
 package com.forum.controller.v1;
 
+import com.forum.dto.PostDto;
 import com.forum.model.Post;
 import com.forum.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -48,5 +50,11 @@ public class PostController {
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/post")
+    @ResponseBody
+    public String postPost(PostDto post) {
+        return "no";
     }
 }

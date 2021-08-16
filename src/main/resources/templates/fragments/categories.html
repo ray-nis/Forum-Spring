@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="categories">
+    <div th:each="category : ${categories}">
+        <a th:href="@{~/category/{name}/(name=${category.getSlug()})}"><h1 th:text="${category.getSlug()}"></h1></a>
+    </div>
+</div>
+</body>
+</html>

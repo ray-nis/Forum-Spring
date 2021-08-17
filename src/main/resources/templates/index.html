@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Forum</title>
+    <div th:replace="/fragments/assets.html :: assets"></div>
 </head>
 <body>
-<header th:insert="/fragments/menuHeader.html :: menuHeader"></header>
-<nav th:insert="/fragments/menuProfileHeader.html :: menuProfile"></nav>
+<div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
 <main>
     <div th:insert="/fragments/categories.html" :: categories></div>
 </main>

@@ -1,14 +1,22 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<body>
-    <header th:fragment="menuHeader">
-        <nav>
-            <ul>
-                <li><a th:text="#{home}" th:href="@{~/}"></a></li>
-                <li><a th:text="#{about}" href="#"></a></li>
-                <li><a th:text="#{contact}" href="#"></a></li>
-            </ul>
-        </nav>
-    </header>
-</body>
-</html>
+<header th:fragment="menuHeader">
+    <nav class="navbar navbar-dark justify-content-center" style="background-color: #43a178;">
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand " href="#"><h1 class="display-3">Forum</h1></a>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link link-light" th:href="@{~/}" th:text="#{home}"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" th:href="@{~/about}" th:text="#{about}"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" th:href="@{~/contact}" th:text="#{contact}"></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" th:href="@{~/search}" th:text="#{search}"></a>
+            </li>
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,34 @@
+a {
+    text-decoration: none;
+}
+
+.menuProfileHeaderContainer {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.menuProfileHeader a {
+    color: #142847;
+    font-size: 1.3em;
+}
+
+.menuProfileHeader h1 {
+    color: #142847;
+    font-size: 3em;
+}
+
+.menuProfileHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.menuProfileHeader div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menuProfileHeader div a {
+    padding-right: 15px;
+}

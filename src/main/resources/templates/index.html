@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Forum</title>
-    <div th:replace="/fragments/assets.html :: assets"></div>
+    <div th:replace="/fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
 <div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
@@ -11,6 +11,7 @@
 <main>
     <div th:insert="/fragments/categories.html" :: categories></div>
 </main>
-<footer th:insert="/fragments/footer.html :: footer"></footer>
+<div th:replace="/fragments/footer.html :: footer"></div>
+<div th:replace="/fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

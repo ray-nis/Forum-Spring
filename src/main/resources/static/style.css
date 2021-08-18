@@ -32,3 +32,26 @@ a {
 .menuProfileHeader div a {
     padding-right: 15px;
 }
+
+.footerContainer {
+    display: flex;
+    justify-content: center;
+    padding: 25px 0 15px 0px;
+    margin-top: 30px;
+    border-top: 1px solid #43a178;
+}
+
+.footer {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer h1 {
+    font-size: 1.1em;
+    padding-bottom: 20px;
+}
+
+.footer p {
+    font-size: 0.9em;
+}

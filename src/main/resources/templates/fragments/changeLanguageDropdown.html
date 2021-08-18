@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="dropdown" th:fragment="changeLanguageDropdown">
+    <button class="btn btn-success dropdown-toggle" th:text="#{changeLanguage}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Change language
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" th:text="#{switchEn}" th:href="@{~/?localeData=en}">Action</a>
+        <a class="dropdown-item" th:text="#{switchAl}" th:href="@{~/?localeData=sq}">Action</a>
+    </div>
+</div>
+</html>

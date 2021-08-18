@@ -1,3 +1,7 @@
+body {
+    font-family: 'Ubuntu', sans-serif;
+}
+
 a {
     text-decoration: none;
 }
@@ -6,11 +10,12 @@ a {
     display: flex;
     justify-content: center;
     padding: 15px 0;
+    border-bottom: 1px solid #43a178;
 }
 
 .menuProfileHeader a {
     color: #142847;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .menuProfileHeader h1 {
@@ -21,7 +26,7 @@ a {
 .menuProfileHeader {
     display: flex;
     justify-content: space-between;
-    width: 60%;
+    width: 70%;
 }
 
 .menuProfileHeader div {
@@ -54,4 +59,30 @@ a {
 
 .footer p {
     font-size: 0.9em;
+}
+
+.categoriesContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.categories {
+    width: 70%;
+    margin-top: 40px;
+}
+
+.category {
+    margin-bottom: 35px;
+}
+
+.categoryTitle {
+    color: #142847;
+    font-size: 1.7em;
+    margin-bottom: 10px;
+}
+
+.categoryDesc {
+    font-size: 0.9rem;
+    color: #5c6169;
+    font-family: 'Open Sans', sans-serif;
 }

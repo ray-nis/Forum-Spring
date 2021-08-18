@@ -1,18 +1,4 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="menuProfil">
-    <div sec:authorize="isAnonymous()">
-        <h1 th:text="Welcome"></h1>
-        <h5><a th:text="Login" th:href="@{~/login}"></a></h5>
-        <h5><a th:text="Register" th:href="@{~/signup}"></a></h5>
-    </div>
-    <div sec:authorize="isAuthenticated()">
-        Welcome back
-        <h1 th:text="'Welcome back ' + ${#authentication.getPrincipal().getVisibleUsername()}"></h1>
-        <h5><a th:text="Profile" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></h5>
-    </div>
-</div>
-
-
 <div th:fragment="menuProfile" class="menuProfileHeaderContainer">
     <div sec:authorize="isAnonymous()" class="menuProfileHeader">
         <a th:text="#{welcome}"></a>
@@ -23,6 +9,9 @@
     </div>
     <div sec:authorize="isAuthenticated()" class="menuProfileHeader">
         <a th:text="#{welcomeBack} + ${#authentication.getPrincipal().getVisibleUsername()} + '!'"></a>
-        <a th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}">
+        <div>
+            <a th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></a>
+            <a th:text="#{logout}" th:href="@{~/logout}"></a>
+        </div>
     </div>
 </div>

@@ -5,6 +5,7 @@ import com.forum.util.SlugUtil;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class Category extends DateAudit {
 
     private String slug;
 
+    @Size(max = 50)
     private String description;
 
     @OneToMany(mappedBy = "category")

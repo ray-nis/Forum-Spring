@@ -7,6 +7,7 @@ import com.forum.model.User;
 import com.forum.model.VerificationToken;
 import com.forum.service.UserService;
 import com.forum.service.VerificationTokenService;
+import com.forum.util.ClockUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class AuthController {
     private final UserService userService;
     private final ApplicationEventPublisher eventPublisher;
     private final VerificationTokenService verificationTokenService;
+    private final ClockUtil clockUtil;
 
     @GetMapping("/login")
     public String logIn() {
@@ -77,7 +79,7 @@ public class AuthController {
             return mav;
         }
 
-        if (verificationToken.get().getExpiresAt().isBefore(LocalDateTime.now())) {
+        if (verificationToken.get().getExpiresAt().isBefore(clockUtil.getTimeNow())) {
             ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Token expired");
             return mav;
         }

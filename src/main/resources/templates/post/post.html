@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${post.getTitle()}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
-<h1 th:text="${post.getTitle()}"></h1>
-<h3 th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getPostedTime()}"></h3>
-<p th:text="${post.getPostContent()}"></p>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="postsContainer">
+    <div class="posts">
+        <h1 class="postTitle" th:text="${post.getTitle()}"></h1>
+        <h3 class="postTime" th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getPostedTime()}"></h3>
+        <p class="postContent" th:text="${post.getPostContent()}"></p>
+    </div>
+</div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

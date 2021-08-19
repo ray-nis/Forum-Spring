@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${category.getName()}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
-<div th:each="post : ${posts}">
-    <a th:href="@{~/post/{id}/{slug}(id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="postsContainer">
+    <div class="posts">
+        <div th:each="post : ${posts}">
+            <a class="postTitle" th:href="@{~/post/{id}/{slug}(id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
+        </div>
+    </div>
 </div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

@@ -11,6 +11,7 @@ a {
     justify-content: center;
     padding: 15px 0;
     border-bottom: 1px solid #43a178;
+    margin-bottom: 50px;
 }
 
 .menuProfileHeader a {
@@ -42,7 +43,7 @@ a {
     display: flex;
     justify-content: center;
     padding: 25px 0 15px 0px;
-    margin-top: 30px;
+    margin-top: 40px;
     border-top: 1px solid #43a178;
 }
 
@@ -68,7 +69,6 @@ a {
 
 .categories {
     width: 70%;
-    margin-top: 40px;
 }
 
 .category {
@@ -85,4 +85,30 @@ a {
     font-size: 0.9rem;
     color: #5c6169;
     font-family: 'Open Sans', sans-serif;
+}
+
+.postsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.posts {
+    width: 70%;
+}
+
+.postTitle {
+    color: #142847;
+    font-size: 1.7em;
+    margin-bottom: 10px;
+}
+
+.postTime {
+    font-size: 1rem;
+    color: #343c4a;
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 20px;
+}
+
+.postContent {
+    font-size: 1.4em;
 }

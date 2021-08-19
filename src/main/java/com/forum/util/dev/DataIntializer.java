@@ -106,5 +106,9 @@ public class DataIntializer implements CommandLineRunner {
                 .build();
 
         postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost));
+
+        User thee = userRepository.findUserWithPostsByUserName("Ben").get();
+        log.info(String.valueOf(thee.getPosts()));
+
     }
 }

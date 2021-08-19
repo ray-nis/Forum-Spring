@@ -53,7 +53,7 @@ class UserServiceTest {
                 .enabled(false)
                 .build();
 
-        when(userRepository.findByEmail("username")).thenReturn(Optional.of(user));
+        when(userRepository.findByEmailIgnoreCase("username")).thenReturn(Optional.of(user));
 
         UserSignupDto userDto = UserSignupDto.builder().email("username").build();
 
@@ -73,7 +73,7 @@ class UserServiceTest {
                 .enabled(false)
                 .build();
 
-        when(userRepository.findByUserName("username")).thenReturn(Optional.of(user));
+        when(userRepository.findByUserNameIgnoreCase("username")).thenReturn(Optional.of(user));
 
         UserSignupDto userDto = UserSignupDto.builder().email("email@email.com").userName("username").build();
 

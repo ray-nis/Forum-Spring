@@ -39,13 +39,13 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUp(Model model) {
         model.addAttribute("user", new UserSignupDto());
-        return "signUp";
+        return "auth/signUp";
     }
 
     @PostMapping("/signup")
     public ModelAndView saveUser(@Valid @ModelAttribute("user") UserSignupDto userSignupDto, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
-            ModelAndView mav = new ModelAndView("signUp", "user", userSignupDto);
+            ModelAndView mav = new ModelAndView("auth/signUp", "user", userSignupDto);
             return mav;
         }
         try {
@@ -57,7 +57,7 @@ public class AuthController {
             eventPublisher.publishEvent(new RegistrationCompleteEvent(user, baseUrl));
         }
         catch (UserExistsException err) {
-            ModelAndView mav = new ModelAndView("signUp", "user", userSignupDto);
+            ModelAndView mav = new ModelAndView("auth/signUp", "user", userSignupDto);
             mav.addObject("message", err.getMessage());
             return mav;
         }
@@ -65,7 +65,7 @@ public class AuthController {
             // TODO
         }
 
-        return new ModelAndView("succesfulSignUp");
+        return new ModelAndView("auth/succesfulSignUp");
     }
 
     @GetMapping("/registrationConfirm")
@@ -73,17 +73,17 @@ public class AuthController {
         Optional<VerificationToken> verificationToken = verificationTokenService.getVerificationToken(token);
 
         if (verificationToken.isEmpty()) {
-            ModelAndView mav = new ModelAndView("badToken", "msg", "Token not found");
+            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Bad token");
             return mav;
         }
 
         if (verificationToken.get().getExpiresAt().isBefore(LocalDateTime.now())) {
-            ModelAndView mav = new ModelAndView("badToken", "msg", "Token expired");
+            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Token expired");
             return mav;
         }
 
         if (verificationToken.get().getConfirmedAt() != null) {
-            ModelAndView mav = new ModelAndView("badToken", "msg", "Token already used");
+            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Bad token");
             return mav;
         }
 

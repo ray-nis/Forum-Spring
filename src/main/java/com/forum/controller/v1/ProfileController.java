@@ -23,7 +23,7 @@ public class ProfileController {
         Optional<User> user = userService.findUserWithPostsById(id);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
-            return "profile";
+            return "profile/profile";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

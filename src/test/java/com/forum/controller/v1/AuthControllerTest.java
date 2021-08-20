@@ -1,5 +1,6 @@
 package com.forum.controller.v1;
 
+import com.forum.exception.UserExistsException;
 import com.forum.model.User;
 import com.forum.model.VerificationToken;
 import com.forum.service.UserDetailsServiceImpl;
@@ -19,8 +20,11 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = AuthController.class)
@@ -44,6 +48,90 @@ class AuthControllerTest {
     void shouldReturnLogin() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldContainUsernameValidationError() throws Exception {
+        mockMvc.perform(post("/signup")
+                .param("userName", "Rr")
+                .param("email", "username@gmail.com")
+                .param("password", "password")
+                .param("matchingPassword", "password")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/signUp"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeHasFieldErrors("user", "userName"));
+    }
+
+    @Test
+    void shouldContainEmailValidationError() throws Exception {
+        mockMvc.perform(post("/signup")
+                .param("userName", "username")
+                .param("email", "usernamegmail.com")
+                .param("password", "password")
+                .param("matchingPassword", "password")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/signUp"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeHasFieldErrors("user", "email"));
+    }
+
+    @Test
+    void shouldContainShortPasswordValidationError() throws Exception {
+        mockMvc.perform(post("/signup")
+                .param("userName", "username")
+                .param("email", "username@gmail.com")
+                .param("password", "pass")
+                .param("matchingPassword", "pass")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/signUp"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().attributeHasFieldErrors("user", "password"));
+    }
+
+    @Test
+    void shouldContainMismatchingPasswordValidationError() throws Exception {
+        mockMvc.perform(post("/signup")
+                .param("userName", "username")
+                .param("email", "username@gmail.com")
+                .param("password", "password")
+                .param("matchingPassword", "password1")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/signUp"))
+                .andExpect(model().attributeExists("user"))
+                .andExpect(model().hasErrors());
+    }
+
+    @Test
+    void shouldShowUserExists() throws Exception {
+        doThrow(new UserExistsException("Email already in use"))
+                .when(userService).saveUser(any());
+
+        mockMvc.perform(post("/signup")
+                .param("userName", "username")
+                .param("email", "username@gmail.com")
+                .param("password", "password")
+                .param("matchingPassword", "password")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/signUp"))
+                .andExpect(model().attributeExists("message"));
+    }
+
+    @Test
+    void shouldShowSuccesfulSignUp() throws Exception {
+        mockMvc.perform(post("/signup")
+                .param("userName", "username")
+                .param("email", "username@gmail.com")
+                .param("password", "password")
+                .param("matchingPassword", "password")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("auth/succesfulSignUp"));
     }
 
     @Test

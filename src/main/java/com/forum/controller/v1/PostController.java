@@ -1,7 +1,9 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.PostDto;
+import com.forum.model.Category;
 import com.forum.model.Post;
+import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final CategoryService categoryService;
 
     @GetMapping("/post/{id}/{slug}")
     public String getPostByIdAndSlug(@PathVariable("id") Long id, @PathVariable("slug") String slug, Model model) {
@@ -47,6 +50,17 @@ public class PostController {
         if (post.isPresent()) {
             model.addAttribute("post", post.get());
             return "post/post";
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/category/{category}/new")
+    public String newPost(@PathVariable("category") String categorySlug,Model model) {
+        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
+        if (category.isPresent()) {
+            model.addAttribute("post", new PostDto());
+            return "post/newPost";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

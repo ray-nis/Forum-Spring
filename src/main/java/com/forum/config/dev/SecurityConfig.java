@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile({"dev", "test"})
+@Profile({"dev"})
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,17 +37,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors().disable();
 
-        http.
-                authorizeRequests()
-                .antMatchers("/post/").authenticated()
+        http.authorizeRequests()
+                .antMatchers("/css/**", "/js/**", "/static/**").permitAll()
+                .antMatchers("/", "/login", "/signup", "/registrationConfirm", "/about", "/contact", "/search", "/rules").permitAll()
+                .antMatchers("/profile", "/profile/*").authenticated()
                 .antMatchers("/post/**").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/category/**/new").authenticated()
+                .antMatchers("/category/**").permitAll()
+                .anyRequest().denyAll()
                 .and()
                 .formLogin()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/")
                 .and()
                 .rememberMe();
+
+
     }
 }

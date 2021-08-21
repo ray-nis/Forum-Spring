@@ -3,6 +3,7 @@ package com.forum.controller.v1;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.model.User;
+import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 import com.forum.service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,8 @@ class PostControllerTest {
 
     @MockBean
     private PostService postService;
+    @MockBean
+    private CategoryService categoryService;
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
 

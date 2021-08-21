@@ -51,10 +51,4 @@ public class PostController {
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-
-    @GetMapping("/post")
-    @ResponseBody
-    public String postPost(PostDto post) {
-        return "no";
-    }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <title th:text="#{register}"></title>
 </head>
 <body>
 <form action="/signup" method="POST" th:object="${user}">

@@ -105,6 +105,13 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(john)
                 .build();
 
-        postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost));
+        Post sixthPost = Post.builder()
+                .title("4th Post for the 2nd in 2nd category")
+                .postContent("Second post for 2nd category")
+                .category(secondCategory)
+                .poster(ben)
+                .build();
+
+        postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost, sixthPost));
     }
 }

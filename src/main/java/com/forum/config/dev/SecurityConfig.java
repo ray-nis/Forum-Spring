@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile", "/profile/*").authenticated()
                 .antMatchers("/post/**").permitAll()
                 .antMatchers("/category/**/new").authenticated()
+                .antMatchers("/category/**/post/**").permitAll()
                 .antMatchers("/category/**").permitAll()
                 .anyRequest().denyAll()
                 .and()

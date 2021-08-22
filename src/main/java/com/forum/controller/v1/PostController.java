@@ -22,34 +22,15 @@ public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
 
-    @GetMapping("/post/{id}/{slug}")
-    public String getPostByIdAndSlug(@PathVariable("id") Long id, @PathVariable("slug") String slug, Model model) {
-        Optional<Post> post = postService.getPostByIdAndSlug(id, slug);
-        if (post.isPresent()) {
-            model.addAttribute("post", post.get());
-            return "post/post";
-        }
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/post/{id}")
-    public String getPostById(@PathVariable("id") Long id, Model model) {
-        Optional<Post> post = postService.getPostById(id);
-        if (post.isPresent()) {
-            model.addAttribute("post", post.get());
-            return "post/post";
-        }
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/post/id/{slug}")
-    public String getPostById(@PathVariable("slug") String slug, Model model) {
-        Optional<Post> post = postService.getPostBySlug(slug);
-        if (post.isPresent()) {
-            model.addAttribute("post", post.get());
-            return "post/post";
+    @GetMapping("/category/{category}/post/{id}/{slug}")
+    public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
+        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
+        if (category.isPresent()) {
+            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
+            if (post.isPresent()) {
+                model.addAttribute("post", post.get());
+                return "post/post";
+            }
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

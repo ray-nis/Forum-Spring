@@ -11,7 +11,7 @@
 <div class="postsContainer">
     <div class="posts">
         <div th:each="post : ${posts}">
-            <a class="postTitle" th:href="@{~/post/{id}/{slug}(id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
+            <a class="postTitle" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
         </div>
     </div>
 </div>

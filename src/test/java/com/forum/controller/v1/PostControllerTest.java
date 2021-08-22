@@ -54,67 +54,34 @@ class PostControllerTest {
     }
 
     @Test
-    void shouldGetPostById() throws Exception {
+    void shouldGetPost() throws Exception {
         Post post = setUpPost();
-        when(postService.getPostById(1L)).thenReturn(Optional.of(post));
+        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(Optional.of(post));
+        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.of(new Category()));
 
-        mockMvc.perform(get("/post/1"))
+        mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/post"))
                 .andExpect(model().attributeExists("post"));
-
-        verify(postService, times(1)).getPostById(1L);
     }
 
     @Test
-    void shouldGetPostByIdAndSlug() throws Exception {
+    void shouldThrowNotFoundCategoryMissing() throws Exception {
         Post post = setUpPost();
-        when(postService.getPostByIdAndSlug(1L, "title")).thenReturn(Optional.of(post));
+        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.empty());
+        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(Optional.of(post));
 
-        mockMvc.perform(get("/post/1/title"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("post/post"))
-                .andExpect(model().attributeExists("post"));
-
-        verify(postService, times(1)).getPostByIdAndSlug(1L, "title");
+        mockMvc.perform(get("/category/the-category/post/1/slug"))
+                .andExpect(status().isNotFound())
+                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
     }
 
     @Test
-    void shouldGetPostBySlug() throws Exception {
-        Post post = setUpPost();
-        when(postService.getPostBySlug("title")).thenReturn(Optional.of(post));
-
-        mockMvc.perform(get("/post/id/title"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("post/post"))
-                .andExpect(model().attributeExists("post"));
-
-        verify(postService, times(1)).getPostBySlug("title");
-    }
-
-    @Test
-    void shouldThrowNotFoundWithId() throws Exception {
+    void shouldThrowNotFoundPostMissing() throws Exception {
+        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.of(new Category()));
         when(postService.getPostById(1L)).thenReturn(Optional.empty());
 
-        mockMvc.perform(get("/post/1"))
-                .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
-    }
-
-    @Test
-    void shouldThrowNotFoundWithSlug() throws Exception {
-        when(postService.getPostBySlug("title")).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/post/id/title"))
-                .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
-    }
-
-    @Test
-    void shouldThrowNotFoundWithIdAndSlug() throws Exception {
-        when(postService.getPostByIdAndSlug(1L, "title")).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/post/1/title"))
+        mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isNotFound())
                 .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
     }

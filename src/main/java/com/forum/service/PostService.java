@@ -29,4 +29,8 @@ public class PostService {
     public Optional<List<Post>> getAllByCategory(Category category) {
         return postRepository.findByCategory(category);
     }
+
+    public Optional<Post> getPostByCategoryAndIdAndSlug(Category category, Long id, String postSlug) {
+        return postRepository.findByCategoryAndIdAndSlug(category, id, postSlug);
+    }
 }

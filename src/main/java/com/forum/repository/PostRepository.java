@@ -21,4 +21,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByIdAndSlug(Long id, String slug);
 
     Optional<Post> findBySlug(String slug);
+
+    Optional<Post> findByCategoryAndId(Category category, Long id);
+
+    Optional<Post> findByCategoryAndIdAndSlug(Category category, Long id, String postSlug);
 }

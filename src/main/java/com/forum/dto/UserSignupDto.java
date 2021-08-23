@@ -12,20 +12,17 @@ import javax.validation.constraints.*;
 @Builder
 @PasswordMatches
 public class UserSignupDto {
-    @NotEmpty
-    @NotNull
-    @NotBlank(message = "Username is required.")
-    @Size(min = 3, max = 20, message = "Cannot be less than 3 characters")
+    @NotBlank(message = "{validationUsernameRequired}")
+    @Size(min = 3, max = 20, message = "{validationUsernameCharLimit}")
     private String userName;
 
-    @NotEmpty
-    @NotNull
-    @Email(regexp = ".+@.+\\..+", message = "Not a valid email")
+    @NotBlank(message = "{validationEmailRequired}")
+    @Email(regexp = ".+@.+\\..+", message = "{validationValidEmail}")
     private String email;
 
-    @NotEmpty
+    @NotEmpty(message = "{validationPasswordRequired}")
     @NotNull
-    @Size(min = 6, message = "Cannot be less than 6 characters")
+    @Size(min = 6, message = "{validationPasswordMinCharacters}")
     private String password;
     private String matchingPassword;
 }

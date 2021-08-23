@@ -3,8 +3,6 @@ package com.forum.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Setter
@@ -13,15 +11,11 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class PostDto {
-    @NotEmpty
-    @NotNull
-    @NotBlank(message = "Title is required.")
-    @Size(min = 3, max = 50, message = "Cannot be less than 3 or bigger than 50 characters")
+    @NotBlank(message = "{validationTitleRequired}")
+    @Size(min = 3, max = 50, message = "{validationPostTitleCharacters}")
     private String title;
 
-    @NotEmpty
-    @NotNull
-    @NotBlank(message = "Post is required.")
-    @Size(min = 3, message = "Cannot be less than 3 characters")
+    @NotBlank(message = "{validationPostRequired}")
+    @Size(min = 3, message = "{validationPostCharacters}")
     private String postContent;
 }

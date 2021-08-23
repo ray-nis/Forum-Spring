@@ -42,6 +42,8 @@ public class Post extends DateAudit {
     @ManyToOne
     private Category category;
 
+    private Integer timesViewed = 0;
+
     public String getPostedTime() {
         Locale locale = LocaleContextHolder.getLocale();
         PrettyTime p = new PrettyTime(locale);

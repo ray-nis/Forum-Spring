@@ -1,5 +1,6 @@
 package com.forum.event;
 
+import com.forum.service.MailSenderService;
 import com.forum.service.VerificationTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class RegistrationCompleteListener implements ApplicationListener<RegistrationCompleteEvent> {
 
     private final VerificationTokenService verificationTokenService;
-    private final JavaMailSender mailSender;
+    private final MailSenderService mailSenderService;
 
     @Override
     public void onApplicationEvent(RegistrationCompleteEvent registrationCompleteEvent) {
@@ -29,19 +30,8 @@ public class RegistrationCompleteListener implements ApplicationListener<Registr
         String token = verificationTokenService.createVerificationToken(event.getUser());
 
         String recipientAddress = event.getUser().getEmail();
-        String subject = "Registration Confirmation";
         String confirmationUrl = event.getBaseUrl() + "/registrationConfirm?token=" + token;
 
-        // TODO refactor as a service
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom("hello@gmail.com");
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText(confirmationUrl);
-        try {
-            mailSender.send(email);
-        } catch (RuntimeException err) {
-            log.error(String.valueOf(err));
-        }
+        mailSenderService.sendAccountVerificationEmail(recipientAddress, confirmationUrl);
     }
 }

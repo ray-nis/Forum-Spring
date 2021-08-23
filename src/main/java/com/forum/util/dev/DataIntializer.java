@@ -75,6 +75,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("First post for 1st category")
                 .category(firstCategory)
                 .poster(john)
+                .timesViewed(1)
                 .build();
 
         Post secondPost = Post.builder()
@@ -82,6 +83,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("Second post for 1st category")
                 .category(firstCategory)
                 .poster(ben)
+                .timesViewed(2)
                 .build();
 
         Post thirdPost = Post.builder()
@@ -89,6 +91,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("First post for 2nd category")
                 .category(secondCategory)
                 .poster(ben)
+                .timesViewed(2)
                 .build();
 
         Post fourthPost = Post.builder()
@@ -96,6 +99,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("Second post for 2nd category")
                 .category(secondCategory)
                 .poster(ben)
+                .timesViewed(0)
                 .build();
 
         Post fifthPost = Post.builder()
@@ -103,6 +107,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("Third post for 2nd category")
                 .category(secondCategory)
                 .poster(john)
+                .timesViewed(5)
                 .build();
 
         Post sixthPost = Post.builder()
@@ -110,6 +115,7 @@ public class DataIntializer implements CommandLineRunner {
                 .postContent("Second post for 2nd category")
                 .category(secondCategory)
                 .poster(ben)
+                .timesViewed(0)
                 .build();
 
         postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost, sixthPost));

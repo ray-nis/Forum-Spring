@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -86,4 +87,14 @@ class PostControllerTest {
                 .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
     }
 
+    @Test
+    @WithMockUser
+    void shouldGetNewPost() throws Exception {
+        when(categoryService.getCategoryBySlug("any")).thenReturn(Optional.of(new Category()));
+
+        mockMvc.perform(get("/category/any/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("post/newPost"))
+                .andExpect(model().attributeExists("post"));
+    }
 }

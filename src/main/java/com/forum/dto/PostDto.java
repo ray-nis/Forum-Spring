@@ -17,11 +17,11 @@ public class PostDto {
     @NotNull
     @NotBlank(message = "Title is required.")
     @Size(min = 3, max = 50, message = "Cannot be less than 3 or bigger than 50 characters")
-    String title;
+    private String title;
 
     @NotEmpty
     @NotNull
     @NotBlank(message = "Post is required.")
     @Size(min = 3, message = "Cannot be less than 3 characters")
-    String postContent;
+    private String postContent;
 }

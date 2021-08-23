@@ -1,4 +1,4 @@
-package com.forum.config.dev;
+package com.forum.config;
 
 import com.forum.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile({"dev"})
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -42,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login", "/signup", "/registrationConfirm", "/about", "/contact", "/search", "/rules").permitAll()
                 .antMatchers("/profile", "/profile/*").authenticated()
                 .antMatchers("/post/**").permitAll()
-                .antMatchers("/category/**/new").authenticated()
+                .antMatchers(HttpMethod.GET, "/category/**/new").authenticated()
+                .antMatchers(HttpMethod.POST, "/category/**/new").authenticated()
                 .antMatchers("/category/**/post/**").permitAll()
                 .antMatchers("/category/**").permitAll()
                 .anyRequest().denyAll()

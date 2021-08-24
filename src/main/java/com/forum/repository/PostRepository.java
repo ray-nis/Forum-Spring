@@ -3,6 +3,8 @@ package com.forum.repository;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +27,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Optional<Post> findByCategoryAndId(Category category, Long id);
 
     Optional<Post> findByCategoryAndIdAndSlug(Category category, Long id, String postSlug);
+
+    Page<Post> findAllByCategory(Category category, Pageable pageable);
 }

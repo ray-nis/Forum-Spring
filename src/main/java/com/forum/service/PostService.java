@@ -6,6 +6,9 @@ import com.forum.model.Post;
 import com.forum.model.User;
 import com.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +48,9 @@ public class PostService {
     @Transactional
     public void increaseTimesViewed(Post post) {
         post.setTimesViewed(post.getTimesViewed() + 1);
+    }
+
+    public Page<Post> getPaginatedSorted(Category category, Pageable pageable) {
+        return postRepository.findAllByCategory(category, pageable);
     }
 }

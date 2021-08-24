@@ -68,7 +68,12 @@ public class DataIntializer implements CommandLineRunner {
                 .name("Second category")
                 .build();
 
-        categoryRepository.saveAll(Arrays.asList(firstCategory, secondCategory));
+        Category thirdCategory = Category.builder()
+                .description("Third category descp")
+                .name("Third category")
+                .build();
+
+        categoryRepository.saveAll(Arrays.asList(firstCategory, secondCategory, thirdCategory));
 
         Post firstPost = Post.builder()
                 .title("1st Post Hello")
@@ -117,6 +122,17 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(ben)
                 .timesViewed(0)
                 .build();
+
+        for (int i = 0; i < 15; i++) {
+            Post post = Post.builder()
+                    .title("For loop title " + i)
+                    .postContent("For loop content " + i)
+                    .category(firstCategory)
+                    .poster(i % 2 == 0 ? ben : john)
+                    .timesViewed(0)
+                    .build();
+            postRepository.save(post);
+        }
 
         postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost, sixthPost));
     }

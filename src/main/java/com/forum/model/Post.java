@@ -34,6 +34,8 @@ public class Post extends DateAudit {
 
     private String slug;
 
+    private Boolean pinned = false;
+
     @Size(min = 3)
     @NotEmpty
     @NotNull

@@ -36,8 +36,13 @@ public class CategoryController {
     public String getCategory(@PathVariable("slug") String slug, @RequestParam("page") Optional<Integer> page, Model model) {
         Optional<Category> category = categoryService.getCategoryBySlug(slug);
         if (category.isPresent()) {
-            int currentPage = page.orElse(1);
-            Page<Post> posts = postService.getPaginatedSorted(category.get(), PageRequest.of(currentPage - 1, 10, Sort.by("createdAt").descending()));
+            int currentPage = 1;
+            if (page.isPresent() && page.get() > 0) {
+                currentPage = page.get();
+            }
+
+            PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("pinned").descending().and(Sort.by("createdAt").descending()));
+            Page<Post> posts = postService.getPaginatedSorted(category.get(), pageRequest);
 
             if (posts.getTotalPages() > 0) {
                 List<Integer> pageNumbers = IntStream.rangeClosed(1, posts.getTotalPages())

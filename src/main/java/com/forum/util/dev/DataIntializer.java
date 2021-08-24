@@ -81,6 +81,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(firstCategory)
                 .poster(john)
                 .timesViewed(1)
+                .pinned(true)
                 .build();
 
         Post secondPost = Post.builder()
@@ -89,6 +90,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(firstCategory)
                 .poster(ben)
                 .timesViewed(2)
+                .pinned(false)
                 .build();
 
         Post thirdPost = Post.builder()
@@ -97,6 +99,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(secondCategory)
                 .poster(ben)
                 .timesViewed(2)
+                .pinned(false)
                 .build();
 
         Post fourthPost = Post.builder()
@@ -105,6 +108,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(secondCategory)
                 .poster(ben)
                 .timesViewed(0)
+                .pinned(false)
                 .build();
 
         Post fifthPost = Post.builder()
@@ -113,6 +117,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(secondCategory)
                 .poster(john)
                 .timesViewed(5)
+                .pinned(true)
                 .build();
 
         Post sixthPost = Post.builder()
@@ -121,6 +126,7 @@ public class DataIntializer implements CommandLineRunner {
                 .category(secondCategory)
                 .poster(ben)
                 .timesViewed(0)
+                .pinned(false)
                 .build();
 
         for (int i = 0; i < 15; i++) {
@@ -130,6 +136,7 @@ public class DataIntializer implements CommandLineRunner {
                     .category(firstCategory)
                     .poster(i % 2 == 0 ? ben : john)
                     .timesViewed(0)
+                    .pinned(false)
                     .build();
             postRepository.save(post);
         }

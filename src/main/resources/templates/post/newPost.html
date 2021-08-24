@@ -5,11 +5,7 @@
     <title th:text="#{createPost}"></title>
 </head>
 <body>
-<form action="" method="POST" th:object="${post}">
-    <input
-            type="hidden"
-            th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}" />
+<form th:action="@{''}" method="POST" th:object="${post}">
     <input th:placeholder="#{newPostTitlePlaceholder}" type="text" th:field="*{title}">
     <p th:each="error: ${#fields.errors('title')}"
        th:text="${error}">Validation error</p>

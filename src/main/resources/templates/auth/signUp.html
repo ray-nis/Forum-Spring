@@ -5,12 +5,11 @@
     <title th:text="#{register}"></title>
 </head>
 <body>
-<form action="/signup" method="POST" th:object="${user}">
-    <!-- <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> -->
-    <input
+<form th:action="@{~/signup}" method="POST" th:object="${user}">>
+    <!-- <input
             type="hidden"
             th:name="${_csrf.parameterName}"
-            th:value="${_csrf.token}" />
+            th:value="${_csrf.token}" /> -->
     <p th:text="${message}">Msg</p>
     <label>Username:</label>
     <input type="text" th:field="*{userName}">

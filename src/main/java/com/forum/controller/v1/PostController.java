@@ -7,7 +7,9 @@ import com.forum.model.User;
 import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -18,11 +20,12 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
@@ -42,6 +45,14 @@ public class PostController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/post/recent")
+    public String getRecentPosts(Model model) {
+        PageRequest pageable = PageRequest.of(0, 15, Sort.by("createdAt").descending());
+        Page<Post> posts = postService.getRecent(pageable);
+        model.addAttribute("posts", posts);
+        return "post/recentPosts";
+    }
+
     @GetMapping("/category/{category}/new")
     public String newPost(@PathVariable("category") String categorySlug,Model model) {
         Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
@@ -58,7 +69,6 @@ public class PostController {
         Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
         if (category.isPresent()) {
             if (result.hasErrors()) {
-                log.error("wtf");
                 ModelAndView mav = new ModelAndView("post/newPost", "post", postDto);
                 return mav;
             }

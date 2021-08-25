@@ -7,7 +7,6 @@ import com.forum.model.User;
 import com.forum.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,5 +51,13 @@ public class PostService {
 
     public Page<Post> getPaginatedSorted(Category category, Pageable pageable) {
         return postRepository.findAllByCategory(category, pageable);
+    }
+
+    public Optional<Iterable<Post>> getAll() {
+        return Optional.of(postRepository.findAll());
+    }
+
+    public Page<Post> getRecent(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 }

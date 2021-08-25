@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .and()
-                .rememberMe();
+                .rememberMe().tokenValiditySeconds(86400);
 
 
     }

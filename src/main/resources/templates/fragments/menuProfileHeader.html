@@ -11,7 +11,7 @@
         <a th:text="#{welcomeBack} + ${#authentication.getPrincipal().getVisibleUsername()} + '!'"></a>
         <div>
             <a th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></a>
-            <a th:text="#{logout}" th:href="@{~/logout}"></a>
+            <form th:action="@{~/logout}" th:method="POST"><button type="submit" th:text="#{logout}"></button></form>
         </div>
     </div>
 </div>

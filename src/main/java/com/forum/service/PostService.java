@@ -60,4 +60,8 @@ public class PostService {
     public Page<Post> getRecent(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
+
+    public List<Post> getHotPosts() {
+        return postRepository.findTop15Hottest();
+    }
 }

@@ -53,6 +53,13 @@ public class PostController {
         return "post/recentPosts";
     }
 
+    @GetMapping("/post/hot")
+    public String getHotPosts(Model model) {
+        List<Post> posts = postService.getHotPosts();
+        model.addAttribute("posts", posts);
+        return "post/hotPosts";
+    }
+
     @GetMapping("/category/{category}/new")
     public String newPost(@PathVariable("category") String categorySlug,Model model) {
         Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);

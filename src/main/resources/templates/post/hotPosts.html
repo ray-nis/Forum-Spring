@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{hotPosts}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
+</head>
+<body>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="postsContainer">
+    <div class="posts">
+        <div th:each="post : ${posts}">
+            <a class="postTitle" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
+        </div>
+    </div>
+</div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
+</body>
+</html>

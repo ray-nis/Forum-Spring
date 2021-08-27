@@ -1,4 +1,4 @@
 package com.forum.exception;
 
-public class BadTokenException extends Throwable {
+public class BadTokenException extends Exception {
 }

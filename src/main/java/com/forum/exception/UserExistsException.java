@@ -1,19 +1,8 @@
 package com.forum.exception;
 
-public class UserExistsException extends RuntimeException {
-    public UserExistsException() {
-        super();
-    }
-
-    public UserExistsException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public UserExistsException(final String message) {
+// TODO refactor into localized message with resource bundler
+public class UserExistsException extends Exception {
+    public UserExistsException(String message) {
         super(message);
-    }
-
-    public UserExistsException(final Throwable cause) {
-        super(cause);
     }
 }

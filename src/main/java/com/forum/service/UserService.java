@@ -33,10 +33,10 @@ public class UserService {
     @Transactional
     public User saveUser(UserSignupDto userSignupDto) throws UserExistsException {
         if (emailExists(userSignupDto.getEmail())) {
-            throw new UserExistsException("Email already in use");
+            throw new UserExistsException("emailExists");
         }
         if (userNameExists(userSignupDto.getUserName())) {
-            throw new UserExistsException("Username already in use");
+            throw new UserExistsException("usernameExists");
         }
         Role userRole = roleRepository.findByRole("ROLE_USER");
 

@@ -10,7 +10,7 @@
             type="hidden"
             th:name="${_csrf.parameterName}"
             th:value="${_csrf.token}" /> -->
-    <p th:text="${message}">Msg</p>
+    <p th:text="${err}">Msg</p>
     <label>Username:</label>
     <input type="text" th:field="*{userName}">
     <p th:each="error: ${#fields.errors('userName')}"

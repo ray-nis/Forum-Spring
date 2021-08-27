@@ -40,4 +40,13 @@ public class VerificationTokenService {
     public Optional<VerificationToken> getVerificationToken(String token) {
         return verificationTokenRepository.findByToken(token);
     }
+
+    public boolean isTokenValid(String token) {
+        Optional<VerificationToken> verificationToken = getVerificationToken(token);
+
+        if (verificationToken.isEmpty()) return false;
+        if (verificationToken.get().getExpiresAt().isBefore(clockUtil.getTimeNow())) return false;
+        if (verificationToken.get().getConfirmedAt() != null) return false;
+        return true;
+    }
 }

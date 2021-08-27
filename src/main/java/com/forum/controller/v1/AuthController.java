@@ -16,6 +16,8 @@ import com.forum.util.ClockUtil;
 import com.forum.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +41,7 @@ public class AuthController {
     private final VerificationTokenService verificationTokenService;
     private final PasswordResetService passwordResetService;
     private final ClockUtil clockUtil;
+    private final MessageSource messageSource;
 
     @GetMapping("/login")
     public String logIn() {
@@ -59,15 +62,13 @@ public class AuthController {
         }
         try {
             User user = userService.saveUser(userSignupDto);
-            String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
-                    .replacePath(null)
-                    .build()
-                    .toUriString();
+            String baseUrl = UrlUtil.getUrlFromServletRequest(request);
             eventPublisher.publishEvent(new RegistrationCompleteEvent(user, baseUrl));
         }
         catch (UserExistsException err) {
             ModelAndView mav = new ModelAndView("auth/signUp", "user", userSignupDto);
-            mav.addObject("message", err.getMessage());
+            String message = messageSource.getMessage(err.getMessage(), null, LocaleContextHolder.getLocale());
+            mav.addObject("err", message);
             return mav;
         }
 
@@ -75,26 +76,13 @@ public class AuthController {
     }
 
     @GetMapping("/registrationConfirm")
-    public ModelAndView confirmRegistration(@RequestParam("token") String token, Model model) {
-        Optional<VerificationToken> verificationToken = verificationTokenService.getVerificationToken(token);
-
-        if (verificationToken.isEmpty()) {
-            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Bad token");
-            return mav;
+    public ModelAndView confirmRegistration(@RequestParam("token") String token, Model model) throws BadTokenException {
+        if (verificationTokenService.isTokenValid(token)) {
+            verificationTokenService.confirmToken(verificationTokenService.getVerificationToken(token).get());
+            return new ModelAndView("redirect:/login");
         }
 
-        if (verificationToken.get().getExpiresAt().isBefore(clockUtil.getTimeNow())) {
-            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Token expired");
-            return mav;
-        }
-
-        if (verificationToken.get().getConfirmedAt() != null) {
-            ModelAndView mav = new ModelAndView("auth/badToken", "msg", "Bad token");
-            return mav;
-        }
-
-        verificationTokenService.confirmToken(verificationToken.get());
-        return new ModelAndView("redirect:/login");
+        throw new BadTokenException();
     }
 
     @GetMapping("/resetPassword")

@@ -57,15 +57,24 @@ public class UserService {
         user.setEnabled(true);
     }
 
-    private boolean emailExists(String email) {
+    public boolean emailExists(String email) {
         return userRepository.findByEmailIgnoreCase(email).isPresent();
     }
 
-    private boolean userNameExists(String userName) {
+    public boolean userNameExists(String userName) {
         return userRepository.findByUserNameIgnoreCase(userName).isPresent();
     }
 
     public Optional<User> findUserWithPostsById(Long id) {
         return userRepository.findUserWithPostsById(id);
+    }
+
+    public Optional<User> findUserByEmailIgnoreCase(String email) {
+        return userRepository.findByEmailIgnoreCase(email);
+    }
+
+    @Transactional
+    public void changePassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
     }
 }

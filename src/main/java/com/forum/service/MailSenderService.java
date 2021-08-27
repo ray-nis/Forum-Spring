@@ -30,4 +30,19 @@ public class MailSenderService {
             throw new MailSenderException();
         }
     }
+
+    public void sendResetPasswordEmail(String recipientAddress, String confirmationUrl) {
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom("hello@gmail.com");
+        email.setTo(recipientAddress);
+        Locale locale = LocaleContextHolder.getLocale();
+        String message = messageSource.getMessage("resetPassword", null, locale);
+        email.setSubject(message);
+        email.setText(confirmationUrl);
+        try {
+            mailSender.send(email);
+        } catch (RuntimeException err) {
+            throw new MailSenderException();
+        }
+    }
 }

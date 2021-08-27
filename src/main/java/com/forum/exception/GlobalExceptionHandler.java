@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleMailSenderFailure() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("error/customError");
-        String message = messageSource.getMessage("cantSendVerificationEmail", null, LocaleContextHolder.getLocale());
+        String message = messageSource.getMessage("cantSendEmail", null, LocaleContextHolder.getLocale());
         mav.addObject("errorMsg", message);
         return mav;
     }

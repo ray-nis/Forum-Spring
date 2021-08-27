@@ -2,6 +2,7 @@ package com.forum.event;
 
 import com.forum.service.MailSenderService;
 import com.forum.service.VerificationTokenService;
+import com.forum.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
@@ -30,7 +31,7 @@ public class RegistrationCompleteListener implements ApplicationListener<Registr
         String token = verificationTokenService.createVerificationToken(event.getUser());
 
         String recipientAddress = event.getUser().getEmail();
-        String confirmationUrl = event.getBaseUrl() + "/registrationConfirm?token=" + token;
+        String confirmationUrl = event.getBaseUrl() + UrlUtil.verificationTokenUrl + token;
 
         mailSenderService.sendAccountVerificationEmail(recipientAddress, confirmationUrl);
     }

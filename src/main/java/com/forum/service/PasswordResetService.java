@@ -4,6 +4,7 @@ import com.forum.model.PasswordResetToken;
 import com.forum.model.User;
 import com.forum.repository.PasswordResetRepository;
 import com.forum.util.ClockUtil;
+import com.forum.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class PasswordResetService {
         Optional<User> user = userService.findUserByEmailIgnoreCase(email);
         if (user.isEmpty()) return;
         String token = createPasswordResetToken(user.get());
-        String confirmationUrl = baseUrl + "/resetPasswordToken?token=" + token;
+        String confirmationUrl = baseUrl + UrlUtil.passwordResetTokenUrl + token;
         mailSenderService.sendResetPasswordEmail(user.get().getEmail(), confirmationUrl);
     }
 

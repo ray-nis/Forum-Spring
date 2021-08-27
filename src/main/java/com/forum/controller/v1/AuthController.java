@@ -4,6 +4,7 @@ import com.forum.dto.PasswordDto;
 import com.forum.dto.PasswordResetDto;
 import com.forum.dto.UserSignupDto;
 import com.forum.event.RegistrationCompleteEvent;
+import com.forum.exception.BadTokenException;
 import com.forum.exception.UserExistsException;
 import com.forum.model.PasswordResetToken;
 import com.forum.model.User;
@@ -12,6 +13,7 @@ import com.forum.service.PasswordResetService;
 import com.forum.service.UserService;
 import com.forum.service.VerificationTokenService;
 import com.forum.util.ClockUtil;
+import com.forum.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -96,55 +97,55 @@ public class AuthController {
         return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/resetpassword")
-    public String resetPasswordPage(Model model) {
-        model.addAttribute("passwordDto", new PasswordResetDto());
-        return "auth/resetPassword";
-    }
-
-    @GetMapping("/resetPasswordToken")
-    public String resetPasswordToken(@RequestParam("token") String token, Model model) {
+    @GetMapping("/resetPassword")
+    public String resetPassword(@RequestParam("token") String token, Model model) throws BadTokenException {
         if (passwordResetService.isTokenValid(token)) {
             model.addAttribute("token", token);
             model.addAttribute("passwordDto", new PasswordDto());
-            return "auth/changePassword";
+            return "auth/forgotPassword/changePassword";
         }
 
-        model.addAttribute("msg", "Bad token");
-        return "auth/badToken";
+        throw new BadTokenException();
     }
 
-    @PostMapping("/resetPasswordToken")
-    public String changePassword(@Valid @ModelAttribute("passwordDto") PasswordDto passwordDto,BindingResult result, HttpServletRequest request, Model model) {
+    @PostMapping("/resetPassword")
+    public String changePassword(@Valid @ModelAttribute("passwordDto") PasswordDto passwordDto,BindingResult result, HttpServletRequest request, Model model) throws BadTokenException {
         if (result.hasErrors()) {
             model.addAttribute("passwordDto", passwordDto);
-            return "auth/changePassword";
+            return "auth/forgotPassword/changePassword";
         }
 
         String token = request.getParameter("token");
         if (passwordResetService.isTokenValid(token)) {
             PasswordResetToken passwordResetToken = passwordResetService.getToken(token).get();
             userService.changePassword(passwordResetToken.getUser(), passwordDto.getPassword());
-            return "auth/successfulPasswordReset";
+            return "auth/forgotPassword/successfulPasswordReset";
         }
 
-        model.addAttribute("msg", "Bad token");
-        return "auth/badToken";
+        throw new BadTokenException();
     }
 
-    @PostMapping("/resetpassword")
-    public String resetPassword(@Valid @ModelAttribute("passwordDto") PasswordResetDto passwordResetDto, BindingResult result, Model model, HttpServletRequest request) {
+    @GetMapping("/forgotpassword")
+    public String forgotPasswordPage(Model model) {
+        model.addAttribute("passwordResetDto", new PasswordResetDto());
+        return "auth/forgotPassword/forgotPassword";
+    }
+
+    @PostMapping("/forgotpassword")
+    public String forgotPassword(@Valid @ModelAttribute("passwordResetDto") PasswordResetDto passwordResetDto, BindingResult result, Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
-            model.addAttribute("passwordDto", passwordResetDto);
-            return "auth/resetPassword";
+            model.addAttribute("passwordResetDto", passwordResetDto);
+            return "auth/forgotPassword/forgotPassword";
         }
 
-        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
-                .replacePath(null)
-                .build()
-                .toUriString();
+        String baseUrl = UrlUtil.getUrlFromServletRequest(request);
         passwordResetService.resetPassword(passwordResetDto.getEmail(), baseUrl);
 
-        return "auth/sentResetPassword";
+        return "redirect:/forgotpasswordsent";
+    }
+
+    @GetMapping("/forgotpasswordsent")
+    public String sentForgotEmail() {
+        return "auth/forgotPassword/sentResetPassword";
     }
 }

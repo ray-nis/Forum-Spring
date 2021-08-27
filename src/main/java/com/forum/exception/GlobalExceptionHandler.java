@@ -23,4 +23,14 @@ public class GlobalExceptionHandler {
         mav.addObject("errorMsg", message);
         return mav;
     }
+
+    @ExceptionHandler(BadTokenException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleBadToken() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("error/customError");
+        String message = messageSource.getMessage("badToken", null, LocaleContextHolder.getLocale());
+        mav.addObject("errorMsg", message);
+        return mav;
+    }
 }

@@ -20,13 +20,14 @@ import java.io.IOException;
 public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String error = "error";
-        /*if (exception.getClass().isAssignableFrom(BadCredentialsException.class)) {
-            error = "error2";
+        String error = "loginError";
+        if (exception.getClass().isAssignableFrom(BadCredentialsException.class)) {
+            error = "loginError1";
         }
         if (exception.getClass().isAssignableFrom(DisabledException.class)) {
-            error = "error3";
+            error = "loginError2";
         }
+        /*
         if (exception.getClass().isAssignableFrom(LockedException.class)) {
             error = "error4";
         }*/

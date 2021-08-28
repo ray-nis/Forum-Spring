@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UrlUtil {
     public final static String passwordResetTokenUrl = "/resetPassword?token=";
     public final static String verificationTokenUrl = "/registrationConfirm?token=";
+    public final static String loginFailureRedirectUrl = "/login?error=";
 
     public static String getUrlFromServletRequest(HttpServletRequest request) {
         String url = ServletUriComponentsBuilder.fromRequestUri(request)

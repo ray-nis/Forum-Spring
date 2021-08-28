@@ -42,8 +42,8 @@ public class DataIntializer implements CommandLineRunner {
         User john = User.builder()
                 .userName("John")
                 .email("john123@gmail.com")
-                .enabled(true)
-                .nonLocked(true)
+                .enabled(false)
+                .nonLocked(false)
                 .password(passwordEncoder.encode("password"))
                 .roles(new HashSet<Role>(Arrays.asList(userRole))).build();
 
@@ -55,8 +55,23 @@ public class DataIntializer implements CommandLineRunner {
                 .password(passwordEncoder.encode("password"))
                 .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
 
-        userRepository.save(john);
-        userRepository.save(ben);
+        User ty = User.builder()
+                .userName("Ty12")
+                .email("ty@gmail.com")
+                .enabled(false)
+                .nonLocked(true)
+                .password(passwordEncoder.encode("password"))
+                .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
+
+        User rob = User.builder()
+                .userName("Rob13")
+                .email("rob@gmail.com")
+                .enabled(true)
+                .nonLocked(false)
+                .password(passwordEncoder.encode("password"))
+                .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
+
+        userRepository.saveAll(Arrays.asList(john, ben, ty, rob));
 
         Category firstCategory = Category.builder()
                 .description("First category descp")

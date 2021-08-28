@@ -45,7 +45,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String logIn() {
-        return "login";
+        return "auth/logIn";
     }
 
     @GetMapping("/signup")

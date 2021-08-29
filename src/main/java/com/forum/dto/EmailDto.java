@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PasswordResetDto {
+public class EmailDto {
     @NotBlank(message = "{validationEmailRequired}")
     @Email(regexp = ".+@.+\\..+", message = "{validationValidEmail}")
     private String email;

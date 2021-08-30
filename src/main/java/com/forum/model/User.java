@@ -49,6 +49,9 @@ public class User extends DateAudit implements UserDetails {
     @OneToMany(mappedBy = "poster")
     private List<Post> posts = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "usersFavorited")
+    private Set<Post> favoritePosts;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();

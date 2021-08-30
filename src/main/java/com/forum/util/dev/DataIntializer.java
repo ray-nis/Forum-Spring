@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Profile("dev")
 @Component
@@ -53,6 +54,7 @@ public class DataIntializer implements CommandLineRunner {
                 .enabled(true)
                 .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
+                .favoritePosts(new HashSet<>())
                 .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
 
         User ty = User.builder()

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -43,6 +44,10 @@ public class Post extends DateAudit {
 
     @ManyToOne
     private Category category;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_favorites", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private Set<User> usersFavorited;
 
     private Integer timesViewed = 0;
 

@@ -15,26 +15,54 @@
 </div>
 <div th:fragment="favoriteJs" th:remove="tag">
     <script>
-        let favoriteButton = document.getElementById("favorite");
-        let favoriteLink = window.location.href.endsWith("/") ? "favorite" : "/favorite";
-        let link = window.location.href + favoriteLink;
-        console.log(link)
-        let favorite = "fas fa-heart";
-        let unfavorite = "far fa-heart";
-        favoriteButton.style.cursor = "pointer";
-        favoriteButton.onclick = () => {
-            fetch(link)
-            .then(res => {
-                if (res.status === 200) {
-                    if (favoriteButton.className === favorite) {
-                        favoriteButton.className = unfavorite;
+        const favorite = () => {
+            let favoriteButton = document.getElementById("favorite");
+            let favoriteLink = window.location.href.endsWith("/") ? "favorite" : "/favorite";
+            let link = window.location.href + favoriteLink;
+            let favorite = "fas fa-heart";
+            let unfavorite = "far fa-heart";
+            favoriteButton.style.cursor = "pointer";
+            favoriteButton.onclick = () => {
+                fetch(link)
+                .then(res => {
+                    if (res.status === 200) {
+                        if (favoriteButton.className === favorite) {
+                            favoriteButton.className = unfavorite;
+                        }
+                        else if (favoriteButton.className === unfavorite) {
+                            favoriteButton.className = favorite;
+                        }
                     }
-                    else if (favoriteButton.className === unfavorite) {
-                        favoriteButton.className = favorite;
-                    }
-                }
-            })
+                })
+            }
         }
+        favorite();
+    </script>
+</div>
+<div th:fragment="likeJs" th:remove="tag">
+    <script>
+        const like = () => {
+            let likeButton = document.getElementById("like");
+            let likeLink = window.location.href.endsWith("/") ? "like" : "/like";
+            let link = window.location.href + likeLink;
+            let like = "fas fa-thumbs-up";
+            let unlike = "far fa-thumbs-up";
+            likeButton.style.cursor = "pointer";
+            likeButton.onclick = () => {
+                fetch(link)
+                .then(res => {
+                    if (res.status === 200) {
+                        if (likeButton.className === like) {
+                            likeButton.className = unlike;
+                        }
+                        else if (likeButton.className === unlike) {
+                            likeButton.className = like;
+                        }
+                    }
+                })
+            }
+        }
+        like();
     </script>
 </div>
 </html>

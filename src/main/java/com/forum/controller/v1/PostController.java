@@ -69,6 +69,26 @@ public class PostController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/category/{category}/post/{id}/{slug}/like")
+    public ResponseEntity<Object> likePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
+        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
+        if (category.isPresent()) {
+            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
+            if (post.isPresent()) {
+                User user = currentUserUtil.getUser();
+                if (postService.hasLikedPost(user, post.get())) {
+                    postService.unlikePost(user, post.get());
+                }
+                else {
+                    postService.likePost(user, post.get());
+                }
+                return ResponseEntity.ok().build();
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/post/recent")
     public String getRecentPosts(Model model) {
         PageRequest pageable = PageRequest.of(0, 15, Sort.by("createdAt").descending());

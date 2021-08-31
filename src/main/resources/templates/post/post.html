@@ -18,9 +18,11 @@
 </div>
 <div class="postSocial">
     <i sec:authorize="isAuthenticated()" id="favorite" th:class="${post.getUsersFavorited().contains(#authentication.getPrincipal())} ? 'fas fa-heart' : 'far fa-heart'"></i>
+    <i sec:authorize="isAuthenticated()" id="like" th:class="${post.getUsersLiked().contains(#authentication.getPrincipal())} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
 </div>
 <div th:replace="./fragments/footer.html :: footer"></div>
 <div th:replace="./fragments/assets.html :: assetsJs"></div>
 <div th:replace="./fragments/assets.html :: favoriteJs"></div>
+<div th:replace="./fragments/assets.html :: likeJs"></div>
 </body>
 </html>

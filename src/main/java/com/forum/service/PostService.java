@@ -78,4 +78,18 @@ public class PostService {
     public void unfavoritePost(User user, Post post) {
         post.getUsersFavorited().remove(user);
     }
+
+    @Transactional
+    public void likePost(User user, Post post) {
+        post.getUsersLiked().add(user);
+    }
+
+    public boolean hasLikedPost(User user, Post post) {
+        return post.getUsersLiked().contains(user);
+    }
+
+    @Transactional
+    public void unlikePost(User user, Post post) {
+        post.getUsersLiked().remove(user);
+    }
 }

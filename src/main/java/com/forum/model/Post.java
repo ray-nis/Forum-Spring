@@ -49,6 +49,10 @@ public class Post extends DateAudit {
     @JoinTable(name = "user_favorites", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
     private Set<User> usersFavorited;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private Set<User> usersLiked;
+
     private Integer timesViewed = 0;
 
     public String getPostedTime() {

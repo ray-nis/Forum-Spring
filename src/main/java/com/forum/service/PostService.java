@@ -64,4 +64,18 @@ public class PostService {
     public List<Post> getHotPosts() {
         return postRepository.findTop15Hottest();
     }
+
+    @Transactional
+    public void favoritePost(User user, Post post) {
+        post.getUsersFavorited().add(user);
+    }
+
+    public boolean hasFavoritedPost(User user, Post post) {
+        return post.getUsersFavorited().contains(user);
+    }
+
+    @Transactional
+    public void unfavoritePost(User user, Post post) {
+        post.getUsersFavorited().remove(user);
+    }
 }

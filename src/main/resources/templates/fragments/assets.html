@@ -5,9 +5,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
 </div>
+<div th:fragment="fontAwesome" th:remove="tag">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+</div>
 <div th:fragment="assetsJs" th:remove="tag">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</div>
+<div th:fragment="favoriteJs" th:remove="tag">
+    <script>
+        let favoriteButton = document.getElementById("favorite");
+        let favoriteLink = window.location.href.endsWith("/") ? "favorite" : "/favorite";
+        let link = window.location.href + favoriteLink;
+        console.log(link)
+        let favorite = "fas fa-heart";
+        let unfavorite = "far fa-heart";
+        favoriteButton.style.cursor = "pointer";
+        favoriteButton.onclick = () => {
+            fetch(link)
+            .then(res => {
+                if (res.status === 200) {
+                    if (favoriteButton.className === favorite) {
+                        favoriteButton.className = unfavorite;
+                    }
+                    else if (favoriteButton.className === unfavorite) {
+                        favoriteButton.className = favorite;
+                    }
+                }
+            })
+        }
+    </script>
 </div>
 </html>

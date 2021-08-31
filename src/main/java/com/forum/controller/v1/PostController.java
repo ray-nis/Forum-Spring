@@ -6,11 +6,14 @@ import com.forum.model.Post;
 import com.forum.model.User;
 import com.forum.service.CategoryService;
 import com.forum.service.PostService;
+import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,15 +23,16 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
+    private final CurrentUserUtil currentUserUtil;
 
     @GetMapping("/category/{category}/post/{id}/{slug}")
     public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
@@ -39,6 +43,26 @@ public class PostController {
                 postService.increaseTimesViewed(post.get());
                 model.addAttribute("post", post.get());
                 return "post/post";
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/category/{category}/post/{id}/{slug}/favorite")
+    public ResponseEntity<Object> favoritePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
+        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
+        if (category.isPresent()) {
+            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
+            if (post.isPresent()) {
+                User user = currentUserUtil.getUser();
+                if (postService.hasFavoritedPost(user, post.get())) {
+                    postService.unfavoritePost(user, post.get());
+                }
+                else {
+                    postService.favoritePost(user, post.get());
+                }
+                return ResponseEntity.ok().build();
             }
         }
 

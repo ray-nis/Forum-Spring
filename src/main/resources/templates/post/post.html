@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="${post.getTitle()}"></title>
     <div th:replace="./fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
 </head>
 <body>
 <div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
@@ -15,7 +16,11 @@
         <p class="postContent" th:text="${post.getPostContent()}"></p>
     </div>
 </div>
+<div class="postSocial">
+    <i sec:authorize="isAuthenticated()" id="favorite" th:class="${post.getUsersFavorited().contains(#authentication.getPrincipal())} ? 'fas fa-heart' : 'far fa-heart'"></i>
+</div>
 <div th:replace="./fragments/footer.html :: footer"></div>
 <div th:replace="./fragments/assets.html :: assetsJs"></div>
+<div th:replace="./fragments/assets.html :: favoriteJs"></div>
 </body>
 </html>

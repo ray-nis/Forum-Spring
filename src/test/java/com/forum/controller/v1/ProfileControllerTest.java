@@ -1,8 +1,10 @@
 package com.forum.controller.v1;
 
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.User;
 import com.forum.service.UserDetailsServiceImpl;
 import com.forum.service.UserService;
+import com.forum.util.CurrentUserUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -35,6 +37,8 @@ class ProfileControllerTest {
     private UserDetailsServiceImpl userDetailsService;
     @MockBean
     private AuthenticationFailureHandler loginFailureHandler;
+    @MockBean
+    private CurrentUserUtil currentUserUtil;
 
 
     @Test
@@ -48,7 +52,7 @@ class ProfileControllerTest {
                 .enabled(false)
                 .nonLocked(true)
                 .build();
-        when(userService.findUserWithPostsById(any())).thenReturn(Optional.of(user));
+        when(userService.findUserWithPostsById(any())).thenReturn(user);
 
         mockMvc.perform(get("/profile/1"))
                 .andExpect(status().isOk())
@@ -59,11 +63,11 @@ class ProfileControllerTest {
     @Test
     @WithMockUser
     void shouldThrowNotFound() throws Exception {
-        when(userService.findUserWithPostsById(any())).thenReturn(Optional.empty());
+        when(userService.findUserWithPostsById(any())).thenThrow(new ResourceNotFoundException());
 
         mockMvc.perform(get("/profile/1"))
                 .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
+                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResourceNotFoundException));
     }
 
 

@@ -3,9 +3,11 @@ package com.forum.controller.v1;
 import com.forum.dto.PostDto;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
+import com.forum.model.Comment;
 import com.forum.model.Post;
 import com.forum.model.User;
 import com.forum.service.CategoryService;
+import com.forum.service.CommentService;
 import com.forum.service.PostService;
 import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,14 +36,32 @@ public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
     private final CurrentUserUtil currentUserUtil;
+    private final CommentService commentService;
 
     @GetMapping("/category/{category}/post/{id}/{slug}")
-    public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+    public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(categorySlug);
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
         postService.increaseTimesViewed(post);
         model.addAttribute("post", post);
+
+        int currentPage = 1;
+        if (page.isPresent() && page.get() > 0) {
+            currentPage = page.get();
+        }
+
+        PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("createdAt").ascending());
+        Page<Comment> comments = commentService.getPaginatedSorted(post, pageRequest);
+
+        if (comments.getTotalPages() > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, comments.getTotalPages())
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        model.addAttribute("comments", comments);
+
         return "post/post";
     }
 

@@ -1,13 +1,7 @@
 package com.forum.util.dev;
 
-import com.forum.model.Category;
-import com.forum.model.Post;
-import com.forum.model.Role;
-import com.forum.model.User;
-import com.forum.repository.CategoryRepository;
-import com.forum.repository.PostRepository;
-import com.forum.repository.RoleRepository;
-import com.forum.repository.UserRepository;
+import com.forum.model.*;
+import com.forum.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -32,6 +26,7 @@ public class DataIntializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final CategoryRepository categoryRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -159,5 +154,14 @@ public class DataIntializer implements CommandLineRunner {
         }
 
         postRepository.saveAll(Arrays.asList(firstPost, secondPost, thirdPost, fourthPost, fifthPost, sixthPost));
+
+        for (int i = 0; i < 50; i++) {
+            Comment comment = Comment.builder()
+                    .post(firstPost)
+                    .commentContent("Content " + i)
+                    .commenter(ben)
+                    .build();
+            commentRepository.save(comment);
+        }
     }
 }

@@ -20,6 +20,17 @@
     <i sec:authorize="isAuthenticated()" id="favorite" th:class="${post.getUsersFavorited().contains(#authentication.getPrincipal())} ? 'fas fa-heart' : 'far fa-heart'"></i>
     <i sec:authorize="isAuthenticated()" id="like" th:class="${post.getUsersLiked().contains(#authentication.getPrincipal())} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
 </div>
+<div class="comments" th:each="comment : ${comments}">
+    <div class="comment">
+        <h1 th:text="${comment.getCommentContent()}"></h1>
+    </div>
+</div>
+<div th:if="${comments.getTotalPages() > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{''(page=${pageNumber})}"
+       th:text=${pageNumber}
+       th:class="${pageNumber==comments.getNumber() + 1} ? active"></a>
+</div>
 <div th:replace="./fragments/footer.html :: footer"></div>
 <div th:replace="./fragments/assets.html :: assetsJs"></div>
 <div th:replace="./fragments/assets.html :: favoriteJs"></div>

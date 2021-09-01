@@ -20,14 +20,6 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
 
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
-    }
-
-    public Optional<List<Post>> getAllByCategory(Category category) {
-        return postRepository.findByCategory(category);
-    }
-
     public Post getPostByCategoryAndIdAndSlug(Category category, Long id, String postSlug) throws ResourceNotFoundException {
         return postRepository.findByCategoryAndIdAndSlug(category, id, postSlug).orElseThrow(ResourceNotFoundException::new);
     }
@@ -52,10 +44,6 @@ public class PostService {
 
     public Page<Post> getPaginatedSorted(Category category, Pageable pageable) {
         return postRepository.findAllByCategory(category, pageable);
-    }
-
-    public Optional<Iterable<Post>> getAll() {
-        return Optional.of(postRepository.findAll());
     }
 
     public Page<Post> getRecent(Pageable pageable) {

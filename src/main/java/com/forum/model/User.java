@@ -47,7 +47,10 @@ public class User extends DateAudit implements UserDetails {
     private Boolean enabled = false;
 
     @OneToMany(mappedBy = "poster")
-    private List<Post> posts = new ArrayList<>();
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "commenter")
+    private List<Comment> comments;
 
     @ManyToMany(mappedBy = "usersFavorited")
     private Set<Post> favoritePosts;

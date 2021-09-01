@@ -1,6 +1,7 @@
 package com.forum.service;
 
 import com.forum.dto.UserSignupDto;
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.exception.UserExistsException;
 import com.forum.model.Role;
 import com.forum.model.User;
@@ -24,10 +25,6 @@ public class UserService {
 
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    public Optional<User> findUserByUserName(String userName) {
-        return userRepository.findByUserName(userName);
     }
 
     @Transactional
@@ -65,8 +62,8 @@ public class UserService {
         return userRepository.findByUserNameIgnoreCase(userName).isPresent();
     }
 
-    public Optional<User> findUserWithPostsById(Long id) {
-        return userRepository.findUserWithPostsById(id);
+    public User findUserWithPostsById(Long id) throws ResourceNotFoundException {
+        return userRepository.findUserWithPostsById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     public Optional<User> findUserByEmailIgnoreCase(String email) {

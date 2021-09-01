@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -41,6 +42,9 @@ public class Post extends DateAudit {
     @NotEmpty
     @NotNull
     private String postContent;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    private List<Comment> commentList;
 
     @ManyToOne
     private Category category;

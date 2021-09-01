@@ -1,11 +1,13 @@
 package com.forum.controller.v1;
 
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.model.User;
 import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 import com.forum.service.UserDetailsServiceImpl;
+import com.forum.util.CurrentUserUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,6 +40,10 @@ class PostControllerTest {
     private CategoryService categoryService;
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
+    @MockBean
+    private AuthenticationFailureHandler loginFailureHandler;
+    @MockBean
+    private CurrentUserUtil currentUserUtil;
 
     private Post setUpPost() {
         Post post = Post.builder()
@@ -69,22 +76,23 @@ class PostControllerTest {
     @Test
     void shouldThrowNotFoundCategoryMissing() throws Exception {
         Post post = setUpPost();
-        when(categoryService.getCategoryBySlug(any())).thenReturn(null);
+        when(categoryService.getCategoryBySlug(any())).thenThrow(new ResourceNotFoundException());
         when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(post);
 
         mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
+                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResourceNotFoundException));
     }
 
     @Test
     void shouldThrowNotFoundPostMissing() throws Exception {
-        when(categoryService.getCategoryBySlug(any())).thenReturn(new Category());
-        when(postService.getPostById(1L)).thenReturn(Optional.empty());
+        Category category = new Category();
+        when(categoryService.getCategoryBySlug(any())).thenReturn(category);
+        when(postService.getPostByCategoryAndIdAndSlug(category, 1L, "slug")).thenThrow(new ResourceNotFoundException());
 
         mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResponseStatusException));
+                .andExpect(mvcResult -> assertTrue(mvcResult.getResolvedException() instanceof ResourceNotFoundException));
     }
 
     @Test

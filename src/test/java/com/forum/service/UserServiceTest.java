@@ -60,7 +60,7 @@ class UserServiceTest {
         assertThatThrownBy(() -> {
             assertThat(userService.saveUser(userDto));
         }).isInstanceOf(UserExistsException.class)
-        .hasMessageContaining("Email already in use");
+        .hasMessageContaining("emailExists");
     }
 
     @Test
@@ -80,6 +80,6 @@ class UserServiceTest {
         assertThatThrownBy(() -> {
             assertThat(userService.saveUser(userDto));
         }).isInstanceOf(UserExistsException.class)
-                .hasMessageContaining("Username already in use");
+                .hasMessageContaining("usernameExists");
     }
 }

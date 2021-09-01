@@ -71,7 +71,7 @@ public class AuthController {
             return mav;
         }
 
-        return new ModelAndView("auth/succesfulSignUp");
+        return new ModelAndView("auth/successfulSignUp");
     }
 
     @GetMapping("/registrationConfirm")

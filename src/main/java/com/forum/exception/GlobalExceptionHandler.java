@@ -33,4 +33,12 @@ public class GlobalExceptionHandler {
         mav.addObject("errorMsg", message);
         return mav;
     }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView handleNotFound() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("error/404");
+        return mav;
+    }
 }

@@ -57,8 +57,8 @@ class PostControllerTest {
     @Test
     void shouldGetPost() throws Exception {
         Post post = setUpPost();
-        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(Optional.of(post));
-        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.of(new Category()));
+        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(post);
+        when(categoryService.getCategoryBySlug(any())).thenReturn(new Category());
 
         mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isOk())
@@ -69,8 +69,8 @@ class PostControllerTest {
     @Test
     void shouldThrowNotFoundCategoryMissing() throws Exception {
         Post post = setUpPost();
-        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.empty());
-        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(Optional.of(post));
+        when(categoryService.getCategoryBySlug(any())).thenReturn(null);
+        when(postService.getPostByCategoryAndIdAndSlug(any(), any(), any())).thenReturn(post);
 
         mockMvc.perform(get("/category/the-category/post/1/slug"))
                 .andExpect(status().isNotFound())
@@ -79,7 +79,7 @@ class PostControllerTest {
 
     @Test
     void shouldThrowNotFoundPostMissing() throws Exception {
-        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.of(new Category()));
+        when(categoryService.getCategoryBySlug(any())).thenReturn(new Category());
         when(postService.getPostById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/category/the-category/post/1/slug"))
@@ -90,7 +90,7 @@ class PostControllerTest {
     @Test
     @WithMockUser
     void shouldGetNewPost() throws Exception {
-        when(categoryService.getCategoryBySlug("any")).thenReturn(Optional.of(new Category()));
+        when(categoryService.getCategoryBySlug("any")).thenReturn(new Category());
 
         mockMvc.perform(get("/category/any/new"))
                 .andExpect(status().isOk())

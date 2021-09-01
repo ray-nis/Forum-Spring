@@ -1,5 +1,6 @@
 package com.forum.controller.v1;
 
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.service.CategoryService;
@@ -33,29 +34,26 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/category/{slug}")
-    public String getCategory(@PathVariable("slug") String slug, @RequestParam("page") Optional<Integer> page, Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(slug);
-        if (category.isPresent()) {
-            int currentPage = 1;
-            if (page.isPresent() && page.get() > 0) {
-                currentPage = page.get();
-            }
+    public String getCategory(@PathVariable("slug") String slug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(slug);
 
-            PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("pinned").descending().and(Sort.by("createdAt").descending()));
-            Page<Post> posts = postService.getPaginatedSorted(category.get(), pageRequest);
-
-            if (posts.getTotalPages() > 0) {
-                List<Integer> pageNumbers = IntStream.rangeClosed(1, posts.getTotalPages())
-                        .boxed()
-                        .collect(Collectors.toList());
-                model.addAttribute("pageNumbers", pageNumbers);
-            }
-
-            model.addAttribute("category", category.get());
-            model.addAttribute("posts", posts);
-            return "category/category";
+        int currentPage = 1;
+        if (page.isPresent() && page.get() > 0) {
+            currentPage = page.get();
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("pinned").descending().and(Sort.by("createdAt").descending()));
+        Page<Post> posts = postService.getPaginatedSorted(category, pageRequest);
+
+        if (posts.getTotalPages() > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, posts.getTotalPages())
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        model.addAttribute("category", category);
+        model.addAttribute("posts", posts);
+        return "category/category";
     }
 }

@@ -1,6 +1,7 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.PostDto;
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.model.User;
@@ -12,19 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,58 +33,43 @@ public class PostController {
     private final CurrentUserUtil currentUserUtil;
 
     @GetMapping("/category/{category}/post/{id}/{slug}")
-    public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
-        if (category.isPresent()) {
-            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
-            if (post.isPresent()) {
-                postService.increaseTimesViewed(post.get());
-                model.addAttribute("post", post.get());
-                return "post/post";
-            }
-        }
+    public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        postService.increaseTimesViewed(post);
+        model.addAttribute("post", post);
+        return "post/post";
     }
 
     @GetMapping("/category/{category}/post/{id}/{slug}/favorite")
-    public ResponseEntity<Object> favoritePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
-        if (category.isPresent()) {
-            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
-            if (post.isPresent()) {
-                User user = currentUserUtil.getUser();
-                if (postService.hasFavoritedPost(user, post.get())) {
-                    postService.unfavoritePost(user, post.get());
-                }
-                else {
-                    postService.favoritePost(user, post.get());
-                }
-                return ResponseEntity.ok().build();
-            }
-        }
+    public ResponseEntity<Object> favoritePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        User user = currentUserUtil.getUser();
+        if (postService.hasFavoritedPost(user, post)) {
+            postService.unfavoritePost(user, post);
+        }
+        else {
+            postService.favoritePost(user, post);
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/category/{category}/post/{id}/{slug}/like")
-    public ResponseEntity<Object> likePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
-        if (category.isPresent()) {
-            Optional<Post> post = postService.getPostByCategoryAndIdAndSlug(category.get(), id, postSlug);
-            if (post.isPresent()) {
-                User user = currentUserUtil.getUser();
-                if (postService.hasLikedPost(user, post.get())) {
-                    postService.unlikePost(user, post.get());
-                }
-                else {
-                    postService.likePost(user, post.get());
-                }
-                return ResponseEntity.ok().build();
-            }
-        }
+    public ResponseEntity<Object> likePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        User user = currentUserUtil.getUser();
+        if (postService.hasLikedPost(user, post)) {
+            postService.unlikePost(user, post);
+        }
+        else {
+            postService.likePost(user, post);
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/post/recent")
@@ -105,30 +88,24 @@ public class PostController {
     }
 
     @GetMapping("/category/{category}/new")
-    public String newPost(@PathVariable("category") String categorySlug,Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
-        if (category.isPresent()) {
-            model.addAttribute("post", new PostDto());
-            return "post/newPost";
-        }
+    public String newPost(@PathVariable("category") String categorySlug,Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        model.addAttribute("post", new PostDto());
+        return "post/newPost";
     }
 
     @PostMapping("/category/{category}/new")
-    public ModelAndView postNewPost(@Valid @ModelAttribute("post") PostDto postDto, BindingResult result, @PathVariable("category") String categorySlug, Authentication authentication, Model model) {
-        Optional<Category> category = categoryService.getCategoryBySlug(categorySlug);
-        if (category.isPresent()) {
-            if (result.hasErrors()) {
-                ModelAndView mav = new ModelAndView("post/newPost", "post", postDto);
-                return mav;
-            }
+    public ModelAndView postNewPost(@Valid @ModelAttribute("post") PostDto postDto, BindingResult result, @PathVariable("category") String categorySlug, Authentication authentication, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
 
-            Post post = postService.savePost(postDto, category.get(), (User)authentication.getPrincipal());
-
-            return new ModelAndView("redirect:/category/" + category.get().getSlug() + "/post/" + post.getId() + "/" + post.getSlug(), "post", post);
+        if (result.hasErrors()) {
+            ModelAndView mav = new ModelAndView("post/newPost", "post", postDto);
+            return mav;
         }
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Post post = postService.savePost(postDto, category, (User)authentication.getPrincipal());
+
+        return new ModelAndView("redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug(), "post", post);
     }
 }

@@ -47,7 +47,7 @@ class CategoryControllerTest {
                 .slug("name")
                 .posts(new ArrayList<>())
                 .build();
-        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.of(category));
+        when(categoryService.getCategoryBySlug(any())).thenReturn(category);
         when(postService.getAllByCategory(any())).thenReturn(Optional.of(new ArrayList<Post>()));
 
         mockMvc.perform(get("/category/name"))
@@ -59,7 +59,7 @@ class CategoryControllerTest {
 
     @Test
     void shouldThrowNotFound() throws Exception {
-        when(categoryService.getCategoryBySlug(any())).thenReturn(Optional.empty());
+        when(categoryService.getCategoryBySlug(any())).thenReturn(null);
 
         mockMvc.perform(get("/category/name"))
                 .andExpect(status().isNotFound())

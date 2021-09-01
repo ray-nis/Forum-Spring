@@ -1,6 +1,7 @@
 package com.forum.service;
 
 import com.forum.dto.PostDto;
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.model.User;
@@ -27,8 +28,8 @@ public class PostService {
         return postRepository.findByCategory(category);
     }
 
-    public Optional<Post> getPostByCategoryAndIdAndSlug(Category category, Long id, String postSlug) {
-        return postRepository.findByCategoryAndIdAndSlug(category, id, postSlug);
+    public Post getPostByCategoryAndIdAndSlug(Category category, Long id, String postSlug) throws ResourceNotFoundException {
+        return postRepository.findByCategoryAndIdAndSlug(category, id, postSlug).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Transactional

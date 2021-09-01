@@ -1,9 +1,12 @@
 package com.forum.service;
 
+import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -20,7 +23,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> getCategoryBySlug(String slug) {
-        return categoryRepository.findBySlug(slug);
+    public Category getCategoryBySlug(String slug) throws ResourceNotFoundException {
+        return categoryRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException::new);
     }
 }

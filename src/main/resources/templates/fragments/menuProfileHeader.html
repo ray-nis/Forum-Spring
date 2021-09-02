@@ -1,17 +1,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="menuProfile" class="menuProfileHeaderContainer">
     <div sec:authorize="isAnonymous()" class="menuProfileHeader">
-        <a th:text="#{welcome}"></a>
+        <div>
+            <a th:href="@{~/post/recent}" th:text="#{recent}"></a>
+            <a th:href="@{~/post/hot}" th:text="#{hot}"></a>
+        </div>
         <div>
             <a th:text="#{login}" th:href="@{~/login}"></a>
             <a th:text="#{register}" th:href="@{~/signup}"></a>
         </div>
     </div>
     <div sec:authorize="isAuthenticated()" class="menuProfileHeader">
-        <a th:text="#{welcomeBack} + ${#authentication.getPrincipal().getVisibleUsername()} + '!'"></a>
+        <!-- <a th:text="#{welcomeBack} + ${#authentication.getPrincipal().getVisibleUsername()} + '!'"></a> -->
+        <div>
+            <a th:href="@{~/post/recent}" th:text="#{recent}"></a>
+            <a th:href="@{~/post/hot}" th:text="#{hot}"></a>
+        </div>
         <div>
             <a th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></a>
-            <form th:action="@{~/logout}" th:method="POST"><button type="submit" th:text="#{logout}"></button></form>
+            <form th:action="@{~/logout}" th:method="POST"><button id="logout" type="submit" th:text="#{logout}"></button></form>
         </div>
     </div>
 </div>

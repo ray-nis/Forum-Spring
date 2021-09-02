@@ -8,18 +8,15 @@
 <body>
 <div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
-<div class="postsContainer">
-    <div class="posts">
-        <div th:each="post : ${posts}">
-            <a class="postTitle" th:classappend="${post.getPinned()==true} ? pinned" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"><h1 th:text="${post.getTitle()}"></h1></a>
-        </div>
+<main>
+    <div th:replace="/fragments/posts.html :: postsWithoutCategory"></div>
+</main>
+<div class="paginationContainer">
+    <div th:if="${posts.getTotalPages() > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{~/category/{categoryName}(page=${pageNumber}, categoryName=${category.getSlug()})}"
+           th:text=${pageNumber}
+           th:class="${pageNumber==posts.getNumber() + 1} ? active"></a>
     </div>
-</div>
-<div th:if="${posts.getTotalPages() > 0}" class="pagination"
-     th:each="pageNumber : ${pageNumbers}">
-    <a th:href="@{~/category/{categoryName}(page=${pageNumber}, categoryName=${category.getSlug()})}"
-       th:text=${pageNumber}
-       th:class="${pageNumber==posts.getNumber() + 1} ? active"></a>
 </div>
 <div th:replace="./fragments/footer.html :: footer"></div>
 <div th:replace="./fragments/assets.html :: assetsJs"></div>

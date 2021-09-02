@@ -6,6 +6,13 @@ a {
     text-decoration: none;
 }
 
+#logout {
+    all: unset;
+    font-size: 1.2em;
+    color: #142847;
+    cursor: pointer;
+}
+
 .menuProfileHeaderContainer {
     display: flex;
     justify-content: center;
@@ -96,10 +103,20 @@ a {
     width: 70%;
 }
 
-.postTitle {
+.postPosts {
+    margin-bottom: 35px;
+}
+
+.postsTitle {
     color: #142847;
-    font-size: 1.7em;
+    font-size: 1.8em;
     margin-bottom: 10px;
+}
+
+.postsDesc {
+    font-size: 1rem;
+    color: #516078;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .postTime {
@@ -111,4 +128,32 @@ a {
 
 .postContent {
     font-size: 1.4em;
+}
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: #43a178;
+    color: white;
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

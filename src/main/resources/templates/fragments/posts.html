@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="posts" class="postsContainer">
+    <div class="posts">
+        <div class="postPosts" th:each="post : ${posts}">
+                <a class="postsTitle" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:text="${post.getTitle()}"></a>
+                <div>
+                    <a class="postsDesc" th:text="${post.getCommentList().size()} + ' ' + #{comments}" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"></a>
+                    <a class="postsDesc" th:href="@{~/profile/{profileId}/(profileId=${post.getPoster.getId()})}" th:text="'&#8226; ' + ${post.getPoster().getVisibleUsername()} + ' &#8226; ' + ${post.getPostedTime()}"></a>
+                    <a class="postsDesc" th:href="@{~/category/{category}/(category=${post.getCategory().getSlug()})}" th:text="'&#8226; ' + ${post.getCategory().getName()}"></a>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="postsWithoutCategory" class="postsContainer">
+    <div class="posts">
+        <div class="postPosts" th:each="post : ${posts}">
+            <a class="postsTitle" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:text="${post.getTitle()}"></a>
+            <div>
+                <a class="postsDesc" th:text="${post.getCommentList().size()} + ' ' + #{comments}" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"></a>
+                <a class="postsDesc" th:href="@{~/profile/{profileId}/(profileId=${post.getPoster.getId()})}" th:text="'&#8226; ' + ${post.getPoster().getVisibleUsername()} + ' &#8226; ' + ${post.getPostedTime()}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

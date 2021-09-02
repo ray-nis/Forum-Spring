@@ -21,4 +21,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     @Query(value = "SELECT * , TIMES_VIEWED / ((TIMESTAMPDIFF(HOUR, NOW(), CREATED_AT) + 2) * 1.8) AS HOT FROM POST ORDER BY HOT DESC LIMIT 15", nativeQuery = true)
     List<Post> findTop15Hottest();
+
+    Long countByCategory(Category category);
 }

@@ -15,7 +15,9 @@
 <div th:fragment="postsWithoutCategory" class="postsContainer">
     <div class="posts">
         <div class="postPosts" th:each="post : ${posts}">
-            <a class="postsTitle" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:text="${post.getTitle()}"></a>
+            <a class="postsTitle"
+               th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"
+               ><i th:class="${post.getPinned()} ? 'fas fa-thumbtack'"></i><span th:text="' ' + ${post.getTitle()}" /></a>
             <div>
                 <a class="postsDesc" th:text="${post.getCommentList().size()} + ' ' + #{comments}" th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"></a>
                 <a class="postsDesc" th:href="@{~/profile/{profileId}/(profileId=${post.getPoster.getId()})}" th:text="'&#8226; ' + ${post.getPoster().getVisibleUsername()} + ' &#8226; ' + ${post.getPostedTime()}"></a>

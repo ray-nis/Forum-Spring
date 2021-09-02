@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{createPost}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
 </head>
 <body>
-<form th:action="@{''}" method="POST" th:object="${post}">
-    <input th:placeholder="#{newPostTitlePlaceholder}" type="text" th:field="*{title}">
-    <p th:each="error: ${#fields.errors('title')}"
-       th:text="${error}">Validation error</p>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="postPostContainer">
+    <form th:action="@{''}" method="POST" th:object="${post}">
+        <input th:placeholder="#{newPostTitlePlaceholder}" type="text" th:field="*{title}">
+        <p class="error" th:each="error: ${#fields.errors('title')}"
+           th:text="${error}">Validation error</p>
 
-    <textarea th:placeholder="#{newPostPostPlaceholder}" th:field="*{postContent}"></textarea>
-    <p th:each="error: ${#fields.errors('postContent')}"
-       th:text="${error}">Validation error</p>
+        <textarea th:placeholder="#{followTheRules}" th:field="*{postContent}"></textarea>
+        <p class="error" th:each="error: ${#fields.errors('postContent')}"
+           th:text="${error}">Validation error</p>
 
 
-    <button th:text="#{postIt}" type="submit"></button>
-</form>
+        <button th:text="#{postIt}" type="submit"></button>
+    </form>
+</div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

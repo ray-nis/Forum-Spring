@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <title th:text="${category.getName()}"></title>
     <div th:replace="./fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
 </head>
 <body>
 <div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
 <main>
+    <div class="categoryHeader">
+        <div>
+            <a class="categoryHeaderLink" th:href="@{~/category/{category}/new(category=${category.getSlug()})}"></a>
+            <a th:href="@{~/category/{category}/new(category=${category.getSlug()})}" >
+                <i class="fas fa-pencil-alt"></i><span th:text="' ' + #{newPost}" />
+            </a>
+        </div>
+    </div>
     <div th:replace="/fragments/posts.html :: postsWithoutCategory"></div>
 </main>
 <div class="paginationContainer">
-    <div th:if="${posts.getTotalPages() > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{~/category/{categoryName}(page=${pageNumber}, categoryName=${category.getSlug()})}"
+    <div th:if="${posts.getTotalPages() > 0}" class="pagination">
+        <a th:each="pageNumber : ${pageNumbers}"
+           th:href="@{~/category/{categoryName}(page=${pageNumber}, categoryName=${category.getSlug()})}"
            th:text=${pageNumber}
            th:class="${pageNumber==posts.getNumber() + 1} ? active"></a>
     </div>

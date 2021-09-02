@@ -25,6 +25,14 @@
         <h1 th:text="${comment.getCommentContent()}"></h1>
     </div>
 </div>
+<div sec:authorize="isAuthenticated()" class="postComment">
+    <form th:action="@{''}" method="POST" th:object="${commentDto}">
+        <textarea th:field="*{commentContent}"></textarea>
+        <p th:each="error: ${#fields.errors('commentContent')}"
+           th:text="${error}">Validation error</p>
+        <button type="submit" th:text="#{postIt}"></button>
+    </form>
+</div>
 <div th:if="${comments.getTotalPages() > 0}" class="pagination"
      th:each="pageNumber : ${pageNumbers}">
     <a th:href="@{''(page=${pageNumber})}"

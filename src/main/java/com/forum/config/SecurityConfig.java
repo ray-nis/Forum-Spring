@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/category/**/new").authenticated()
                 .antMatchers("/category/**/post/**/favorite").authenticated()
                 .antMatchers("/category/**/post/**/like").authenticated()
+                .antMatchers(HttpMethod.POST, "/category/**/post/**").authenticated()
                 .antMatchers("/category/**/post/**").permitAll()
                 .antMatchers("/category/**").permitAll()
                 .anyRequest().denyAll()

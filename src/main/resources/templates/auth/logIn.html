@@ -9,31 +9,29 @@
 <div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
 <main>
-    <form th:action="@{~/login}" method="POST">
-        <!-- <div th:if="${param.error}">
-            <p th:text="#{${param.error[0]}}"></p>
-        </div> -->
+    <div class="authFormContainer">
+        <form th:action="@{~/login}" method="POST">
+            <label for="email" th:text="#{emailForm}"></label>
+            <input type="text" id="email" name="email"/>
+            <label for="password" th:text="#{passwordForm}"></label>
+            <input type="password" id="password" name="password"/>
 
-        <label for="email" th:text="#{emailForm}"></label>
-        <input type="text" id="email" name="email"/>
-        <label for="password" th:text="#{passwordForm}"></label>
-        <input type="password" id="password" name="password"/>
+            <button th:text="#{login}" type="submit"></button>
+        </form>
 
-        <button th:text="#{login}" type="submit"></button>
-    </form>
-
-    <th:block th:if="${param.error}" th:switch="${param.error[0]}">
-        <div th:case="'loginError'">
-            <p th:text="#{loginError}"></p>
-        </div>
-        <div th:case="'loginError1'">
-            <p th:text="#{loginError1}"></p>
-        </div>
-        <div th:case="'loginError2'">
-            <p th:text="#{loginError2}"></p>
-            <a th:text="#{clickForResend}" th:href="@{~/resendverification}"></a>
-        </div>
-    </th:block>
+        <th:block th:if="${param.error}" th:switch="${param.error[0]}">
+            <div th:case="'loginError'">
+                <p class="error" th:text="#{loginError}"></p>
+            </div>
+            <div th:case="'loginError1'">
+                <p class="error" th:text="#{loginError1}"></p>
+            </div>
+            <div th:case="'loginError2'">
+                <p class="error" th:text="#{loginError2}"></p>
+                <a th:text="#{clickForResend}" th:href="@{~/resendverification}"></a>
+            </div>
+        </th:block>
+    </div>
 </main>
 <div th:replace="/fragments/footer.html :: footer"></div>
 <div th:replace="/fragments/assets.html :: assetsJs"></div>

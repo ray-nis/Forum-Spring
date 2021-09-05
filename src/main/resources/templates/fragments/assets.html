@@ -17,8 +17,9 @@
     <script>
         const favorite = () => {
             let favoriteButton = document.getElementById("favorite");
-            let favoriteLink = window.location.href.endsWith("/") ? "favorite" : "/favorite";
-            let link = window.location.href + favoriteLink;
+            let link = window.location.href.split("?")[0];
+            let favoriteLink = link.endsWith("/") ? "favorite" : "/favorite";
+            link = link + favoriteLink;
             let favorite = "fas fa-heart";
             let unfavorite = "far fa-heart";
             favoriteButton.style.cursor = "pointer";
@@ -43,8 +44,9 @@
     <script>
         const like = () => {
             let likeButton = document.getElementById("like");
-            let likeLink = window.location.href.endsWith("/") ? "like" : "/like";
-            let link = window.location.href + likeLink;
+            let link = window.location.href.split("?")[0];
+            let likeLink = link.endsWith("/") ? "like" : "/like";
+            link = link + likeLink;
             let like = "fas fa-thumbs-up";
             let unlike = "far fa-thumbs-up";
             likeButton.style.cursor = "pointer";

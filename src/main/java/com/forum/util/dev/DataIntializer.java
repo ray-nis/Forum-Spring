@@ -38,8 +38,8 @@ public class DataIntializer implements CommandLineRunner {
         User john = User.builder()
                 .userName("John")
                 .email("john123@gmail.com")
-                .enabled(false)
-                .nonLocked(false)
+                .enabled(true)
+                .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
                 .roles(new HashSet<Role>(Arrays.asList(userRole))).build();
 

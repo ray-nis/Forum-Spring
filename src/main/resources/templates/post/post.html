@@ -22,8 +22,10 @@
         <i id="like" th:class="${post.getUsersLiked().contains(#authentication.getPrincipal())} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
         <i class="fas fa-share-square"></i>
         <i class="fas fa-bullhorn"></i>
+        <i th:if="${#authentication.getPrincipal()} == ${post.getPoster()}" class="far fa-trash-alt"></i>
     </div>
 </div>
+<div th:replace="/fragments/modal.html :: deletePostModal"></div>
 <div th:replace="/fragments/comments.html :: comments"></div>
 <div th:replace="/fragments/comments.html :: postComment"></div>
 <div class="paginationContainer">

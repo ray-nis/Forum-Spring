@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -109,6 +110,20 @@ public class PostController {
         model.addAttribute("comments", comments);
 
         return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug + "/?page=" + comments.getTotalPages();
+    }
+
+    @PostMapping("/category/{category}/post/{id}/{slug}/delete")
+    public String deletePost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        //TODO factor into method authorization
+        if (currentUserUtil.getUser().equals(post.getPoster())) {
+            postService.delete(post);
+            return "redirect:/";
+        }
+
+        return "error/error";
     }
 
     @GetMapping("/category/{category}/post/{id}/{slug}/favorite")

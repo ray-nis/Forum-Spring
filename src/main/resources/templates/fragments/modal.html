@@ -2,11 +2,13 @@
 <div th:fragment="deletePostModal" th:if="${#authentication.getPrincipal()} == ${post.getPoster()}" th:remove="tag ">
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <p th:text="#{deletePostConfirmation}"></p>
-            <div class="deletePostOptions">
-                <button class="buttonStyle" id="deletePostButton" disabled th:text="Yes"></button>
-                <button class="buttonStyle" id="dontDeletePostButton" th:text="No"></button>
-            </div>
+            <form th:action="@{~/category/{category}/post/{id}/{slug}/delete(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:method="POST">
+                <p th:text="#{deletePostConfirmation}"></p>
+                <div class="deletePostOptions">
+                    <button type="submit" class="buttonStyle" id="deletePostButton" th:text="Yes"></button>
+                    <button type="button" class="buttonStyle" id="dontDeletePostButton" th:text="No"></button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -14,7 +16,6 @@
         const deletePostModal = () => {
             let modal = document.getElementById("myModal");
             let btn = document.getElementsByClassName("fa-trash-alt")[0];
-            let yesButton = document.getElementById("deletePostButton");
             let noButton = document.getElementById("dontDeletePostButton");
 
             btn.onclick = function() {

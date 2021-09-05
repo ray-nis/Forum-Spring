@@ -381,7 +381,7 @@ i {
 .deletePostOptions {
     display: flex;
     justify-content: space-evenly;
-    width: 50%;
+    width: 100%;
 }
 
 .deletePostOptions button {

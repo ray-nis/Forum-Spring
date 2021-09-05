@@ -43,7 +43,7 @@ public class Post extends DateAudit {
     @NotNull
     private String postContent;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> commentList;
 
     @ManyToOne

@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/category/**/post/**/favorite").authenticated()
                 .antMatchers("/category/**/post/**/like").authenticated()
                 .antMatchers(HttpMethod.POST, "/category/**/post/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/category/**/post/**").authenticated()
                 .antMatchers("/category/**/post/**").permitAll()
                 .antMatchers("/category/**").permitAll()
                 .anyRequest().denyAll()
@@ -63,7 +64,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .rememberMe().tokenValiditySeconds(86400);
-
-
     }
 }

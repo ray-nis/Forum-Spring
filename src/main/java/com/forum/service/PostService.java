@@ -82,4 +82,9 @@ public class PostService {
     public void unlikePost(User user, Post post) {
         post.getUsersLiked().remove(user);
     }
+
+    @Transactional
+    public void delete(Post post) {
+        postRepository.delete(post);
+    }
 }

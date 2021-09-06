@@ -117,7 +117,6 @@ public class PostController {
         Category category = categoryService.getCategoryBySlug(categorySlug);
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
-        //TODO factor into method authorization
         if (currentUserUtil.getUser().equals(post.getPoster())) {
             postService.delete(post);
             return "redirect:/";

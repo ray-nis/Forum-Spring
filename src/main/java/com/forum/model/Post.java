@@ -50,14 +50,14 @@ public class Post extends DateAudit {
     private Category category;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_favorites", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @JoinTable(name = "user_favorites", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> usersFavorited;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @JoinTable(name = "user_likes", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> usersLiked;
 
-    private Integer timesViewed = 0;
+    private int timesViewed;
 
     public String getPostedTime() {
         Locale locale = LocaleContextHolder.getLocale();

@@ -19,7 +19,12 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     Page<Post> findAllByCategory(Category category, Pageable pageable);
 
-    @Query(value = "SELECT * , TIMES_VIEWED / ((TIMESTAMPDIFF(HOUR, NOW(), CREATED_AT) + 2) * 1.8) AS HOT FROM POST ORDER BY HOT DESC LIMIT 15", nativeQuery = true)
+    @Query(value = "SELECT * , \n" +
+            "((SELECT COUNT(*) FROM comment WHERE post_id = post.id) + ((SELECT COUNT(*) FROM user_likes WHERE user_likes.post_id = post.id) * 0.5) + (TIMES_VIEWED * 0.3)) / \n" +
+            "((TIMESTAMPDIFF(HOUR, CREATED_AT, NOW())) + 0.1) * 1.8 AS HOT\n" +
+            "FROM POST \n" +
+            "ORDER BY HOT DESC \n" +
+            "LIMIT 15", nativeQuery = true)
     List<Post> findTop15Hottest();
 
     Long countByCategory(Category category);

@@ -28,4 +28,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     List<Post> findTop15Hottest();
 
     Long countByCategory(Category category);
+
+    Long countByPoster(User user);
+
+    Page<Post> findAllByPoster(User user, Pageable pageable);
 }

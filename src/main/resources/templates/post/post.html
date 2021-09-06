@@ -12,7 +12,7 @@
 <div class="postsContainer">
     <div class="posts">
         <h1 class="postTitle" th:text="${post.getTitle()}"></h1>
-        <h3 class="postTime" th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getPostedTime()}"></h3>
+        <a th:href="@{~/profile/{profileId}(profileId=${post.getPoster.getId()})}" class="postTime" th:text="${post.getPoster().getVisibleUsername()} + ' - ' + ${post.getPostedTime()}"></a>
         <p class="postContent" th:text="${post.getPostContent()}"></p>
     </div>
 </div>

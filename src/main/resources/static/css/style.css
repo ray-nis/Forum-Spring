@@ -388,3 +388,19 @@ i {
     width: 30%;
     padding: 0px 10px;
 }
+
+.profileContainer {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.alignCenter {
+    text-align: center;
+}
+
+.orofileInfoCategory {
+    color: #142847;
+    font-size: 1.2em;
+}

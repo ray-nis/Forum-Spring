@@ -74,4 +74,8 @@ public class UserService {
     public void changePassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
     }
+
+    public User findUserById(Long id) throws ResourceNotFoundException {
+        return userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
 }

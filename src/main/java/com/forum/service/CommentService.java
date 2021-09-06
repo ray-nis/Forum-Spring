@@ -8,7 +8,9 @@ import com.forum.model.User;
 import com.forum.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,5 +33,14 @@ public class CommentService {
                 .build();
 
         commentRepository.save(comment);
+    }
+
+    public Page<Comment> getFiveRecentCommentsFromUser(User user) {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
+        return commentRepository.findAllByCommenter(user, pageable);
+    }
+
+    public Long getNumberOfCommentsFromUser(User user) {
+        return commentRepository.countByCommenter(user);
     }
 }

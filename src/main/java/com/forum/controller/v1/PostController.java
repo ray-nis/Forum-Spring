@@ -3,6 +3,7 @@ package com.forum.controller.v1;
 import com.forum.dto.CommentDto;
 import com.forum.dto.EmailDto;
 import com.forum.dto.PostDto;
+import com.forum.dto.ReportDto;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Comment;
@@ -11,6 +12,7 @@ import com.forum.model.User;
 import com.forum.service.CategoryService;
 import com.forum.service.CommentService;
 import com.forum.service.PostService;
+import com.forum.service.ReportService;
 import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,7 @@ public class PostController {
     private final CategoryService categoryService;
     private final CurrentUserUtil currentUserUtil;
     private final CommentService commentService;
+    private final ReportService reportService;
 
     @GetMapping("/category/{category}/post/{id}/{slug}")
     public String getPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
@@ -48,6 +51,7 @@ public class PostController {
 
         postService.increaseTimesViewed(post);
         model.addAttribute("post", post);
+        model.addAttribute("reportDto", new ReportDto());
 
         int currentPage = 1;
         if (page.isPresent() && page.get() > 0) {
@@ -110,6 +114,16 @@ public class PostController {
         model.addAttribute("comments", comments);
 
         return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug + "/?page=" + comments.getTotalPages();
+    }
+
+    @PostMapping("/category/{category}/post/{id}/{slug}/report")
+    public String reportPost(@Valid @ModelAttribute("reportDto") ReportDto reportDto, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        reportService.saveReport(reportDto, post, currentUserUtil.getUser());
+
+        return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug;
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}/delete")

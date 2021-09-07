@@ -41,10 +41,14 @@ public class Post extends DateAudit {
     @Size(min = 3)
     @NotEmpty
     @NotNull
+    @Column(length = 3000)
     private String postContent;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> commentList;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Report> reportList;
 
     @ManyToOne
     private Category category;

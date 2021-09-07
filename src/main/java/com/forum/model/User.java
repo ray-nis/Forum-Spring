@@ -58,6 +58,9 @@ public class User extends DateAudit implements UserDetails {
     @ManyToMany(mappedBy = "usersLiked")
     private Set<Post> likedPosts;
 
+    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL)
+    private List<Report> reportList;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();

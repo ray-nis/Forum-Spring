@@ -38,19 +38,25 @@
 <div th:fragment="reportPostModal" th:remove="tag ">
     <div id="reportPostModal" class="modal">
         <div class="modal-content">
-            <form th:object="${reportDto}" th:action="@{~/category/{category}/post/{id}/{slug}/report(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:method="POST">
+            <form class="reportPostForm" th:object="${reportDto}" th:action="@{~/category/{category}/post/{id}/{slug}/report(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:method="POST">
                 <p th:text="#{reportPostConfirmation}"></p>
-                <input th:field="*{reportReason}" type="radio" id="reportReasonSpam" name="reportReason" value=" Spam">
-                <label for="reportReasonSpam">Spam</label>
-                <input th:field="*{reportReason}" type="radio" id="reportReasonHateful" name="reportReason" value=" Hateful content">
-                <label for="reportReasonSpam"> Hateful content</label>
-                <input th:field="*{reportReason}" type="radio" id="reportReasonIllegal" name="reportReason" value=" Illegal content">
-                <label for="reportReasonSpam"> Illegal content</label>
-                <label for="reportReasonComment">Other</label>
+                <div>
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonSpam" name="reportReason" value="Spam">
+                    <label for="reportReasonSpam" th:text="#{reportSpam}"></label>
+                </div>
+                <div>
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonHateful" name="reportReason" value="Hateful content">
+                    <label for="reportReasonHateful"  th:text="#{reportHate}"></label>
+                </div>
+                <div>
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonIllegal" name="reportReason" value="Illegal content">
+                    <label for="reportReasonIllegal" th:text="#{reportIllegal}"></label>
+                </div>
+                <label for="reportReasonComment" th:text="#{reportOther}"></label>
                 <input th:field="*{reportComment}" type="text" id="reportReasonComment" name="reportComment" maxlength="30">
                 <div class="deletePostOptions">
-                    <button type="submit" class="buttonStyle" id="reportPostButton" th:text="Report"></button>
-                    <button type="button" class="buttonStyle" id="dontReportPostButton" th:text="Cancel"></button>
+                    <button type="submit" class="buttonStyle" id="reportPostButton" th:text="#{report}"></button>
+                    <button type="button" class="buttonStyle" id="dontReportPostButton" th:text="#{cancel}"></button>
                 </div>
             </form>
         </div>

@@ -382,6 +382,7 @@ i {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .deletePostOptions button {
@@ -403,4 +404,22 @@ i {
 .orofileInfoCategory {
     color: #142847;
     font-size: 1.2em;
+}
+
+.reportPostForm {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+.reportPostForm div {
+    margin-bottom: 5px;
+}
+
+.reportPostForm div label {
+    margin-right: 5px;
+}
+
+#reportPostButton, #dontReportPostButton {
+    width: 40%;
 }

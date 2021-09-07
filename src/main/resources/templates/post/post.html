@@ -25,8 +25,8 @@
         <i th:if="${#authentication.getPrincipal()} == ${post.getPoster()}" class="far fa-trash-alt"></i>
     </div>
 </div>
-<div th:replace="/fragments/modal.html :: deletePostModal"></div>
-<div th:replace="/fragments/modal.html :: reportPostModal"></div>
+<div sec:authorize="isAuthenticated()" th:replace="/fragments/modal.html :: deletePostModal"></div>
+<div sec:authorize="isAuthenticated()" th:replace="/fragments/modal.html :: reportPostModal"></div>
 <div th:replace="/fragments/comments.html :: comments"></div>
 <div th:replace="/fragments/comments.html :: postComment"></div>
 <div class="paginationContainer">

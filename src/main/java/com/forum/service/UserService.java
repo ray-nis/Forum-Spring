@@ -73,9 +73,14 @@ public class UserService {
     @Transactional
     public void changePassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 
     public User findUserById(Long id) throws ResourceNotFoundException {
         return userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public boolean passwordsMatch(String password, User user) {
+        return passwordEncoder.matches(password, user.getPassword());
     }
 }

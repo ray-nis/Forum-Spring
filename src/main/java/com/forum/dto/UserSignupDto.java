@@ -20,8 +20,7 @@ public class UserSignupDto {
     @Email(regexp = ".+@.+\\..+", message = "{validationValidEmail}")
     private String email;
 
-    @NotEmpty(message = "{validationPasswordRequired}")
-    @NotNull
+    @NotBlank(message = "{validationPasswordRequired}")
     @Size(min = 6, message = "{validationPasswordMinCharacters}")
     private String password;
     private String matchingPassword;

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getVisibleUsername()}"></title>
+    <div th:replace="/fragments/assets.html :: assetsCss"></div>
+</head>
+<div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
+<body>
+<main>
+    <p th:if="${success}" class="success"  th:text="#{${success}}"></p>
+    <div>
+        <p>Password</p>
+        <form th:action="@{~/changepassword}" th:object="${passwordChangeDto}" th:method="POST">
+            <input name="oldPassword" type="password" th:field="*{oldPassword}"/>
+            <p class="error" th:each="error: ${#fields.errors('oldPassword')}" th:text="${error}">Validation error</p>
+            <input name="password" type="password" th:field="*{newPassword}"/>
+            <p class="error" th:each="error: ${#fields.errors('newPassword')}" th:text="${error}">Validation error</p>
+            <input id="passwordConfirm" type="password" th:field="*{confirmPassword}"/>
+            <p class="error" th:if="${#fields.hasErrors('${passwordChangeDto}')}" th:errors="${passwordChangeDto}"></p>
+            <p th:if="${error}" class="error"  th:text="#{${error}}"></p>
+            <button type="submit">Change password</button>
+        </form>
+    </div>
+</main>
+<div th:replace="/fragments/footer.html :: footer"></div>
+<div th:replace="/fragments/assets.html :: assetsJs"></div>
+</body>
+</html>

@@ -11,6 +11,18 @@
 <main>
     <div class="authFormContainer">
         <form th:action="@{~/login}" method="POST">
+            <th:block th:if="${param.error}" th:switch="${param.error[0]}">
+                <div th:case="'loginError'">
+                    <p class="error" th:text="#{loginError}"></p>
+                </div>
+                <div th:case="'loginError1'">
+                    <p class="error" th:text="#{loginError1}"></p>
+                </div>
+                <div th:case="'loginError2'">
+                    <p class="error" th:text="#{loginError2}"></p>
+                    <a th:text="#{clickForResend}" th:href="@{~/resendverification}"></a>
+                </div>
+            </th:block>
             <label for="email" th:text="#{emailForm}"></label>
             <input type="text" id="email" name="email"/>
             <label for="password" th:text="#{passwordForm}"></label>
@@ -18,19 +30,6 @@
 
             <button th:text="#{login}" type="submit"></button>
         </form>
-
-        <th:block th:if="${param.error}" th:switch="${param.error[0]}">
-            <div th:case="'loginError'">
-                <p class="error" th:text="#{loginError}"></p>
-            </div>
-            <div th:case="'loginError1'">
-                <p class="error" th:text="#{loginError1}"></p>
-            </div>
-            <div th:case="'loginError2'">
-                <p class="error" th:text="#{loginError2}"></p>
-                <a th:text="#{clickForResend}" th:href="@{~/resendverification}"></a>
-            </div>
-        </th:block>
     </div>
 </main>
 <div th:replace="/fragments/footer.html :: footer"></div>

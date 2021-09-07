@@ -423,3 +423,36 @@ i {
 #reportPostButton, #dontReportPostButton {
     width: 40%;
 }
+
+.editSection {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.success {
+    color: #198754;
+}
+
+.editSectionHeader {
+    margin-bottom: 20px;
+    width: 50%;
+    padding: 3px 5px 3px 5px;
+    font-size: 1.2em;
+    color: white;
+    background: rgb(25,135,84);
+    background: linear-gradient(135deg, rgba(25,135,84,1) 0%, rgba(255,255,255,1) 100%);
+}
+
+.changePasswordForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.changePasswordForm input {
+    width: 30%;
+    margin-bottom: 15px;
+}
+
+.changePasswordForm button {
+    width: 30%;
+}

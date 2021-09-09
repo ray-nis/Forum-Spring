@@ -1,5 +1,6 @@
 package com.forum.controller.v1;
 
+import com.forum.dto.EmailChangeDto;
 import com.forum.dto.PasswordChangeDto;
 import com.forum.dto.UsernameChangeDto;
 import com.forum.exception.ResourceNotFoundException;
@@ -58,6 +59,7 @@ public class ProfileController {
         model.addAttribute("user", user);
         model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+        model.addAttribute("emailChangeDto", new EmailChangeDto());
         return "profile/editProfile";
     }
 
@@ -69,6 +71,7 @@ public class ProfileController {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", passwordChangeDto);
             model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+            model.addAttribute("emailChangeDto", new EmailChangeDto());
             return "profile/editProfile";
         }
 
@@ -76,6 +79,7 @@ public class ProfileController {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", passwordChangeDto);
             model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+            model.addAttribute("emailChangeDto", new EmailChangeDto());
 
             model.addAttribute("passwordError", "currentPasswordIncorrect");
             return "profile/editProfile";
@@ -95,6 +99,7 @@ public class ProfileController {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", new PasswordChangeDto());
             model.addAttribute("usernameChangeDto", usernameChangeDto);
+            model.addAttribute("emailChangeDto", new EmailChangeDto());
             return "profile/editProfile";
         }
 
@@ -102,6 +107,7 @@ public class ProfileController {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", new PasswordChangeDto());
             model.addAttribute("usernameChangeDto", usernameChangeDto);
+            model.addAttribute("emailChangeDto", new EmailChangeDto());
 
             model.addAttribute("usernameError", "usernameExists");
             return "profile/editProfile";
@@ -111,6 +117,7 @@ public class ProfileController {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", new PasswordChangeDto());
             model.addAttribute("usernameChangeDto", usernameChangeDto);
+            model.addAttribute("emailChangeDto", new EmailChangeDto());
 
             model.addAttribute("usernamePasswordError", "currentPasswordIncorrect");
             return "profile/editProfile";
@@ -123,7 +130,40 @@ public class ProfileController {
     }
 
     @PostMapping("/changeemail")
-    public String changeEmail(Model model, RedirectAttributes redirectAttributes) {
+    public String changeEmail(@Valid @ModelAttribute("emailChangeDto") EmailChangeDto emailChangeDto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        User user = currentUserUtil.getUser();
+
+        if (result.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+            model.addAttribute("emailChangeDto", emailChangeDto);
+            return "profile/editProfile";
+        }
+
+        if (userService.emailExists(emailChangeDto.getEmail())) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+            model.addAttribute("emailChangeDto", emailChangeDto);
+
+
+            model.addAttribute("emailError", "emailExists");
+            return "profile/editProfile";
+        }
+
+        if (!userService.passwordsMatch(emailChangeDto.getPassword(), user)) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+            model.addAttribute("emailChangeDto", emailChangeDto);
+
+            model.addAttribute("emailPasswordError", "currentPasswordIncorrect");
+            return "profile/editProfile";
+        }
+
+        userService.changeEmail(user, emailChangeDto.getEmail());
+
         redirectAttributes.addFlashAttribute("success", "emailChangeSuccess");
         return "redirect:/editprofile";
     }

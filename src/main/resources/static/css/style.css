@@ -427,6 +427,7 @@ i {
 .editSection {
     width: 70%;
     margin: 0 auto;
+    margin-bottom: 80px;
 }
 
 .success {
@@ -443,16 +444,16 @@ i {
     background: linear-gradient(135deg, rgba(25,135,84,1) 0%, rgba(255,255,255,1) 100%);
 }
 
-.changePasswordForm {
+.changeProfileForm {
     display: flex;
     flex-direction: column;
 }
 
-.changePasswordForm input {
+.changeProfileForm input {
     width: 30%;
     margin-bottom: 15px;
 }
 
-.changePasswordForm button {
+.changeProfileForm button {
     width: 30%;
 }

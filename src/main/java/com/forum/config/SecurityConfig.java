@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/about", "/contact", "/search", "/rules").permitAll()
                 .antMatchers("/", "/login", "/signup", "/resendverification","/resetPassword", "/forgotpassword", "/forgotpasswordsent","/registrationConfirm").permitAll()
                 .antMatchers("/profile", "/profile/*", "/editprofile").authenticated()
-                .antMatchers("/changepassword").authenticated()
+                .antMatchers("/changepassword", "/changeusername", "/changeemail").authenticated()
                 .antMatchers("/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/category/**/new").authenticated()
                 .antMatchers(HttpMethod.POST, "/category/**/new").authenticated()

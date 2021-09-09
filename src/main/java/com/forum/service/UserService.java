@@ -76,6 +76,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void changeUsername(User user, String userName) {
+        user.setUserName(userName);
+        userRepository.save(user);
+    }
+
     public User findUserById(Long id) throws ResourceNotFoundException {
         return userRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }

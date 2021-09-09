@@ -1,16 +1,15 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.PasswordChangeDto;
+import com.forum.dto.UsernameChangeDto;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.User;
-import com.forum.repository.UserRepository;
 import com.forum.service.CommentService;
 import com.forum.service.PostService;
 import com.forum.service.UserService;
 import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,10 +18,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ProfileController {
@@ -58,6 +57,7 @@ public class ProfileController {
         User user = currentUserUtil.getUser();
         model.addAttribute("user", user);
         model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+        model.addAttribute("usernameChangeDto", new UsernameChangeDto());
         return "profile/editProfile";
     }
 
@@ -68,19 +68,63 @@ public class ProfileController {
         if (result.hasErrors()) {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", passwordChangeDto);
+            model.addAttribute("usernameChangeDto", new UsernameChangeDto());
             return "profile/editProfile";
         }
 
         if (!userService.passwordsMatch(passwordChangeDto.getOldPassword(), user)) {
             model.addAttribute("user", user);
             model.addAttribute("passwordChangeDto", passwordChangeDto);
-            model.addAttribute("error", "currentPasswordIncorrect");
+            model.addAttribute("usernameChangeDto", new UsernameChangeDto());
+
+            model.addAttribute("passwordError", "currentPasswordIncorrect");
             return "profile/editProfile";
         }
 
         userService.changePassword(user, passwordChangeDto.getNewPassword());
 
         redirectAttributes.addFlashAttribute("success", "passwordChangeSuccess");
+        return "redirect:/editprofile";
+    }
+
+    @PostMapping("/changeusername")
+    public String changeUsername(@Valid @ModelAttribute("usernameChangeDto") UsernameChangeDto usernameChangeDto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        User user = currentUserUtil.getUser();
+
+        if (result.hasErrors()) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", usernameChangeDto);
+            return "profile/editProfile";
+        }
+
+        if (userService.userNameExists(usernameChangeDto.getUserName())) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", usernameChangeDto);
+
+            model.addAttribute("usernameError", "usernameExists");
+            return "profile/editProfile";
+        }
+
+        if (!userService.passwordsMatch(usernameChangeDto.getPassword(), user)) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+            model.addAttribute("usernameChangeDto", usernameChangeDto);
+
+            model.addAttribute("usernamePasswordError", "currentPasswordIncorrect");
+            return "profile/editProfile";
+        }
+
+        userService.changeUsername(user, usernameChangeDto.getUserName());
+
+        redirectAttributes.addFlashAttribute("success", "usernameChangeSuccess");
+        return "redirect:/editprofile";
+    }
+
+    @PostMapping("/changeemail")
+    public String changeEmail(Model model, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("success", "emailChangeSuccess");
         return "redirect:/editprofile";
     }
 }

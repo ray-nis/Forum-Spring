@@ -5,6 +5,7 @@ import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.service.CategoryService;
 import com.forum.service.PostService;
+import com.forum.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,24 +37,16 @@ public class CategoryController {
     @GetMapping("/category/{slug}")
     public String getCategory(@PathVariable("slug") String slug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(slug);
-
-        int currentPage = 1;
-        if (page.isPresent() && page.get() > 0) {
-            currentPage = page.get();
-        }
-
-        PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("pinned").descending().and(Sort.by("createdAt").descending()));
-        Page<Post> posts = postService.getPaginatedSorted(category, pageRequest);
-
-        if (posts.getTotalPages() > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, posts.getTotalPages())
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-
         model.addAttribute("category", category);
+
+        int currentPage = PaginationUtil.getPage(page);
+
+        Page<Post> posts = postService.getPaginatedSorted(category, currentPage);
         model.addAttribute("posts", posts);
+
+        List<Integer> pageNumbers = PaginationUtil.getPageNumbers(posts.getTotalPages());
+        model.addAttribute("pageNumbers", pageNumbers);
+
         return "category/category";
     }
 }

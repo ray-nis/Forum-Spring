@@ -10,12 +10,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostDto {
-    @NotBlank(message = "{validationTitleRequired}")
-    @Size(min = 3, max = 50, message = "{validationPostTitleCharacters}")
-    private String title;
-
+public class PostChangeDto {
     @NotBlank(message = "{validationPostRequired}")
-    @Size(min = 3, max = 3000, message = "{validationPostCharacters}")
+    @Size(min = 3, message = "{validationPostCharacters}")
     private String postContent;
 }

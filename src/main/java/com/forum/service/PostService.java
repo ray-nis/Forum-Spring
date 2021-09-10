@@ -49,6 +49,11 @@ public class PostService {
         return postRepository.findAllByCategory(category, pageable);
     }
 
+    public Page<Post> getPaginatedSorted(Category category, int currentPage) {
+        PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("pinned").descending().and(Sort.by("createdAt").descending()));
+        return postRepository.findAllByCategory(category, pageRequest);
+    }
+
     public Page<Post> getRecent(Pageable pageable) {
         return postRepository.findAll(pageable);
     }

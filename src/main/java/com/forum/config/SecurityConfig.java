@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/category/**/new").authenticated()
                 .antMatchers("/category/**/post/**/favorite").authenticated()
                 .antMatchers("/category/**/post/**/like").authenticated()
+                .antMatchers("/category/**/post/**/edit").authenticated()
                 .antMatchers(HttpMethod.POST, "/category/**/post/**/report").authenticated()
                 .antMatchers(HttpMethod.POST, "/category/**/post/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/category/**/post/**").authenticated()

@@ -22,6 +22,7 @@
         <i id="like" th:class="${post.getUsersLiked().contains(#authentication.getPrincipal())} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
         <i class="fas fa-share-square"></i>
         <i class="fas fa-bullhorn"></i>
+        <a th:if="${#authentication.getPrincipal()} == ${post.getPoster()}" class="far fa-edit icon" th:href="@{~/category/{category}/post/{id}/{slug}/edit(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"></a>
         <i th:if="${#authentication.getPrincipal()} == ${post.getPoster()}" class="far fa-trash-alt"></i>
     </div>
 </div>

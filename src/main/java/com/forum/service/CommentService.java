@@ -23,6 +23,11 @@ public class CommentService {
         return commentRepository.findAllByPost(post, pageable);
     }
 
+    public Page<Comment> getPaginatedSorted(Post post, int currentPage) {
+        PageRequest pageRequest = PageRequest.of(currentPage - 1, 10, Sort.by("createdAt").ascending());
+        return commentRepository.findAllByPost(post, pageRequest);
+    }
+
     @Transactional
     public void saveComment(CommentDto commentDto, Post post, User poster) {
         Comment comment = Comment

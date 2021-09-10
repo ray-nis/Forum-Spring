@@ -462,3 +462,7 @@ i {
     color: #1c704b;
     font-size: 1.1em;
 }
+
+.icon:hover {
+    color: #1c704b;
+}

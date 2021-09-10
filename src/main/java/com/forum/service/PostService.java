@@ -103,4 +103,10 @@ public class PostService {
     public Long getNumberOfPostsFromUser(User user) {
         return postRepository.countByPoster(user);
     }
+
+    @Transactional
+    public void changeContent(Post post, String postContent) {
+        post.setPostContent(postContent);
+        postRepository.save(post);
+    }
 }

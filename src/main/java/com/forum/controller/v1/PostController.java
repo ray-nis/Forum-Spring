@@ -1,9 +1,6 @@
 package com.forum.controller.v1;
 
-import com.forum.dto.CommentDto;
-import com.forum.dto.EmailDto;
-import com.forum.dto.PostDto;
-import com.forum.dto.ReportDto;
+import com.forum.dto.*;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Comment;
@@ -63,6 +60,40 @@ public class PostController {
         model.addAttribute("pageNumbers", pageNumbers);
 
         return "post/post";
+    }
+
+    @GetMapping("/category/{category}/post/{id}/{slug}/edit")
+    public String getEditPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        if (currentUserUtil.getUser().equals(post.getPoster())) {
+            PostChangeDto postChangeDto = new PostChangeDto();
+            postChangeDto.setPostContent(post.getPostContent());
+            model.addAttribute("postChangeDto", postChangeDto);
+
+            return "post/editPost";
+        }
+
+        return "error/error";
+    }
+
+    @PostMapping("/category/{category}/post/{id}/{slug}/edit")
+    public String editPost(@Valid @ModelAttribute("postChangeDto") PostChangeDto postChangeDto, BindingResult result, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        if (currentUserUtil.getUser().equals(post.getPoster())) {
+            if (result.hasErrors()) {
+                model.addAttribute("postChangeDto", postChangeDto);
+                return "post/editPost";
+            }
+
+            postService.changeContent(post, postChangeDto.getPostContent());
+            return "redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug();
+        }
+
+        return "error/error";
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}")

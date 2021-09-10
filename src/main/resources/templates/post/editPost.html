@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{changeIt}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
+</head>
+<body>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="postPostContainer">
+    <form th:action="@{''}" th:method="POST" th:object="${postChangeDto}">
+        <textarea th:placeholder="#{followTheRules}" th:field="*{postContent}" th:text="${postChangeDto.getPostContent()}"></textarea>
+        <p class="error" th:each="error: ${#fields.errors('postContent')}"
+           th:text="${error}">Validation error</p>
+
+        <button th:text="#{changeIt}" type="submit"></button>
+    </form>
+</div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
+<div th:replace="./fragments/assets.html :: favoriteJs"></div>
+<div th:replace="./fragments/assets.html :: likeJs"></div>
+</body>
+</html>

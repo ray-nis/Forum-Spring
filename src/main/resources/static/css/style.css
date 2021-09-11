@@ -11,6 +11,11 @@ a {
     color: #d91a2d;
 }
 
+.info {
+    padding: 10px;
+    color: #444e80;
+}
+
 i {
     cursor: pointer
 }

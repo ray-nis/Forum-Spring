@@ -28,7 +28,7 @@
         <input minlength="6" type="password" th:field="*{matchingPassword}"/>
         <p class="error" th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
 
-        <button th:text="#{register}" type="submit">/button>
+        <button class="buttonStyle" th:text="#{register}" type="submit">/button>
     </form>
 </div>
 <div th:replace="./fragments/footer.html :: footer"></div>

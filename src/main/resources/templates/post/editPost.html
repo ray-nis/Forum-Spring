@@ -15,7 +15,7 @@
         <p class="error" th:each="error: ${#fields.errors('postContent')}"
            th:text="${error}">Validation error</p>
 
-        <button th:text="#{changeIt}" type="submit"></button>
+        <button class="buttonStyle" th:text="#{changeIt}" type="submit"></button>
     </form>
 </div>
 <div th:replace="./fragments/footer.html :: footer"></div>

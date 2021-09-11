@@ -19,8 +19,7 @@
                     <p class="error" th:text="#{loginError1}"></p>
                 </div>
                 <div th:case="'loginError2'">
-                    <p class="error" th:text="#{loginError2}"></p>
-                    <a th:text="#{clickForResend}" th:href="@{~/resendverification}"></a>
+                    <a th:href="@{~/resendverification}" class="error" th:text="#{loginError2} + '. ' + #{clickForResend}"></a>
                 </div>
             </th:block>
             <label for="email" th:text="#{emailForm}"></label>
@@ -28,7 +27,9 @@
             <label for="password" th:text="#{passwordForm}"></label>
             <input minlength="6"  type="password" id="password" name="password"/>
 
-            <button th:text="#{login}" type="submit"></button>
+            <a th:text="#{forgotPasswordQ}" th:href="@{~/forgotpassword}"></a>
+
+            <button class="buttonStyle" th:text="#{login}" type="submit"></button>
         </form>
     </div>
 </main>

@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{error}"></title>
+    <div th:replace="/fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
-<p th:text="${err}"></p>
+<div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
+<p class="info alignCenter" th:text="#{error}"></p>
+<div th:replace="/fragments/footer.html :: footer"></div>
+<div th:replace="/fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

@@ -11,11 +11,11 @@
 <div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
 <div class="postPostContainer">
     <form th:action="@{''}" method="POST" th:object="${post}">
-        <input th:placeholder="#{newPostTitlePlaceholder}" type="text" th:field="*{title}">
+        <input minlength="3" maxlength="50" th:placeholder="#{newPostTitlePlaceholder}" type="text" th:field="*{title}">
         <p class="error" th:each="error: ${#fields.errors('title')}"
            th:text="${error}">Validation error</p>
 
-        <textarea th:placeholder="#{followTheRules}" th:field="*{postContent}"></textarea>
+        <textarea minlength="3" maxlength="3000" th:placeholder="#{followTheRules}" th:field="*{postContent}"></textarea>
         <p class="error" th:each="error: ${#fields.errors('postContent')}"
            th:text="${error}">Validation error</p>
 

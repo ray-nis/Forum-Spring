@@ -14,9 +14,9 @@
         <div>
             <h1 class="editSectionHeader" th:text="#{username}"></h1>
             <form class="changeProfileForm" th:action="@{~/changeusername}" th:object="${usernameChangeDto}" th:method="POST">
-                <input name="newUsername" th:placeholder="#{newUsername}" type="text" th:field="*{userName}"/>
+                <input minlength="3" maxlength="20"  name="newUsername" th:placeholder="#{newUsername}" type="text" th:field="*{userName}"/>
                 <p class="error" th:each="error: ${#fields.errors('userName')}" th:text="${error}">Validation error</p>
-                <input name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
+                <input minlength="6" name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
                 <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
                 <p th:if="${usernameError}" class="error"  th:text="#{${usernameError}}"></p>
                 <p th:if="${usernamePasswordError}" class="error"  th:text="#{${usernamePasswordError}}"></p>
@@ -29,9 +29,9 @@
         <div>
             <h1 class="editSectionHeader" th:text="#{email}"></h1>
             <form class="changeProfileForm" th:action="@{~/changeemail}" th:object="${emailChangeDto}" th:method="POST">
-                <input name="newUsername" th:placeholder="#{newEmail}" type="text" th:field="*{email}"/>
+                <input name="newUsername" th:placeholder="#{newEmail}" type="email" th:field="*{email}"/>
                 <p class="error" th:each="error: ${#fields.errors('email')}" th:text="${error}">Validation error</p>
-                <input name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
+                <input minlength="6" name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
                 <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
                 <p th:if="${emailError}" class="error"  th:text="#{${emailError}}"></p>
                 <p th:if="${emailPasswordError}" class="error"  th:text="#{${emailPasswordError}}"></p>
@@ -44,11 +44,11 @@
         <div>
             <h1 class="editSectionHeader" th:text="#{password}"></h1>
             <form class="changeProfileForm" th:action="@{~/changepassword}" th:object="${passwordChangeDto}" th:method="POST">
-                <input name="oldPassword" th:placeholder="#{currentPassword}" type="password" th:field="*{oldPassword}"/>
+                <input minlength="6" name="oldPassword" th:placeholder="#{currentPassword}" type="password" th:field="*{oldPassword}"/>
                 <p class="error" th:each="error: ${#fields.errors('oldPassword')}" th:text="${error}">Validation error</p>
-                <input name="password" th:placeholder="#{newPassword}" type="password" th:field="*{newPassword}"/>
+                <input minlength="6"  name="password" th:placeholder="#{newPassword}" type="password" th:field="*{newPassword}"/>
                 <p class="error" th:each="error: ${#fields.errors('newPassword')}" th:text="${error}">Validation error</p>
-                <input id="passwordConfirm" th:placeholder="#{newPasswordConfirm}" type="password" th:field="*{confirmPassword}"/>
+                <input minlength="6"  id="passwordConfirm" th:placeholder="#{newPasswordConfirm}" type="password" th:field="*{confirmPassword}"/>
                 <p class="error" th:if="${#fields.hasErrors('${passwordChangeDto}')}" th:errors="${passwordChangeDto}"></p>
                 <p th:if="${passwordError}" class="error"  th:text="#{${passwordError}}"></p>
                 <button class="buttonStyle" type="submit" th:text="#{changePassword}"></button>

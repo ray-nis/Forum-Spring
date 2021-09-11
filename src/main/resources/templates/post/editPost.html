@@ -11,7 +11,7 @@
 <div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
 <div class="postPostContainer">
     <form th:action="@{''}" th:method="POST" th:object="${postChangeDto}">
-        <textarea th:placeholder="#{followTheRules}" th:field="*{postContent}" th:text="${postChangeDto.getPostContent()}"></textarea>
+        <textarea minlength="3" maxlength="3000" th:placeholder="#{followTheRules}" th:field="*{postContent}" th:text="${postChangeDto.getPostContent()}"></textarea>
         <p class="error" th:each="error: ${#fields.errors('postContent')}"
            th:text="${error}">Validation error</p>
 

@@ -24,9 +24,9 @@
                 </div>
             </th:block>
             <label for="email" th:text="#{emailForm}"></label>
-            <input type="text" id="email" name="email"/>
+            <input minlength="3" maxlength="20" type="text" id="email" name="email"/>
             <label for="password" th:text="#{passwordForm}"></label>
-            <input type="password" id="password" name="password"/>
+            <input minlength="6"  type="password" id="password" name="password"/>
 
             <button th:text="#{login}" type="submit"></button>
         </form>

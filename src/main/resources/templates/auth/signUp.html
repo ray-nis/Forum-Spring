@@ -12,7 +12,7 @@
     <form th:action="@{~/signup}" method="POST" th:object="${user}">
         <p th:text="${err}">Msg</p>
         <label th:text="#{usernameForm}">Username:</label>
-        <input type="text" th:field="*{userName}">
+        <input minlength="3" maxlength="20" type="text" th:field="*{userName}">
         <p class="error" th:each="error: ${#fields.errors('userName')}"
            th:text="${error}">Validation error</p>
 
@@ -21,11 +21,11 @@
         <p class="error" th:each="error: ${#fields.errors('email')}" th:text="${error}">Validation error</p>
 
         <label th:text="#{passwordForm}">Password:</label>
-        <input type="password" th:field="*{password}">
+        <input minlength="6" type="password" th:field="*{password}">
         <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
 
         <label th:text="#{confirmPasswordForm}">Confirm Password:</label>
-        <input type="password" th:field="*{matchingPassword}"/>
+        <input minlength="6" type="password" th:field="*{matchingPassword}"/>
         <p class="error" th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
 
         <button th:text="#{register}" type="submit">/button>

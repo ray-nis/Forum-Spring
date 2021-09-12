@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<textarea id="txt"></textarea>
+<button id="sendMsg" type="button">Send message</button>
+</body>
+<ul id="myList">
+</ul>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script>
+    var id = "[[${#authentication.getPrincipal().getId()}]]";
+    let stompClient = null;
+
+    const clicking = () => {
+        let btn = document.getElementById("sendMsg");
+        btn.addEventListener("click", sendMsg);
+    }
+
+    const connect = () => {
+        let sockJS = new SockJS("/web-socket");
+        stompClient = Stomp.over(sockJS);
+        stompClient.connect({}, function(frame) {
+                    stompClient.subscribe('/user/' + id + '/queue/messages', function(messageOutput) {
+                        showGreeting(JSON.parse(messageOutput.body));
+                    });
+                });
+    };
+
+    const sendMsg = () => {
+        let textArea = document.getElementById("txt").value;
+        textArea.value = "";
+        recipientId = id === "4" ? "3" : "4";
+        const message = {
+            recipient: recipientId,
+            content: textArea,
+        };
+
+        stompClient.send("/app/chat", {}, JSON.stringify(message));
+    }
+
+    const showGreeting = message => {
+        var node = document.createElement("LI");
+        var textnode = document.createTextNode(message.content);
+        node.appendChild(textnode);
+        document.getElementById("myList").appendChild(node);
+    }
+
+    clicking();
+    connect();
+</script>
+</html>

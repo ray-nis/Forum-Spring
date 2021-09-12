@@ -39,11 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable();
 
         http.authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/static/**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/static/**", "/webjars/**").permitAll()
                 .antMatchers("/about", "/contact", "/search", "/rules").permitAll()
                 .antMatchers("/", "/login", "/signup", "/resendverification","/resetPassword", "/forgotpassword", "/forgotpasswordsent","/registrationConfirm").permitAll()
                 .antMatchers("/profile", "/profile/*", "/editprofile").authenticated()
                 .antMatchers("/changepassword", "/changeusername", "/changeemail").authenticated()
+                .antMatchers("/chat", "/web-socket/**").permitAll()
                 .antMatchers("/post/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/category/**/new").authenticated()
                 .antMatchers(HttpMethod.POST, "/category/**/new").authenticated()

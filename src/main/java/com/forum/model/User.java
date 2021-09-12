@@ -100,6 +100,11 @@ public class User extends DateAudit implements UserDetails {
     }
 
     @Override
+    public String toString() {
+        return "User [username = " + getUsername() + "]";
+    }
+
+    @Override
     public String getUsername() {
         return email;
     }

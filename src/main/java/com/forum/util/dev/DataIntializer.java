@@ -55,7 +55,7 @@ public class DataIntializer implements CommandLineRunner {
         User ty = User.builder()
                 .userName("Ty12")
                 .email("ty@gmail.com")
-                .enabled(false)
+                .enabled(true)
                 .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
                 .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
@@ -64,7 +64,7 @@ public class DataIntializer implements CommandLineRunner {
                 .userName("Rob13")
                 .email("rob@gmail.com")
                 .enabled(true)
-                .nonLocked(false)
+                .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
                 .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
 

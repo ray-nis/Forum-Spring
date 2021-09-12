@@ -64,13 +64,13 @@ class TopicSubscriptionInterceptor implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor headerAccessor= StompHeaderAccessor.wrap(message);
-        if (StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
+        /*if (StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String idRequested = headerAccessor.getDestination().split("/")[2];
             User currentUser = userService.findUserByEmail(headerAccessor.getUser().getName()).get();
             if (!Long.valueOf(idRequested).equals(currentUser.getId())) {
                 throw new RuntimeException();
             }
-        }
+        }*/
         return message;
     }
 }

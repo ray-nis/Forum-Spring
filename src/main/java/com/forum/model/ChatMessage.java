@@ -1,12 +1,10 @@
 package com.forum.model;
 
+import com.forum.model.audit.DateAudit;
 import com.forum.model.enums.MessageStatus;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Setter
@@ -15,13 +13,16 @@ import java.time.Instant;
 @AllArgsConstructor
 @Builder
 @Entity
-public class ChatMessage {
+public class ChatMessage extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String sender;
-    private String recipient;
+    @ManyToOne
+    private User sender;
+
     private String content;
-    private Instant time;
+
+    @ManyToOne
+    private ChatRoom room;
 }

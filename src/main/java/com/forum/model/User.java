@@ -46,6 +46,12 @@ public class User extends DateAudit implements UserDetails {
 
     private Boolean enabled = false;
 
+    @OneToMany(mappedBy = "sender")
+    private List<ChatMessage> messages;
+
+    @ManyToMany(mappedBy = "chatters")
+    private List<ChatRoom> chatRooms;
+
     @OneToMany(mappedBy = "poster")
     private List<Post> posts;
 

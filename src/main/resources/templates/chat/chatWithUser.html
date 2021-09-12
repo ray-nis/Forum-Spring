@@ -7,13 +7,14 @@
 <body>
 <textarea id="txt"></textarea>
 <button id="sendMsg" type="button">Send message</button>
-</body>
 <ul id="myList">
 </ul>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script>
     var id = "[[${#authentication.getPrincipal().getId()}]]";
+    var recipientId = "[[${recipientId}]]"
+    var chatId = "[[${chatId}]]";
     let stompClient = null;
 
     const clicking = () => {
@@ -25,7 +26,7 @@
         let sockJS = new SockJS("/web-socket");
         stompClient = Stomp.over(sockJS);
         stompClient.connect({}, function(frame) {
-                    stompClient.subscribe('/user/' + '54' + '/queue/messages', function(messageOutput) {
+                    stompClient.subscribe('/user/' + chatId + '/queue/messages', function(messageOutput) {
                         showGreeting(JSON.parse(messageOutput.body));
                     });
                 });
@@ -34,9 +35,8 @@
     const sendMsg = () => {
         let textArea = document.getElementById("txt").value;
         textArea.value = "";
-        recipientId = id === "4" ? "3" : "4";
         const message = {
-            recipient: recipientId,
+            recipientId: recipientId,
             content: textArea,
         };
 
@@ -53,4 +53,5 @@
     clicking();
     connect();
 </script>
+</body>
 </html>

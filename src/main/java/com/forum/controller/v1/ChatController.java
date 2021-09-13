@@ -1,6 +1,7 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.ChatMessageDto;
+import com.forum.dto.ChatMessageSavedDto;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.ChatMessage;
 import com.forum.model.ChatRoom;
@@ -41,6 +42,7 @@ public class ChatController {
         User user = userService.findUserByEmail(principal.getName()).get();
         ChatRoom chatRoom = chatRoomService.findByChatters(user, userService.findUserById(recipientId));
         List<ChatMessage> chatMessageList = chatMessageService.getMessagesFromChatRoom(chatRoom);
+        model.addAttribute("visibleUsername", user.getVisibleUsername());
         model.addAttribute("chatId", chatRoom.getId());
         model.addAttribute("messages", chatMessageList);
         model.addAttribute("recipientId", recipientId);
@@ -49,10 +51,9 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessageDto chatMessageDto, Principal principal) throws ResourceNotFoundException {
-        log.info("Called");
         User user = userService.findUserByEmail(principal.getName()).get();
         ChatRoom chatRoom = chatRoomService.findByChatters(user, userService.findUserById(chatMessageDto.getRecipientId()));
-        chatMessageService.save(chatMessageDto ,chatRoom, user);
-        messagingTemplate.convertAndSendToUser(String.valueOf(chatRoom.getId()), "/queue/messages", chatMessageDto);
+        ChatMessageSavedDto messageSavedDto = chatMessageService.save(chatMessageDto, chatRoom, user);
+        messagingTemplate.convertAndSendToUser(String.valueOf(chatRoom.getId()), "/queue/messages", messageSavedDto);
     }
 }

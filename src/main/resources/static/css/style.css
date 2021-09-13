@@ -471,3 +471,27 @@ i {
 .icon:hover {
     color: #1c704b;
 }
+
+.chat {
+    overflow-y: scroll;
+    height: 40vh;
+    width: 70%;
+    margin: 0 auto;
+}
+
+.sendChat {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.myMsg {
+    background-color: #dcf2dd;
+    padding: 10px;
+    margin: 0px;
+}
+
+.elseMsg {
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin: 0px;
+}

@@ -1,6 +1,7 @@
 package com.forum.service;
 
 import com.forum.dto.ChatMessageDto;
+import com.forum.dto.ChatMessageSavedDto;
 import com.forum.model.ChatMessage;
 import com.forum.model.ChatRoom;
 import com.forum.model.User;
@@ -19,13 +20,19 @@ public class ChatMessageService {
         return chatMessageRepository.findAllByRoom(chatRoom);
     }
 
-    public void save(ChatMessageDto chatMessageDto, ChatRoom chatRoom, User user) {
+    public ChatMessageSavedDto save(ChatMessageDto chatMessageDto, ChatRoom chatRoom, User user) {
         ChatMessage chatMessage = ChatMessage.builder()
                 .content(chatMessageDto.getContent())
                 .room(chatRoom)
                 .sender(user)
                 .build();
 
-        chatMessageRepository.save(chatMessage);
+        chatMessage = chatMessageRepository.save(chatMessage);
+
+        return ChatMessageSavedDto.builder()
+                .content(chatMessage.getContent())
+                .createdAt(chatMessage.getCreatedAt())
+                .senderUsername(chatMessage.getSender().getVisibleUsername())
+                .build();
     }
 }

@@ -2,13 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chat</title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
-<textarea id="txt"></textarea>
-<button id="sendMsg" type="button">Send message</button>
-<ul id="myList">
-</ul>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div id="chat" class="chat">
+    <div class="message" th:each="message : ${messages}">
+        <p th:text="${message.getContent()}" th:classappend="${#strings.equals(message.getSender.getVisibleUsername(), visibleUsername)} ? 'myMsg' : 'elseMsg'"></p>
+    </div>
+</div>
+<div class="sendChat">
+    <textarea id="txt"></textarea>
+    <button id="sendMsg" class="buttonStyle" type="button">Send message</button>
+</div>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script>
@@ -16,6 +24,20 @@
     var recipientId = "[[${recipientId}]]"
     var chatId = "[[${chatId}]]";
     let stompClient = null;
+
+    const scrollChat = () => {
+        let chatWrapper = document.querySelector('#chat');
+        chatWrapper.scrollTo(0, chatWrapper.scrollHeight );
+    }
+
+    const pressEnterListener = () => {
+        let textArea = document.getElementById("txt");
+        textArea.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                document.getElementById("sendMsg").click();
+            }
+        });
+    }
 
     const clicking = () => {
         let btn = document.getElementById("sendMsg");
@@ -27,31 +49,42 @@
         stompClient = Stomp.over(sockJS);
         stompClient.connect({}, function(frame) {
                     stompClient.subscribe('/user/' + chatId + '/queue/messages', function(messageOutput) {
-                        showGreeting(JSON.parse(messageOutput.body));
+                        showMsg(JSON.parse(messageOutput.body));
                     });
                 });
     };
 
     const sendMsg = () => {
-        let textArea = document.getElementById("txt").value;
-        textArea.value = "";
+        let textArea = document.getElementById("txt");
         const message = {
             recipientId: recipientId,
-            content: textArea,
+            content: textArea.value,
         };
+        textArea.value = "";
 
         stompClient.send("/app/chat", {}, JSON.stringify(message));
     }
 
-    const showGreeting = message => {
-        var node = document.createElement("LI");
-        var textnode = document.createTextNode(message.content);
-        node.appendChild(textnode);
-        document.getElementById("myList").appendChild(node);
+    const showMsg = message => {
+        const newDiv = document.createElement("div");
+        newDiv.className = "message";
+
+        const ptag = document.createElement("p");
+        ptag.className = "myMsg";
+        const newContent = document.createTextNode(message.content);
+        ptag.appendChild(newContent);
+
+        newDiv.appendChild(ptag);
+        document.getElementById("chat").appendChild(newDiv);
+        scrollChat();
     }
 
     clicking();
     connect();
+    scrollChat();
+    pressEnterListener();
 </script>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

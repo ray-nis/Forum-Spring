@@ -1,12 +1,9 @@
-package com.forum.model;
+package com.forum.dto;
 
-import com.forum.model.audit.DateAudit;
-import com.forum.model.enums.MessageStatus;
 import lombok.*;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
@@ -16,19 +13,10 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-public class ChatMessage extends DateAudit {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    @ManyToOne
-    private User sender;
-
+public class ChatMessageSavedDto {
     private String content;
-
-    @ManyToOne
-    private ChatRoom room;
+    private String senderUsername;
+    private Instant createdAt;
 
     public String getSentTime() {
         Locale locale = LocaleContextHolder.getLocale();

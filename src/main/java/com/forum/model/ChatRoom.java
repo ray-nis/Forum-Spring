@@ -22,6 +22,6 @@ public class ChatRoom {
     @JoinTable(name = "user_chat_rooms", joinColumns = @JoinColumn(name = "chat_room_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> chatters;
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private List<ChatMessage> messages;
 }

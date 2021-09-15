@@ -2,6 +2,7 @@ package com.forum.controller.v1;
 
 import com.forum.dto.ChatMessageDto;
 import com.forum.dto.ChatMessageSavedDto;
+import com.forum.dto.ChatRoomDto;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.ChatMessage;
 import com.forum.model.ChatRoom;
@@ -33,7 +34,10 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
 
     @GetMapping("/chat")
-    public String chat() {
+    public String chat(Principal principal ,Model model) {
+        User user = userService.findUserByEmail(principal.getName()).get();
+        List<ChatRoomDto> chatRooms = chatRoomService.getAllChat(user);
+        model.addAttribute("chatRooms", chatRooms);
         return "chat/chat";
     }
 

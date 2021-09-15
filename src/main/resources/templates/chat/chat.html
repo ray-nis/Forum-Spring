@@ -5,7 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-Your chats
+<div th:each="room : ${chatRooms}">
+    <a th:text="${room.getRecipientUsername()}" th:href="@{~/chat/{id} (id=${room.getRecipientId()})}"></a>
+</div>
 </body>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>

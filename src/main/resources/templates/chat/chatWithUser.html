@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Chat</title>
+    <title th:text="#{chat} + ' - ' + ${recipientUsername}"></title>
     <div th:replace="./fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
@@ -14,15 +14,15 @@
     </div>
 </div>
 <div class="sendChat">
-    <textarea id="txt"></textarea>
-    <button id="sendMsg" class="buttonStyle" type="button">Send message</button>
+    <textarea id="txt" th:placeholder="#{chattingWith} + ${recipientUsername}"></textarea>
+    <button th:text="#{sendMsg}" id="sendMsg" class="buttonStyle" type="button"></button>
 </div>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script>
-    var id = "[[${#authentication.getPrincipal().getId()}]]";
-    var recipientId = "[[${recipientId}]]"
-    var chatId = "[[${chatId}]]";
+    let recipientId = "[[${recipientId}]]"
+    let chatId = "[[${chatId}]]";
+    let userName = "[[${visibleUsername}]]"
     let stompClient = null;
 
     const scrollChat = () => {
@@ -65,12 +65,12 @@
         stompClient.send("/app/chat", {}, JSON.stringify(message));
     }
 
-    const showMsg = message => {
+    const showMsg = (message) => {
         const newDiv = document.createElement("div");
         newDiv.className = "message";
 
         const ptag = document.createElement("p");
-        ptag.className = "myMsg";
+        ptag.className = message.senderUsername === userName ? "myMsg" : "elseMsg";
         const newContent = document.createTextNode(message.content);
         ptag.appendChild(newContent);
 

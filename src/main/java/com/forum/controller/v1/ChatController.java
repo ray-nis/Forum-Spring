@@ -40,12 +40,17 @@ public class ChatController {
     @GetMapping("/chat/{id}")
     public String chat(@PathVariable("id") Long recipientId, Model model, Principal principal) throws ResourceNotFoundException {
         User user = userService.findUserByEmail(principal.getName()).get();
-        ChatRoom chatRoom = chatRoomService.findByChatters(user, userService.findUserById(recipientId));
+        if (user.getId() == recipientId) {
+            return "redirect:/chat";
+        }
+        User otherUser = userService.findUserById(recipientId);
+        ChatRoom chatRoom = chatRoomService.findByChatters(user, otherUser);
         List<ChatMessage> chatMessageList = chatMessageService.getMessagesFromChatRoom(chatRoom);
         model.addAttribute("visibleUsername", user.getVisibleUsername());
         model.addAttribute("chatId", chatRoom.getId());
         model.addAttribute("messages", chatMessageList);
         model.addAttribute("recipientId", recipientId);
+        model.addAttribute("recipientUsername", otherUser.getVisibleUsername());
         return "chat/chatWithUser";
     }
 

@@ -482,6 +482,19 @@ i {
 .sendChat {
     width: 70%;
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sendChat textarea {
+    width: 83%;
+    height: 100%;
+    resize: none;
+}
+
+.sendChat button {
+    width: 15%;
+    height: 100%;
 }
 
 .myMsg {

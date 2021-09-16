@@ -51,7 +51,7 @@ i {
     width: 70%;
 }
 
-.menuProfileHeader div {
+.menuProfileHeaderItems {
     display: flex;
     justify-content: space-between;
 }
@@ -530,4 +530,17 @@ i {
 
 .lastMsg {
     margin-left: 6%;
+}
+
+.optionsButton {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: #142847;
+    font-size: 1.2em;
+}
+
+.optionsButton:hover {
+    background-color: transparent;
+    color: #142847;
 }

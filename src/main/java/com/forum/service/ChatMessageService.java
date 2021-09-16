@@ -7,6 +7,8 @@ import com.forum.model.ChatRoom;
 import com.forum.model.User;
 import com.forum.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,10 @@ public class ChatMessageService {
 
     public List<ChatMessage> getMessagesFromChatRoom(ChatRoom chatRoom) {
         return chatMessageRepository.findAllByRoom(chatRoom);
+    }
+
+    public ChatMessage getLastMessage(ChatRoom chatRoom) {
+        return chatMessageRepository.findFirstByRoomOrderByCreatedAtDesc(chatRoom);
     }
 
     public ChatMessageSavedDto save(ChatMessageDto chatMessageDto, ChatRoom chatRoom, User user) {

@@ -1,6 +1,7 @@
 package com.forum.service;
 
 import com.forum.dto.ChatRoomDto;
+import com.forum.model.ChatMessage;
 import com.forum.model.ChatRoom;
 import com.forum.model.User;
 import com.forum.repository.ChatRoomRepository;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageService chatMessageService;
 
     public ChatRoom findByChatters(User chatter1, User chatter2) {
         Optional<ChatRoom> optionalChatRoom = Optional.empty();
@@ -49,10 +51,15 @@ public class ChatRoomService {
                     .builder()
                     .recipientId(String.valueOf(recipient.getId()))
                     .recipientUsername(recipient.getVisibleUsername())
+                    .lastMessage(getLastChatMessage(room).getContent())
                     .build();
             chatRoomDtos.add(chatRoomDto);
         }
 
         return chatRoomDtos;
+    }
+
+    private ChatMessage getLastChatMessage(ChatRoom chatRoom) {
+        return chatMessageService.getLastMessage(chatRoom);
     }
 }

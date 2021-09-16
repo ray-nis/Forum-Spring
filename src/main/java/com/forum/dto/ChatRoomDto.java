@@ -10,4 +10,5 @@ import lombok.*;
 public class ChatRoomDto {
     private String recipientUsername;
     private String recipientId;
+    private String lastMessage;
 }

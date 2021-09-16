@@ -11,7 +11,6 @@
         </div>
     </div>
     <div sec:authorize="isAuthenticated()" class="menuProfileHeader">
-        <!-- <a th:text="#{welcomeBack} + ${#authentication.getPrincipal().getVisibleUsername()} + '!'"></a> -->
         <div>
             <a th:href="@{~/post/recent}" th:text="#{recent}"></a>
             <a th:href="@{~/post/hot}" th:text="#{hot}"></a>

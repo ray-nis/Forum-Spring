@@ -508,3 +508,26 @@ i {
     padding: 10px;
     margin: 0px;
 }
+
+.chatRooms {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.chatRoom {
+    border: 1px solid black;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+}
+
+.messager {
+    margin-left: 3%;
+    padding-right: 3%;
+    border-right: 1px solid black;
+}
+
+.lastMsg {
+    margin-left: 6%;
+}

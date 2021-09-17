@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title th:text="${user.getVisibleUsername()}"></title>
     <div th:replace="/fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
 </head>
 <div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
@@ -15,6 +16,7 @@
         <p th:text="${#dates.format(user.getCreatedAt(), 'dd - MMM - yy')}"></p>
         <p th:text="#{postsNumber} + ' ' + ${nrOfPosts}"></p>
         <p th:text="#{commentsNumber} + ' ' + ${nrOfComments}"></p>
+        <a th:href="@{~/chat/{id} (id=${user.getId()})}"class="fas fa-comments" th:text="' ' + #{sendMsg}" th:if="${!#strings.equals(user.getVisibleUsername(), #authentication.getPrincipal().getVisibleUsername())}"></a>
     </div>
     <div>
         <p class="alignCenter" th:text="#{recentComments}"></p>

@@ -23,6 +23,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></a>
+                    <a class="dropdown-item" th:text="#{favorites}" th:href="@{~/favorites}"></a>
                     <a class="dropdown-item" th:text="#{editProfile}" th:href="@{~/editprofile}"></a>
                     <form class="dropdown-item" th:action="@{~/logout}" th:method="POST"><button id="logout" type="submit" th:text="#{logout}"></button></form>
                 </div>

@@ -2,19 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{inbox}"></title>
+    <title th:text="#{favorites}"></title>
     <div th:replace="/fragments/assets.html :: assetsCss"></div>
 </head>
-<body>
 <div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
-<div class="chatRooms" th:each="room : ${chatRooms}">
-    <div class="chatRoom">
-        <a class="messager" th:text="${room.getRecipientUsername()}" th:href="@{~/profile/{id} (id=${room.getRecipientId()})}"></a>
-        <a class="lastMsg" th:text="${room.getLastMessage()}" th:href="@{~/chat/{id} (id=${room.getRecipientId()})}"></a>
-    </div>
-</div>
+<body>
+<div th:replace="./fragments/posts.html :: posts"></div>
+</body>
 <div th:replace="/fragments/footer.html :: footer"></div>
 <div th:replace="/fragments/assets.html :: assetsJs"></div>
-</body>
 </html>

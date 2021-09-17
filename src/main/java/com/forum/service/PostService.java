@@ -109,4 +109,8 @@ public class PostService {
         post.setPostContent(postContent);
         postRepository.save(post);
     }
+
+    public List<Post> getFavorites(User user) {
+        return postRepository.findAllByUsersFavorited(user);
+    }
 }

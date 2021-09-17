@@ -32,4 +32,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Long countByPoster(User user);
 
     Page<Post> findAllByPoster(User user, Pageable pageable);
+
+    List<Post> findAllByUsersFavorited(User user);
 }

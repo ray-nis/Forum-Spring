@@ -4,6 +4,7 @@ import com.forum.dto.EmailChangeDto;
 import com.forum.dto.PasswordChangeDto;
 import com.forum.dto.UsernameChangeDto;
 import com.forum.exception.ResourceNotFoundException;
+import com.forum.model.Post;
 import com.forum.model.User;
 import com.forum.service.CommentService;
 import com.forum.service.PostService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,6 +42,14 @@ public class ProfileController {
         model.addAttribute("nrOfPosts", postService.getNumberOfPostsFromUser(user));
         model.addAttribute("nrOfComments", commentService.getNumberOfCommentsFromUser(user));
         return "profile/profile";
+    }
+
+    @GetMapping("/favorites")
+    public String getFavorites(Model model) {
+        User user = currentUserUtil.getUser();
+        List<Post> favorites = postService.getFavorites(user);
+        model.addAttribute("posts", favorites);
+        return "profile/favorites";
     }
 
     @GetMapping("/profile")

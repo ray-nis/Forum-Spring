@@ -544,3 +544,11 @@ i {
     background-color: transparent;
     color: #142847;
 }
+
+.fa-comments {
+    color: #43a178;
+}
+
+.fa-comments:hover {
+    color: #142847;
+}

@@ -135,7 +135,6 @@ i {
 .posts {
     width: 70%;
     padding-bottom: 20px;
-    border-bottom: 1px solid #43a178;
     margin-bottom: 30px;
 }
 
@@ -533,7 +532,7 @@ i {
 }
 
 .optionsButton {
-    padding: 0;
+    padding: 0 3px 0 3px;
     border: none;
     background-color: transparent;
     color: #142847;
@@ -551,4 +550,12 @@ i {
 
 .fa-comments:hover {
     color: #142847;
+}
+
+.separator {
+    width: 70%;
+    margin: 0 auto;
+    border-bottom: 1px solid #43a178;
+    opacity: 100;
+    margin-bottom: 15px;
 }

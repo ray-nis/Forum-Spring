@@ -16,6 +16,7 @@
         <p class="postContent" th:text="${post.getPostContent()}"></p>
     </div>
 </div>
+<hr class="separator">
 <div sec:authorize="isAuthenticated()" class="postSocial">
     <div>
         <i id="favorite" th:class="${post.getUsersFavorited().contains(#authentication.getPrincipal())} ? 'fas fa-heart' : 'far fa-heart'"></i>

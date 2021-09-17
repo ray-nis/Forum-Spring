@@ -18,6 +18,7 @@
         </div>
     </div>
 <div th:replace="/fragments/posts.html :: postsWithoutCategory"></div>
+<hr class="separator">
 </main>
 <div class="paginationContainer">
     <div th:if="${posts.getTotalPages() > 0}" class="pagination">

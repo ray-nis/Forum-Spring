@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{register}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
+</head>
+<body>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+<div class="authFormContainer">
+    <form th:action="@{~/signup}" method="POST" th:object="${user}">
+        <p th:text="${err}">Msg</p>
+        <label th:text="#{usernameForm}">Username:</label>
+        <input minlength="3" maxlength="20" type="text" th:field="*{userName}">
+        <p class="error" th:each="error: ${#fields.errors('userName')}"
+           th:text="${error}">Validation error</p>
+
+        <label th:text="#{emailForm}">Email:</label>
+        <input type="email" th:field="*{email}">
+        <p class="error" th:each="error: ${#fields.errors('email')}" th:text="${error}">Validation error</p>
+
+        <label th:text="#{passwordForm}">Password:</label>
+        <input minlength="6" type="password" th:field="*{password}">
+        <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
+
+        <label th:text="#{confirmPasswordForm}">Confirm Password:</label>
+        <input minlength="6" type="password" th:field="*{matchingPassword}"/>
+        <p class="error" th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
+
+        <button class="buttonStyle" th:text="#{register}" type="submit">/button>
+    </form>
+</div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
+</body>
+</html>

@@ -45,6 +45,9 @@ public class ChatRoomService {
         List<ChatRoom> chatRooms = getAllChatRooms(user);
         List<ChatRoomDto> chatRoomDtos = new ArrayList<>();
         for (ChatRoom room: chatRooms) {
+            if (chatMessageService.countMessages(room) <= 0) {
+                continue;
+            }
             HashSet<User> chatters = room.getChatters().stream().filter(user1 -> !user1.equals(user)).collect(Collectors.toCollection(HashSet::new));
             User recipient = chatters.stream().findFirst().get();
             ChatRoomDto chatRoomDto = ChatRoomDto

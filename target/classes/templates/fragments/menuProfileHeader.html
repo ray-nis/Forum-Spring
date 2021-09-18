@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="menuProfile" class="menuProfileHeaderContainer">
+    <div sec:authorize="isAnonymous()" class="menuProfileHeader">
+        <div>
+            <a th:href="@{~/post/recent}" th:text="#{recent}"></a>
+            <a th:href="@{~/post/hot}" th:text="#{hot}"></a>
+        </div>
+        <div>
+            <a th:text="#{login}" th:href="@{~/login}"></a>
+            <a th:text="#{register}" th:href="@{~/signup}"></a>
+        </div>
+    </div>
+    <div sec:authorize="isAuthenticated()" class="menuProfileHeader">
+        <div class="menuProfileHeaderItems">
+            <a th:href="@{~/post/recent}" th:text="#{recent}"></a>
+            <a th:href="@{~/post/hot}" th:text="#{hot}"></a>
+        </div>
+        <div class="menuProfileHeaderItems">
+            <a th:href=@{~/chat} th:text="#{inbox}"></a>
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle optionsButton" th:text="#{options}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:text="#{profile}" th:href="@{~/profile/{id}(id=${#authentication.getPrincipal().getId()})}"></a>
+                    <a class="dropdown-item" th:text="#{favorites}" th:href="@{~/favorites}"></a>
+                    <a class="dropdown-item" th:text="#{editProfile}" th:href="@{~/editprofile}"></a>
+                    <form class="dropdown-item" th:action="@{~/logout}" th:method="POST"><button id="logout" type="submit" th:text="#{logout}"></button></form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

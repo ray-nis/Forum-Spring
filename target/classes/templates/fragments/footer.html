@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<footer th:fragment="footer" class="footerContainer">
+    <div class="footer">
+        <div>
+            <h1 th:text="#{usefulLinks}">Useful links</h1>
+            <p th:text="#{usefulLinks1}">Link one</p>
+            <p th:text="#{usefulLinks2}">Link two</p>
+            <p th:text="#{usefulLinks3}">Link three</p>
+        </div>
+        <div>
+            <h1 th:text="#{address}">Address</h1>
+            <p th:text="#{address1}">Road</p>
+            <p th:text="#{address2}">City</p>
+            <p th:text="#{address3}">Country</p>
+        </div>
+        <div>
+            <h1 th:text="#{products}">Products</h1>
+            <p th:text="#{products1}">Stuff one</p>
+            <p th:text="#{products2}">More stuff</p>
+            <p th:text="#{products3}">Here it is</p>
+        </div>
+        <div th:replace="/fragments/changeLanguageDropdown.html :: changeLanguageDropdown"></div>
+    </div>
+</footer>
+</html>

@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="categories" class="categoriesContainer">
+    <div class="categories">
+        <div class="category" th:each="category : ${categories}">
+            <a class="categoryTitle" th:href="@{~/category/{name}/(name=${category.getSlug()})}" th:text="${category.getName()}"></a>
+            <p class="categoryDesc" th:text="${category.getDescription()}"></p>
+        </div>
+    </div>
+</div>
+</html>

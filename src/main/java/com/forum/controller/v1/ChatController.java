@@ -10,7 +10,6 @@ import com.forum.model.User;
 import com.forum.service.ChatMessageService;
 import com.forum.service.ChatRoomService;
 import com.forum.service.UserService;
-import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 import java.util.List;
@@ -49,13 +49,24 @@ public class ChatController {
         }
         User otherUser = userService.findUserById(recipientId);
         ChatRoom chatRoom = chatRoomService.findByChatters(user, otherUser);
-        List<ChatMessage> chatMessageList = chatMessageService.getMessagesFromChatRoom(chatRoom);
         model.addAttribute("visibleUsername", user.getVisibleUsername());
         model.addAttribute("chatId", chatRoom.getId());
-        model.addAttribute("messages", chatMessageList);
         model.addAttribute("recipientId", recipientId);
         model.addAttribute("recipientUsername", otherUser.getVisibleUsername());
         return "chat/chatWithUser";
+    }
+
+    @GetMapping("/messages/{id}")
+    @ResponseBody
+    public List<ChatMessageSavedDto> getChatMessages(@PathVariable("id") Long recipientId, Principal principal) throws ResourceNotFoundException {
+        User user = userService.findUserByEmail(principal.getName()).get();
+        if (user.getId() == recipientId) {
+            throw new ResourceNotFoundException();
+        }
+        User otherUser = userService.findUserById(recipientId);
+        ChatRoom chatRoom = chatRoomService.findByChatters(user, otherUser);
+        List<ChatMessageSavedDto> chatMessageList = chatMessageService.getMessagesFromChatRoom(chatRoom);
+        return chatMessageList;
     }
 
     @MessageMapping("/chat")

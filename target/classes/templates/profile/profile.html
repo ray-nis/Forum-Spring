@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${user.getVisibleUsername()}"></title>
+    <div th:replace="/fragments/assets.html :: assetsCss"></div>
+    <div th:replace="./fragments/assets.html :: fontAwesome"></div>
+</head>
+<div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
+<body>
+<main class="profileContainer">
+    <div class="alignCenter">
+        <p class="orofileInfoCategory" th:text="#{profileInfo}"></p>
+        <p th:text="${user.getVisibleUsername()}"></p>
+        <p th:text="${#dates.format(user.getCreatedAt(), 'dd - MMM - yy')}"></p>
+        <p th:text="#{postsNumber} + ' ' + ${nrOfPosts}"></p>
+        <p th:text="#{commentsNumber} + ' ' + ${nrOfComments}"></p>
+        <a th:href="@{~/chat/{id} (id=${user.getId()})}"class="fas fa-comments" th:text="' ' + #{sendMsg}" th:if="${!#strings.equals(user.getVisibleUsername(), #authentication.getPrincipal().getVisibleUsername())}"></a>
+    </div>
+    <div>
+        <p class="alignCenter" th:text="#{recentComments}"></p>
+        <ul th:each="comment: ${comments}">
+            <a th:href="@{~/category/{category}/post/{id}/{slug}(category=${comment.getPost().getCategory().getSlug()}, id=${comment.getPost().getId()}, slug=${comment.getPost().getSlug()})}"><li th:text="${#strings.abbreviate(comment.getCommentContent(), 15)}"></li></a>
+        </ul>
+    </div>
+    <div>
+        <p class="alignCenter" th:text="#{recentPosts}"></p>
+        <ul th:each="post: ${posts}">
+            <a th:href="@{~/category/{category}/post/{id}/{slug}(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}"><li th:text="${post.getTitle()}"></li></a>
+        </ul>
+    </div>
+</main>
+<div th:replace="/fragments/footer.html :: footer"></div>
+<div th:replace="/fragments/assets.html :: assetsJs"></div>
+</body>
+</html>

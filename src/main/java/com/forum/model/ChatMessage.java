@@ -1,13 +1,16 @@
 package com.forum.model;
 
 import com.forum.model.audit.DateAudit;
-import com.forum.model.enums.MessageStatus;
 import lombok.*;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,14 +28,27 @@ public class ChatMessage extends DateAudit {
     @ManyToOne
     private User sender;
 
+    @Column(length = 1000)
     private String content;
 
     @ManyToOne
     private ChatRoom room;
 
     public String getSentTime() {
-        Locale locale = LocaleContextHolder.getLocale();
-        PrettyTime p = new PrettyTime(locale);
-        return p.format(Date.from(getCreatedAt()));
+        ZonedDateTime sentZDT = getCreatedAt().atZone(ZoneId.of("UTC"));
+        ZonedDateTime todayZDT = ZonedDateTime.now(ZoneId.of("UTC"));
+
+        if (sentZDT.truncatedTo(ChronoUnit.DAYS).equals(todayZDT.truncatedTo(ChronoUnit.DAYS))) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            return sentZDT.format(formatter);
+        }
+
+        if (sentZDT.truncatedTo(ChronoUnit.YEARS).equals(todayZDT.truncatedTo(ChronoUnit.YEARS))) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd/MM");
+            return sentZDT.format(formatter);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yy");
+        return sentZDT.format(formatter);
     }
 }

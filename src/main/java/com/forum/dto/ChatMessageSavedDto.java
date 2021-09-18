@@ -1,12 +1,12 @@
 package com.forum.dto;
 
 import lombok.*;
-import org.ocpsoft.prettytime.PrettyTime;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.Locale;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Setter
 @Getter
@@ -19,8 +19,20 @@ public class ChatMessageSavedDto {
     private Instant createdAt;
 
     public String getSentTime() {
-        Locale locale = LocaleContextHolder.getLocale();
-        PrettyTime p = new PrettyTime(locale);
-        return p.format(Date.from(getCreatedAt()));
+        ZonedDateTime sentZDT = getCreatedAt().atZone(ZoneId.of("UTC"));
+        ZonedDateTime todayZDT = ZonedDateTime.now(ZoneId.of("UTC"));
+
+        if (sentZDT.truncatedTo(ChronoUnit.DAYS).equals(todayZDT.truncatedTo(ChronoUnit.DAYS))) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            return sentZDT.format(formatter);
+        }
+
+        if (sentZDT.truncatedTo(ChronoUnit.YEARS).equals(todayZDT.truncatedTo(ChronoUnit.YEARS))) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd/MM");
+            return sentZDT.format(formatter);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yy");
+        return sentZDT.format(formatter);
     }
 }

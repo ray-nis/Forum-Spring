@@ -498,14 +498,25 @@ i {
 
 .myMsg {
     background-color: #dcf2dd;
-    padding: 10px;
+    padding: 3px;
     margin: 0px;
 }
 
 .elseMsg {
     background-color: #f5f5f5;
-    padding: 10px;
+    padding: 3px;
     margin: 0px;
+}
+
+.message {
+    margin-bottom: 5px;
+}
+
+.messageTime {
+    text-align: right;
+    color: #516078;
+    font-size: 0.7rem;
+    margin-bottom: 0px;
 }
 
 .chatRooms {

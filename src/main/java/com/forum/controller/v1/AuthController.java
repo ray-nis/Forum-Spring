@@ -13,6 +13,7 @@ import com.forum.service.PasswordResetService;
 import com.forum.service.UserService;
 import com.forum.service.VerificationTokenService;
 import com.forum.util.ClockUtil;
+import com.forum.util.CurrentUserUtil;
 import com.forum.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,14 +42,21 @@ public class AuthController {
     private final ClockUtil clockUtil;
     private final MessageSource messageSource;
     private final MailSenderService mailSenderService;
+    private final CurrentUserUtil currentUserUtil;
 
     @GetMapping("/login")
     public String logIn() {
+        if (currentUserUtil.isAuthenticated()) {
+            return "redirect:/";
+        }
         return "auth/logIn";
     }
 
     @GetMapping("/signup")
     public String signUp(Model model) {
+        if (currentUserUtil.isAuthenticated()) {
+            return "redirect:/";
+        }
         model.addAttribute("user", new UserSignupDto());
         return "auth/signUp";
     }

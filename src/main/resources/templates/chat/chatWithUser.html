@@ -9,8 +9,9 @@
 <div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
 <div id="chat" class="chat">
-    <div class="message" th:each="message : ${messages}">
-        <p th:text="${message.getContent()}" th:classappend="${#strings.equals(message.getSender.getVisibleUsername(), visibleUsername)} ? 'myMsg' : 'elseMsg'"></p>
+    <div class="message" th:each="message : ${messages}" th:classappend="${#strings.equals(message.getSender.getVisibleUsername(), visibleUsername)} ? 'myMsg' : 'elseMsg'">
+        <p th:text="${message.getContent()}"></p>
+        <p class="messageTime" th:text="${message.getSentTime()}"></p>
     </div>
 </div>
 <div class="sendChat">
@@ -34,7 +35,7 @@
         let textArea = document.getElementById("txt");
         textArea.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
-                document.getElementById("sendMsg").click();
+                sendMsg();
             }
         });
     }
@@ -56,6 +57,10 @@
 
     const sendMsg = () => {
         let textArea = document.getElementById("txt");
+        console.log(textArea.value.trim())
+        if (textArea.value.trim().length === 0) {
+            return;
+        }
         const message = {
             recipientId: recipientId,
             content: textArea.value,
@@ -67,14 +72,20 @@
 
     const showMsg = (message) => {
         const newDiv = document.createElement("div");
-        newDiv.className = "message";
+        newDiv.className = message.senderUsername === userName ? "message myMsg" : "message elseMsg";
 
         const ptag = document.createElement("p");
-        ptag.className = message.senderUsername === userName ? "myMsg" : "elseMsg";
         const newContent = document.createTextNode(message.content);
         ptag.appendChild(newContent);
 
+        const timetag = document.createElement("p");
+        timetag.className = "messageTime";
+        const newTime = document.createTextNode(message.sentTime);
+        timetag.appendChild(newTime);
+
+
         newDiv.appendChild(ptag);
+        newDiv.appendChild(timetag);
         document.getElementById("chat").appendChild(newDiv);
         scrollChat();
     }

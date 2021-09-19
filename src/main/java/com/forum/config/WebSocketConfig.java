@@ -1,7 +1,9 @@
 package com.forum.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.forum.model.ChatRoom;
 import com.forum.model.User;
+import com.forum.service.ChatRoomService;
 import com.forum.service.UserService;
 import com.forum.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -27,6 +30,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -54,23 +58,24 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 }
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 class TopicSubscriptionInterceptor implements ChannelInterceptor {
 
     private final UserService userService;
+    private final ChatRoomService chatRoomService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor headerAccessor= StompHeaderAccessor.wrap(message);
-        /*if (StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
+        if (StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String idRequested = headerAccessor.getDestination().split("/")[2];
             User currentUser = userService.findUserByEmail(headerAccessor.getUser().getName()).get();
-            if (!Long.valueOf(idRequested).equals(currentUser.getId())) {
-                throw new RuntimeException();
+            Optional<ChatRoom> chatRoom = chatRoomService.getRoom(Long.valueOf(idRequested));
+            if (chatRoom.isEmpty() || !chatRoom.get().getChatters().contains(currentUser)) {
+                throw new AccessDeniedException("Access Denied");
             }
-        }*/
+        }
         return message;
     }
 }

@@ -65,4 +65,8 @@ public class ChatRoomService {
     private ChatMessage getLastChatMessage(ChatRoom chatRoom) {
         return chatMessageService.getLastMessage(chatRoom);
     }
+
+    public Optional<ChatRoom> getRoom(Long id) {
+        return chatRoomRepository.findById(id);
+    }
 }

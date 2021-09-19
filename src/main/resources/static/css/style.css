@@ -32,7 +32,7 @@ i {
     justify-content: center;
     padding: 15px 0;
     border-bottom: 1px solid #43a178;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .menuProfileHeader a {
@@ -604,4 +604,34 @@ i {
 .report form button {
     width: 20%;
     padding: 0;
+}
+
+.asideContainer {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.moderatorMenu {
+    width: 30%;
+    border: 2px solid #465c47;
+    border-radius: 2px;
+    margin: 0 auto;
+}
+
+.moderatorMenu nav {
+    font-size: 1em;
+    display: flex;
+    justify-content: space-around;
+}
+
+.moderatorMenu nav a {
+    padding: 5px;
+    color: #142847;
+    width: 100%;
+    text-align: center;
+}
+
+.moderatorMenu nav a:hover {
+    background-color: #43a178;
+    color: #fff;
 }

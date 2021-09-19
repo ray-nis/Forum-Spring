@@ -1,0 +1,9 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="asideContainer" th:fragment="menu">
+    <nav class="moderatorMenu">
+        <nav>
+            <a th:href="@{~/moderator}" th:text="#{home}"></a>
+            <a th:href="@{~/moderator/reports}" th:text="#{reports}"></a>
+        </nav>
+    </nav>
+</div>

@@ -8,6 +8,7 @@
 <div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
 <div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
 <body>
+    <th:block th:replace="/fragments/moderator :: menu"></th:block>
     <div class="reportContainer">
         <div th:each="report : ${reports}" class="report">
             <p th:text="#{reportReason} + ': ' + #{${report.reportReason}}"></p>

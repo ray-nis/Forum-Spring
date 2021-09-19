@@ -12,20 +12,20 @@
     <form th:action="@{~/signup}" method="POST" th:object="${user}">
         <p th:text="${err}">Msg</p>
         <label th:text="#{usernameForm}">Username:</label>
-        <input minlength="3" maxlength="20" type="text" th:field="*{userName}">
+        <input required minlength="3" maxlength="20" type="text" th:field="*{userName}">
         <p class="error" th:each="error: ${#fields.errors('userName')}"
            th:text="${error}">Validation error</p>
 
         <label th:text="#{emailForm}">Email:</label>
-        <input type="email" th:field="*{email}">
+        <input required type="email" th:field="*{email}">
         <p class="error" th:each="error: ${#fields.errors('email')}" th:text="${error}">Validation error</p>
 
         <label th:text="#{passwordForm}">Password:</label>
-        <input minlength="6" type="password" th:field="*{password}">
+        <input required minlength="6" type="password" th:field="*{password}">
         <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
 
         <label th:text="#{confirmPasswordForm}">Confirm Password:</label>
-        <input minlength="6" type="password" th:field="*{matchingPassword}"/>
+        <input required minlength="6" type="password" th:field="*{matchingPassword}"/>
         <p class="error" th:if="${#fields.hasErrors('${user}')}" th:errors="${user}"></p>
 
         <button class="buttonStyle" th:text="#{register}" type="submit">/button>

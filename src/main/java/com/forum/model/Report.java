@@ -1,5 +1,6 @@
 package com.forum.model;
 
+import com.forum.model.enums.ReportStatus;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
@@ -19,6 +20,8 @@ public class Report {
     private String reportReason;
 
     private String reportComment;
+
+    private ReportStatus status;
 
     @ManyToOne
     @JoinColumn()

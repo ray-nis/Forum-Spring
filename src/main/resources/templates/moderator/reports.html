@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{reports}"></title>
+    <div th:replace="/fragments/assets.html :: assetsCss"></div>
+</head>
+<div th:replace="/fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="/fragments/menuProfileHeader.html :: menuProfile"></div>
+<body>
+    <div class="reportContainer">
+        <div th:each="report : ${reports}" class="report">
+            <p th:text="#{reportReason} + ': ' + #{${report.reportReason}}"></p>
+            <p th:text="#{reportComment} + ': ' + ${report.reportComment}"></p>
+            <a target="_blank" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{~/profile/{id} (id=${report.getReporter().getId()})}" th:text="#{reportedBy} + ': ' + ${report.getReporter().getVisibleUsername()}"></a>
+            <a target="_blank" th:text="${report.getPost().getTitle()}" th:href="@{~/category/{category}/post/{id}/{slug}(category=${report.getPost().getCategory().getSlug()}, id=${report.getPost().getId()}, slug=${report.getPost().getSlug()})}"></a>
+            <form th:action="@{~/moderator/reports/{id} (id=${report.getId()})}" th:method="post"><button class="buttonStyle" type="submit" th:text="#{resolvedMark}"></button></form>
+        </div>
+    </div>
+</body>
+<div th:replace="/fragments/footer.html :: footer"></div>
+<div th:replace="/fragments/assets.html :: assetsJs"></div>
+</html>

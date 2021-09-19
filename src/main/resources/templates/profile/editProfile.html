@@ -14,9 +14,9 @@
         <div>
             <h1 class="editSectionHeader" th:text="#{username}"></h1>
             <form class="changeProfileForm" th:action="@{~/changeusername}" th:object="${usernameChangeDto}" th:method="POST">
-                <input minlength="3" maxlength="20"  name="newUsername" th:placeholder="#{newUsername}" type="text" th:field="*{userName}"/>
+                <input required minlength="3" maxlength="20"  name="newUsername" th:placeholder="#{newUsername}" type="text" th:field="*{userName}"/>
                 <p class="error" th:each="error: ${#fields.errors('userName')}" th:text="${error}">Validation error</p>
-                <input minlength="6" name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
+                <input required minlength="6" name="password" th:placeholder="#{password}" type="password" th:field="*{password}"/>
                 <p class="error" th:each="error: ${#fields.errors('password')}" th:text="${error}">Validation error</p>
                 <p th:if="${usernameError}" class="error"  th:text="#{${usernameError}}"></p>
                 <p th:if="${usernamePasswordError}" class="error"  th:text="#{${usernamePasswordError}}"></p>

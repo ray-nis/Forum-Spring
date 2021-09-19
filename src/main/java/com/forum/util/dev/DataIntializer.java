@@ -32,8 +32,10 @@ public class DataIntializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Role userRole = Role.builder().role("ROLE_USER").build();
         Role adminRole = Role.builder().role("ROLE_ADMIN").build();
+        Role modRole = Role.builder().role("ROLE_MODERATOR").build();
         roleRepository.save(userRole);
         roleRepository.save(adminRole);
+        roleRepository.save(modRole);
 
         User john = User.builder()
                 .userName("John")
@@ -41,7 +43,7 @@ public class DataIntializer implements CommandLineRunner {
                 .enabled(true)
                 .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
-                .roles(new HashSet<Role>(Arrays.asList(userRole))).build();
+                .roles(new HashSet<Role>(Arrays.asList(modRole))).build();
 
         User ben = User.builder()
                 .userName("Ben")
@@ -50,7 +52,7 @@ public class DataIntializer implements CommandLineRunner {
                 .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
                 .favoritePosts(new HashSet<>())
-                .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
+                .roles(new HashSet<Role>(Arrays.asList(adminRole))).build();
 
         User ty = User.builder()
                 .userName("Ty12")
@@ -58,7 +60,7 @@ public class DataIntializer implements CommandLineRunner {
                 .enabled(true)
                 .nonLocked(true)
                 .password(passwordEncoder.encode("password"))
-                .roles(new HashSet<Role>(Arrays.asList(userRole, adminRole))).build();
+                .roles(new HashSet<Role>(Arrays.asList(userRole))).build();
 
         User rob = User.builder()
                 .userName("Rob13")

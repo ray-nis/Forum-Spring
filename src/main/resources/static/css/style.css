@@ -575,3 +575,33 @@ i {
     opacity: 100;
     margin-bottom: 15px;
 }
+
+.reportContainer {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.report {
+    margin-bottom: 20px;
+    padding: 5px;
+    border: 2px solid #465c47;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    color: #142847;
+}
+
+.report p {
+    color: #142847;
+    margin: 0 0 10px 0;
+}
+
+.report a {
+    color: #142847;
+    margin: 0 0 10px 0;
+}
+
+.report form button {
+    width: 20%;
+    padding: 0;
+}

@@ -35,15 +35,15 @@
             <form class="reportPostForm" th:object="${reportDto}" th:action="@{~/category/{category}/post/{id}/{slug}/report(category=${post.getCategory().getSlug()}, id=${post.getId()}, slug=${post.getSlug()})}" th:method="POST">
                 <p th:text="#{reportPostConfirmation}"></p>
                 <div>
-                    <input th:field="*{reportReason}" type="radio" id="reportReasonSpam" name="reportReason" value="Spam">
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonSpam" name="reportReason" value="reportSpam">
                     <label for="reportReasonSpam" th:text="#{reportSpam}"></label>
                 </div>
                 <div>
-                    <input th:field="*{reportReason}" type="radio" id="reportReasonHateful" name="reportReason" value="Hateful content">
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonHateful" name="reportReason" value="reportHate">
                     <label for="reportReasonHateful"  th:text="#{reportHate}"></label>
                 </div>
                 <div>
-                    <input th:field="*{reportReason}" type="radio" id="reportReasonIllegal" name="reportReason" value="Illegal content">
+                    <input th:field="*{reportReason}" type="radio" id="reportReasonIllegal" name="reportReason" value="reportIllegal">
                     <label for="reportReasonIllegal" th:text="#{reportIllegal}"></label>
                 </div>
                 <label for="reportReasonComment" th:text="#{reportOther}"></label>

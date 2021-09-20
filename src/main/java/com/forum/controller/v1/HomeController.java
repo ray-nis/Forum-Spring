@@ -20,4 +20,19 @@ public class HomeController {
         model.addAttribute("categories", categories);
         return "index";
     }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
+    @GetMapping("/contact")
+    public String contact() {
+        return "home/contact";
+    }
+
+    @GetMapping("/search")
+    public String search() {
+        return "home/search;";
+    }
 }

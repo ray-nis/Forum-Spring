@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -112,5 +114,11 @@ public class PostService {
 
     public List<Post> getFavorites(User user) {
         return postRepository.findAllByUsersFavorited(user);
+    }
+
+    public List<Post> getPostsContaining(String searchWord) {
+        List<Post> titles = postRepository.findByTitleContaining(searchWord);
+        List<Post> bodies = postRepository.findByPostContentContaining(searchWord);
+        return Stream.concat(titles.stream(), bodies.stream()).collect(Collectors.toList());
     }
 }

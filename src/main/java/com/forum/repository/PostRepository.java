@@ -34,4 +34,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Page<Post> findAllByPoster(User user, Pageable pageable);
 
     List<Post> findAllByUsersFavorited(User user);
+
+    List<Post> findByTitleContaining(String searchWord);
+
+    List<Post> findByPostContentContaining(String searchWord);
 }

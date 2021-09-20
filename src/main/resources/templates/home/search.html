@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{search}"></title>
+    <div th:replace="./fragments/assets.html :: assetsCss"></div>
 </head>
 <body>
+<div th:replace="./fragments/menuHeader.html :: menuHeader"></div>
+<div th:replace="./fragments/menuProfileHeader.html :: menuProfile"></div>
+    <div>
+        <div class="searchPost">
+            <form th:action="@{~/search}" th:method="POST">
+                <label for="searchWord" th:text="#{postContainingWord}"></label>
+                <input type="text" id="searchWord" name="searchWord">
+                <button type="submit" class="buttonStyle" th:text="#{search}"></button>
+            </form>
+        </div>
 
+        <div th:if="posts">
+            <div th:replace="/fragments/posts.html :: postsWithoutCategory"></div>
+        </div>
+    </div>
+<div th:replace="./fragments/footer.html :: footer"></div>
+<div th:replace="./fragments/assets.html :: assetsJs"></div>
 </body>
 </html>

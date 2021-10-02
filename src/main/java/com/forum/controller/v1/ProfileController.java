@@ -63,7 +63,7 @@ public class ProfileController {
     }
 
     @GetMapping("/editprofile")
-    public String editProfile(Model model) throws ResourceNotFoundException {
+    public String editProfile(Model model) {
         User user = currentUserUtil.getUser();
 
         model.addAttribute("user", user);

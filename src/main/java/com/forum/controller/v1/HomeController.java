@@ -1,6 +1,7 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.ContactDto;
+import com.forum.dto.PasswordChangeDto;
 import com.forum.model.Category;
 import com.forum.model.Post;
 import com.forum.service.CategoryService;
@@ -38,16 +39,21 @@ public class HomeController {
 
     @GetMapping("/contact")
     public String contact(Model model) {
-        model.addAttribute("contactDto", new ContactDto());
+        if (!model.containsAttribute("contactDto")) {
+            model.addAttribute("contactDto", new ContactDto());
+        }
         return "home/contact";
     }
 
     @PostMapping("/contact")
-    public String postContact(@Valid @ModelAttribute("contactDto") ContactDto contactDto, BindingResult result) {
+    public String postContact(Model model, @Valid @ModelAttribute("contactDto") ContactDto contactDto, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contactDto", result);
+            redirectAttributes.addFlashAttribute("contactDto", contactDto);
             return "redirect:/contact";
         }
 
+        redirectAttributes.addFlashAttribute("success", "sentSuccessfully");
         return "redirect:/contact";
     }
 

@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -68,9 +69,11 @@ public class PostController {
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
         if (currentUserUtil.getUser().equals(post.getPoster())) {
-            PostChangeDto postChangeDto = new PostChangeDto();
-            postChangeDto.setPostContent(post.getPostContent());
-            model.addAttribute("postChangeDto", postChangeDto);
+            if (!model.containsAttribute("postChangeDto")) {
+                PostChangeDto postChangeDto = new PostChangeDto();
+                postChangeDto.setPostContent(post.getPostContent());
+                model.addAttribute("postChangeDto", postChangeDto);
+            }
 
             return "post/editPost";
         }
@@ -79,14 +82,15 @@ public class PostController {
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}/edit")
-    public String editPost(@Valid @ModelAttribute("postChangeDto") PostChangeDto postChangeDto, BindingResult result, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, Model model) throws ResourceNotFoundException {
+    public String editPost(@Valid @ModelAttribute("postChangeDto") PostChangeDto postChangeDto, BindingResult result, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, RedirectAttributes redirectAttributes) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(categorySlug);
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
         if (currentUserUtil.getUser().equals(post.getPoster())) {
             if (result.hasErrors()) {
-                model.addAttribute("postChangeDto", postChangeDto);
-                return "post/editPost";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.postChangeDto", result);
+                redirectAttributes.addFlashAttribute( "postChangeDto", postChangeDto);
+                return "redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug() + "/edit";
             }
 
             postService.changeContent(post, postChangeDto.getPostContent());
@@ -201,21 +205,24 @@ public class PostController {
     public String newPost(@PathVariable("category") String categorySlug,Model model) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(categorySlug);
 
-        model.addAttribute("post", new PostDto());
+        if (!model.containsAttribute("post")) {
+            model.addAttribute("post", new PostDto());
+        }
         return "post/newPost";
     }
 
     @PostMapping("/category/{category}/new")
-    public ModelAndView postNewPost(@Valid @ModelAttribute("post") PostDto postDto, BindingResult result, @PathVariable("category") String categorySlug, Authentication authentication, Model model) throws ResourceNotFoundException {
+    public String postNewPost(@Valid @ModelAttribute("post") PostDto postDto, BindingResult result, @PathVariable("category") String categorySlug, RedirectAttributes redirectAttributes) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(categorySlug);
 
         if (result.hasErrors()) {
-            ModelAndView mav = new ModelAndView("post/newPost", "post", postDto);
-            return mav;
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.post", result);
+            redirectAttributes.addFlashAttribute( "post", postDto);
+            return "redirect:/category/" + category.getSlug() + "/new";
         }
 
-        Post post = postService.savePost(postDto, category, (User)authentication.getPrincipal());
+        Post post = postService.savePost(postDto, category, currentUserUtil.getUser());
 
-        return new ModelAndView("redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug(), "post", post);
+        return "redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug();
     }
 }

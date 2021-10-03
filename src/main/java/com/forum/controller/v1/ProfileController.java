@@ -80,7 +80,7 @@ public class ProfileController {
     }
 
     @PostMapping("/changepassword")
-    public String changePassword(@Valid @ModelAttribute("passwordChangeDto") PasswordChangeDto passwordChangeDto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String changePassword(@Valid @ModelAttribute("passwordChangeDto") PasswordChangeDto passwordChangeDto, BindingResult result, RedirectAttributes redirectAttributes) {
         User user = currentUserUtil.getUser();
 
         if (result.hasErrors()) {

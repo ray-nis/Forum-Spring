@@ -2,6 +2,7 @@ package com.forum.controller.v1;
 
 import com.forum.dto.PasswordDto;
 import com.forum.dto.EmailDto;
+import com.forum.dto.PostChangeDto;
 import com.forum.dto.UserSignupDto;
 import com.forum.event.RegistrationCompleteEvent;
 import com.forum.exception.BadTokenException;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -146,15 +148,18 @@ public class AuthController {
 
     @GetMapping("/forgotpassword")
     public String forgotPasswordPage(Model model) {
-        model.addAttribute("passwordResetDto", new EmailDto());
+        if (!model.containsAttribute("passwordResetDto")) {
+            model.addAttribute("passwordResetDto", new EmailDto());
+        }
         return "auth/forgotPassword/forgotPassword";
     }
 
     @PostMapping("/forgotpassword")
-    public String forgotPassword(@Valid @ModelAttribute("passwordResetDto") EmailDto emailDto, BindingResult result, Model model, HttpServletRequest request) {
+    public String forgotPassword(@Valid @ModelAttribute("passwordResetDto") EmailDto emailDto, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (result.hasErrors()) {
-            model.addAttribute("passwordResetDto", emailDto);
-            return "auth/forgotPassword/forgotPassword";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordResetDto", result);
+            redirectAttributes.addFlashAttribute( "passwordResetDto", emailDto);
+            return "redirect/forgotpassword";
         }
 
         String baseUrl = UrlUtil.getUrlFromServletRequest(request);

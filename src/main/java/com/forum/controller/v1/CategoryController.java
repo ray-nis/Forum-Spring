@@ -28,7 +28,6 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryController {
 
     private final PostService postService;

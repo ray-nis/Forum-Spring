@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<div th:fragment="postComment" sec:authorize="isAuthenticated()" class="postComment">
+<div th:fragment="postComment" th:if="${locked} == false" sec:authorize="isAuthenticated()" class="postComment">
     <form th:action="@{''}" method="POST" th:object="${commentDto}">
         <textarea th:placeholder="#{followTheRules}" class="commentTextArea" th:field="*{commentContent}"></textarea>
         <p class="error" th:each="error: ${#fields.errors('commentContent')}"

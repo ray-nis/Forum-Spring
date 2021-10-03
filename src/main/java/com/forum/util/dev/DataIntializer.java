@@ -95,7 +95,8 @@ public class DataIntializer implements CommandLineRunner {
                 .category(firstCategory)
                 .poster(john)
                 .timesViewed(1)
-                .pinned(true)
+                .pinned(false)
+                .locked(false)
                 .build();
 
         Post secondPost = Post.builder()
@@ -105,6 +106,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(ben)
                 .timesViewed(2)
                 .pinned(false)
+                .locked(false)
                 .build();
 
         Post thirdPost = Post.builder()
@@ -114,6 +116,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(ben)
                 .timesViewed(2)
                 .pinned(false)
+                .locked(false)
                 .build();
 
         Post fourthPost = Post.builder()
@@ -123,6 +126,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(ben)
                 .timesViewed(0)
                 .pinned(false)
+                .locked(false)
                 .build();
 
         Post fifthPost = Post.builder()
@@ -132,6 +136,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(john)
                 .timesViewed(5)
                 .pinned(true)
+                .locked(false)
                 .build();
 
         Post sixthPost = Post.builder()
@@ -141,6 +146,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(ben)
                 .timesViewed(0)
                 .pinned(false)
+                .locked(false)
                 .build();
 
         for (int i = 0; i < 15; i++) {
@@ -151,6 +157,7 @@ public class DataIntializer implements CommandLineRunner {
                     .poster(i % 2 == 0 ? ben : john)
                     .timesViewed(0)
                     .pinned(false)
+                    .locked(true)
                     .build();
             postRepository.save(post);
         }

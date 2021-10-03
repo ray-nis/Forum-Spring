@@ -37,6 +37,7 @@ public class PostService {
                 .category(category)
                 .timesViewed(0)
                 .pinned(false)
+                .locked(false)
                 .build();
 
         return postRepository.save(post);

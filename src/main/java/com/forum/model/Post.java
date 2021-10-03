@@ -63,6 +63,8 @@ public class Post extends DateAudit {
 
     private int timesViewed;
 
+    private boolean locked;
+
     public String getPostedTime() {
         Locale locale = LocaleContextHolder.getLocale();
         PrettyTime p = new PrettyTime(locale);

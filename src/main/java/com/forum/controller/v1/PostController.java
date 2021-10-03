@@ -60,6 +60,8 @@ public class PostController {
         List<Integer> pageNumbers = PaginationUtil.getPageNumbers(comments.getTotalPages());
         model.addAttribute("pageNumbers", pageNumbers);
 
+        model.addAttribute("locked", post.isLocked());
+
         return "post/post";
     }
 
@@ -104,6 +106,10 @@ public class PostController {
     public String postComment(@Valid @ModelAttribute("commentDto") CommentDto commentDto, BindingResult result, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
         Category category = categoryService.getCategoryBySlug(categorySlug);
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        if (post.isLocked()) {
+            return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug;
+        }
 
         model.addAttribute("post", post);
 

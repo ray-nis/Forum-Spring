@@ -2,6 +2,8 @@ package com.forum.controller.v1;
 
 import com.forum.dto.CommentDto;
 import com.forum.dto.ReportDto;
+import com.forum.exception.AccessDeniedException;
+import com.forum.exception.BadTokenException;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Comment;
@@ -40,7 +42,7 @@ public class CommentController {
         Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
 
         if (post.isLocked()) {
-            return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug;
+            throw new AccessDeniedException();
         }
 
         model.addAttribute("post", post);

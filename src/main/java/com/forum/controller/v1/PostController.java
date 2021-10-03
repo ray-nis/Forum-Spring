@@ -1,6 +1,7 @@
 package com.forum.controller.v1;
 
 import com.forum.dto.*;
+import com.forum.exception.AccessDeniedException;
 import com.forum.exception.ResourceNotFoundException;
 import com.forum.model.Category;
 import com.forum.model.Comment;
@@ -79,7 +80,7 @@ public class PostController {
             return "post/editPost";
         }
 
-        return "error/error";
+        throw new AccessDeniedException();
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}/edit")
@@ -98,7 +99,7 @@ public class PostController {
             return "redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug();
         }
 
-        return "error/error";
+        throw new AccessDeniedException();
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}/report")
@@ -121,7 +122,7 @@ public class PostController {
             return "redirect:/";
         }
 
-        return "error/error";
+        throw new AccessDeniedException();
     }
 
     @GetMapping("/category/{category}/post/{id}/{slug}/favorite")

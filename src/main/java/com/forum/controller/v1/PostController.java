@@ -35,7 +35,6 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class PostController {
     private final PostService postService;
     private final CategoryService categoryService;
@@ -100,43 +99,6 @@ public class PostController {
         }
 
         return "error/error";
-    }
-
-    @PostMapping("/category/{category}/post/{id}/{slug}")
-    public String postComment(@Valid @ModelAttribute("commentDto") CommentDto commentDto, BindingResult result, @PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
-        Category category = categoryService.getCategoryBySlug(categorySlug);
-        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
-
-        if (post.isLocked()) {
-            return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug;
-        }
-
-        model.addAttribute("post", post);
-
-        int currentPage = PaginationUtil.getPage(page);
-
-        if (result.hasErrors()) {
-            Page<Comment> comments = commentService.getPaginatedSorted(post, currentPage);
-
-            List<Integer> pageNumbers = PaginationUtil.getPageNumbers(comments.getTotalPages());
-            model.addAttribute("pageNumbers", pageNumbers);
-
-            model.addAttribute("comments", comments);
-            model.addAttribute("commentDto", commentDto);
-            model.addAttribute("reportDto", new ReportDto());
-            return "post/post";
-        }
-
-        commentService.saveComment(commentDto, post, currentUserUtil.getUser());
-
-        Page<Comment> comments = commentService.getPaginatedSorted(post, currentPage);
-
-        List<Integer> pageNumbers = PaginationUtil.getPageNumbers(comments.getTotalPages());
-        model.addAttribute("pageNumbers", pageNumbers);
-
-        model.addAttribute("comments", comments);
-
-        return "redirect:/category/" + categorySlug + "/post/" + id + "/" + postSlug + "/?page=" + comments.getTotalPages();
     }
 
     @PostMapping("/category/{category}/post/{id}/{slug}/report")

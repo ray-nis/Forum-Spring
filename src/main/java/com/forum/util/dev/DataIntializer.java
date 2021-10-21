@@ -96,7 +96,7 @@ public class DataIntializer implements CommandLineRunner {
                 .poster(john)
                 .timesViewed(1)
                 .pinned(false)
-                .locked(false)
+                .locked(true)
                 .build();
 
         Post secondPost = Post.builder()
@@ -157,7 +157,7 @@ public class DataIntializer implements CommandLineRunner {
                     .poster(i % 2 == 0 ? ben : john)
                     .timesViewed(0)
                     .pinned(false)
-                    .locked(true)
+                    .locked(false)
                     .build();
             postRepository.save(post);
         }

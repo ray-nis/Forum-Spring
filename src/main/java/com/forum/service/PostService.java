@@ -122,4 +122,14 @@ public class PostService {
         List<Post> bodies = postRepository.findByPostContentContaining(searchWord);
         return Stream.concat(titles.stream(), bodies.stream()).collect(Collectors.toList());
     }
+
+    @Transactional
+    public void lock(Post post) {
+        post.setLocked(true);
+    }
+
+    @Transactional
+    public void unlock(Post post) {
+        post.setLocked(false);
+    }
 }

@@ -180,6 +180,7 @@ i {
 .postSocial div i {
     color: #1c704b;
     font-size: 1.1em;
+    line-height: 2;
 }
 
 .paginationContainer {
@@ -651,4 +652,11 @@ i {
 .searchPost form input {
     width: 30%;
     margin: 10px 0 10px 0;
+}
+
+.stylelessBtn {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    outline: none;
 }

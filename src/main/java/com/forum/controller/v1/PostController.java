@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,6 +124,22 @@ public class PostController {
         }
 
         throw new AccessDeniedException();
+    }
+
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PostMapping("/category/{category}/post/{id}/{slug}/lock")
+    public String lockPost(@PathVariable("category") String categorySlug, @PathVariable("id") Long id, @PathVariable("slug") String postSlug, @RequestParam("page") Optional<Integer> page, Model model) throws ResourceNotFoundException {
+        Category category = categoryService.getCategoryBySlug(categorySlug);
+        Post post = postService.getPostByCategoryAndIdAndSlug(category, id, postSlug);
+
+        if (post.isLocked()) {
+            postService.unlock(post);
+        }
+        else {
+            postService.lock(post);
+        }
+
+        return "redirect:/category/" + category.getSlug() + "/post/" + post.getId() + "/" + post.getSlug();
     }
 
     @GetMapping("/category/{category}/post/{id}/{slug}/favorite")

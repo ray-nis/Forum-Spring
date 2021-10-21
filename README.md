@@ -45,5 +45,6 @@ An old school forum in a monolithic spring boot app.
 ##### Moderators can:
 * View moderator only page
 * View user reports and resolve them
+* Lock/unlock posts
 ##### Admins can:
 * View admin only page
